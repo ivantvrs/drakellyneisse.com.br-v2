@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Termos de Uso | Dra. Kelly Neisse</title>
+  <meta name="description" content="Termos de Uso da Dra. Kelly Neisse — Médica Perita Judicial. Condições de uso do site e dos serviços de assistência técnica médica judicial." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://drakellyneisse.com.br/termos-de-uso/" />
+  <style>
+    :root {
+      --heading: #1B2A4A;
+      --gold: #C4973B;
+      --gold-light: #d4ab5a;
+      --body: #3d4f5f;
+      --muted: #6b7280;
+      --bg: #f8f7f4;
+      --card: #ffffff;
+      --border: #e5e2da;
+      --max: 880px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-kn {
+      display: inline-flex;
+      align-items: baseline;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .logo-k { color: var(--heading); font-size: 28px; }
+
+    .logo-n {
+      color: var(--gold);
+      font-size: 28px;
+      margin-left: -5px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-name { display: flex; flex-direction: column; }
+
+    .header-name strong {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--heading);
+      line-height: 1.2;
+    }
+
+    .header-name span { font-size: 12px; color: var(--muted); letter-spacing: 0.3px; }
+
+    .header-back {
+      font-size: 13px;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .header-back:hover { opacity: 0.8; }
+
+    main {
+      width: 100%;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 48px 20px 72px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px 40px;
+    }
+
+    h1 {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--heading);
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h2 {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: var(--heading);
+      font-size: 1.15rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin: 36px 0 12px;
+      padding-top: 8px;
+    }
+
+    h2::before {
+      content: '';
+      display: inline-block;
+      width: 3px;
+      height: 18px;
+      background: var(--gold);
+      border-radius: 2px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    p { margin-bottom: 16px; font-size: 0.95rem; }
+
+    ul { margin: 0 0 16px; padding-left: 24px; }
+
+    li { margin-bottom: 8px; font-size: 0.95rem; }
+
+    li::marker { color: var(--gold); }
+
+    a { color: var(--gold); text-decoration: underline; text-underline-offset: 2px; }
+
+    a:hover { color: var(--gold-light); }
+
+    strong { font-weight: 600; color: var(--heading); }
+
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--card);
+      padding: 32px 20px;
+      text-align: center;
+    }
+
+    .footer-inner { max-width: var(--max); margin: 0 auto; }
+
+    .footer-name {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--heading);
+      margin-bottom: 4px;
+    }
+
+    .footer-info { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+    .footer-info a { color: var(--muted); text-decoration: none; }
+
+    .footer-info a:hover { color: var(--gold); }
+
+    .footer-links {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 767px) {
+      .logo-k, .logo-n { font-size: 22px; }
+      .logo-n { margin-left: -3px; }
+      main { padding: 24px 16px 48px; }
+      .card { padding: 32px 20px; border-radius: 8px; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="https://drakellyneisse.com.br" class="header-brand">
+        <span class="logo-kn">
+          <span class="logo-k">K</span>
+          <span class="logo-n">N</span>
+        </span>
+        <div class="header-name">
+          <strong>Dra. Kelly Neisse</strong>
+          <span>Médica Perita Judicial</span>
+        </div>
+      </a>
+      <a href="https://drakellyneisse.com.br" class="header-back">← Voltar ao site</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1>Termos de Uso</h1>
+      <p class="meta">Última atualização: 29 de março de 2026</p>
+
+      <p>
+        Este documento estabelece as condições de uso do site <a href="https://drakellyneisse.com.br" target="_blank" rel="noopener noreferrer">drakellyneisse.com.br</a> e seus subdomínios, operados por <strong>NEISSE SERVICOS MEDICOS LTDA</strong>, pessoa jurídica de direito privado, inscrita no CNPJ/MF sob o nº 54.467.021/0001-40.
+      </p>
+
+      <p>
+        O site tem como finalidade apresentar os serviços de assistência técnica médica judicial prestados pela Dra. Kelly Jaqueline Neisse (CRM/MG 109153) e facilitar o contato de advogados e escritórios que necessitam de suporte técnico-médico em seus processos.
+      </p>
+
+      <p>
+        Ao navegar neste site, você concorda com os Termos de Uso descritos abaixo. Caso não esteja de acordo, recomendamos que não continue a utilização.
+      </p>
+
+      <h2>Sobre o serviço</h2>
+
+      <p>
+        A Dra. Kelly Neisse presta serviços de assistência técnica médica judicial para advogados, incluindo: análise técnica de processos com discussão médica, elaboração de quesitos estratégicos, produção de parecer médico-técnico, impugnação de laudo pericial e acompanhamento em perícia oficial.
+      </p>
+
+      <p>
+        O serviço é direcionado exclusivamente a advogados e escritórios de advocacia que atuam em causas com discussão médica nas áreas trabalhista, cível e previdenciária.
+      </p>
+
+      <h2>Natureza técnica da atuação</h2>
+
+      <p>
+        A assistência técnica médica judicial é um serviço de natureza técnico-pericial, regulamentado pelo Código de Processo Civil (art. 465 e seguintes) e pelas normas do Conselho Federal de Medicina.
+      </p>
+
+      <p>
+        A atuação da Dra. Kelly Neisse é pautada por objetividade, fundamentação técnico-científica e imparcialidade, em observância ao Código de Ética Médica, à Resolução CFM nº 2.183/2018 e à Resolução CFM nº 2.325/2022.
+      </p>
+
+      <p>
+        <strong>O serviço não constitui garantia de resultado processual.</strong> A assistência técnica tem como finalidade oferecer suporte médico qualificado ao advogado, contribuindo para a compreensão dos elementos clínicos do caso e para a fundamentação técnica da estratégia processual. O resultado do processo depende de múltiplos fatores, incluindo a decisão judicial, que escapa ao controle das partes.
+      </p>
+
+      <h2>Uso do site</h2>
+
+      <p>
+        O acesso ao site é gratuito e não exige cadastro. As informações disponíveis no site têm caráter informativo e institucional, destinadas a apresentar os serviços e facilitar o contato.
+      </p>
+
+      <p>
+        O site não oferece consultoria médica, diagnóstico ou orientação clínica ao público em geral. As informações apresentadas não substituem a avaliação presencial de um profissional de saúde.
+      </p>
+
+      <h2>Contato e envio de documentos</h2>
+
+      <p>
+        O contato inicial pode ser feito por meio do WhatsApp ou dos canais indicados no site. Ao enviar um resumo do caso ou documentos processuais, o advogado autoriza o uso dessas informações exclusivamente para:
+      </p>
+
+      <ul>
+        <li>Entendimento inicial da demanda;</li>
+        <li>Avaliação do tipo de suporte técnico adequado;</li>
+        <li>Prestação do serviço contratado.</li>
+      </ul>
+
+      <p>
+        Os documentos e informações recebidos são tratados com sigilo profissional e utilizados apenas para a finalidade comunicada. Para mais detalhes, consulte a <a href="https://drakellyneisse.com.br/politica-de-privacidade/">Política de Privacidade</a>.
+      </p>
+
+      <h2>Propriedade intelectual</h2>
+
+      <p>
+        Todo o conteúdo do site — incluindo textos, imagens, logotipo, layout, estrutura e identidade visual — é de propriedade de NEISSE SERVICOS MEDICOS LTDA ou de seus licenciados e está protegido pela legislação de direitos autorais e propriedade intelectual.
+      </p>
+
+      <p>
+        É proibida a reprodução, distribuição, modificação ou utilização do conteúdo do site para fins comerciais sem autorização prévia por escrito.
+      </p>
+
+      <h2>Pareceres e materiais técnicos produzidos</h2>
+
+      <p>
+        Os pareceres, quesitos, análises e demais materiais técnicos produzidos no âmbito da prestação de serviço são entregues ao advogado contratante para uso exclusivo no processo específico para o qual foram elaborados.
+      </p>
+
+      <p>
+        A utilização desses materiais em outros contextos, publicações ou processos depende de autorização prévia da Dra. Kelly Neisse.
+      </p>
+
+      <h2>Limitação de responsabilidade</h2>
+
+      <p>
+        A Dra. Kelly Neisse e a NEISSE SERVICOS MEDICOS LTDA não se responsabilizam por:
+      </p>
+
+      <ul>
+        <li>Resultados processuais, decisões judiciais ou desfechos que dependam de fatores alheios ao suporte técnico prestado;</li>
+        <li>Uso indevido dos materiais técnicos produzidos fora do escopo contratado;</li>
+        <li>Informações incompletas, inexatas ou desatualizadas fornecidas pelo contratante;</li>
+        <li>Indisponibilidade temporária do site por motivos técnicos, manutenção ou força maior;</li>
+        <li>Conteúdo, práticas de privacidade ou funcionamento de sites de terceiros acessados por meio de links disponíveis neste site.</li>
+      </ul>
+
+      <h2>Cookies</h2>
+
+      <p>
+        O site pode utilizar cookies para melhorar a experiência de navegação e coletar dados estatísticos anônimos. Cookies não coletam dados pessoais identificáveis nem documentos processuais. Para mais detalhes, consulte a <a href="https://drakellyneisse.com.br/politica-de-privacidade/">Política de Privacidade</a>.
+      </p>
+
+      <h2>Dados pessoais</h2>
+
+      <p>
+        Os dados pessoais coletados durante a navegação no site e a prestação do serviço são tratados em conformidade com a Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/18). As regras completas sobre coleta, uso e proteção de dados estão descritas na <a href="https://drakellyneisse.com.br/politica-de-privacidade/">Política de Privacidade</a>.
+      </p>
+
+      <h2>Alterações nestes Termos</h2>
+
+      <p>
+        Estes Termos de Uso podem ser atualizados a qualquer momento. Em caso de alteração, a nova versão será publicada nesta página com a data de atualização revisada. O uso continuado do site após alterações implica concordância com a versão vigente.
+      </p>
+
+      <h2>Prazo e disponibilidade</h2>
+
+      <p>
+        O site funciona por prazo indeterminado e pode ser modificado, suspenso ou encerrado a qualquer momento, sem necessidade de aviso prévio.
+      </p>
+
+      <h2>Contato</h2>
+
+      <p>
+        Caso tenha qualquer dúvida sobre estes Termos de Uso, entre em contato pelo e-mail <a href="mailto:contato@drakellyneisse.com.br">contato@drakellyneisse.com.br</a>.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-name">Dra. Kelly Jaqueline Neisse</p>
+      <p class="footer-info">
+        Médica Perita Judicial · CRM/MG 109153<br>
+        Perícia Médica<br>
+        TRT-3 · TJMG · TJMT · TJSP
+      </p>
+      <p class="footer-info" style="margin-top: 8px;">
+        <a href="https://drakellyneisse.com.br">drakellyneisse.com.br</a> ·
+        <a href="mailto:contato@drakellyneisse.com.br">contato@drakellyneisse.com.br</a> ·
+        (34) 9 9687-8758 · Uberlândia/MG
+      </p>
+      <p class="footer-links">
+        <a href="https://drakellyneisse.com.br/politica-de-privacidade/">Política de Privacidade</a> ·
+        <a href="https://drakellyneisse.com.br/termos-de-uso/">Termos de Uso</a><br>
+        © 2026 Dra. Kelly Jaqueline Neisse. Todos os direitos reservados.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>

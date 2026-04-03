@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite:*)",
+      "Bash(npx --yes sharp-cli -i src/assets/hero-portrait.webp --stats)",
+      "Bash(python3 -c \"from PIL import Image; img=Image.open\\('src/assets/hero-portrait.webp'\\); print\\(f'{img.size[0]}x{img.size[1]}'\\)\")",
+      "Bash(npx lighthouse:*)",
+      "Bash(node -e ':*)",
+      "Bash(timeout 3)",
+      "Bash(npx sharp-cli:*)"
+    ]
+  }
+}
