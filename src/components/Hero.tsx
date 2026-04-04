@@ -4,47 +4,23 @@ import heroImage from "@/assets/hero-dra-kelly.webp";
 
 const WHATSAPP_URL = "https://wa.me/5534996878758?text=Olá%20Dra.%20Kelly%2C%20gostaria%20de%20enviar%20meu%20caso%20para%20análise.";
 
-const ESTADOS: Record<string, string> = {
-  'Acre':'AC','Alagoas':'AL','Amapá':'AP','Amazonas':'AM','Bahia':'BA',
-  'Ceará':'CE','Distrito Federal':'DF','Espírito Santo':'ES','Goiás':'GO',
-  'Maranhão':'MA','Mato Grosso':'MT','Mato Grosso do Sul':'MS','Minas Gerais':'MG',
-  'Pará':'PA','Paraíba':'PB','Paraná':'PR','Pernambuco':'PE','Piauí':'PI',
-  'Rio de Janeiro':'RJ','Rio Grande do Norte':'RN','Rio Grande do Sul':'RS',
-  'Rondônia':'RO','Roraima':'RR','Santa Catarina':'SC','São Paulo':'SP',
-  'Sergipe':'SE','Tocantins':'TO',
-};
-
 function useGeoLocation() {
-  const [location, setLocation] = useState("UBERLÂNDIA/MG");
+  const [location, setLocation] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 3000);
+    const timeout = setTimeout(() => controller.abort(), 2500);
 
-    fetch("https://ipapi.co/json/", { signal: controller.signal })
+    fetch("/api/geo", { signal: controller.signal })
       .then(r => r.json())
-      .then(d => {
+      .then(({ city, region, country }) => {
         clearTimeout(timeout);
-        if (d.country_code === "BR" && d.city) {
-          const sigla = ESTADOS[d.region] || d.region_code || "";
-          if (sigla) setLocation(d.city.toUpperCase() + "/" + sigla);
+        if (country === "BR" && city && region) {
+          setLocation(city.toUpperCase() + "/" + region);
         }
       })
       .catch(() => {
         clearTimeout(timeout);
-        // Fallback API
-        const ctrl2 = new AbortController();
-        const t2 = setTimeout(() => ctrl2.abort(), 3000);
-        fetch("https://ipwho.is/", { signal: ctrl2.signal })
-          .then(r => r.json())
-          .then(d => {
-            clearTimeout(t2);
-            if (d.country_code === "BR" && d.city) {
-              const sigla = ESTADOS[d.region] || "";
-              if (sigla) setLocation(d.city.toUpperCase() + "/" + sigla);
-            }
-          })
-          .catch(() => clearTimeout(t2));
       });
 
     return () => { clearTimeout(timeout); controller.abort(); };
@@ -84,7 +60,7 @@ const Hero = () => {
     <div className="container mx-auto relative z-10" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle">
-          ASSISTÊNCIA TÉCNICA MÉDICA · {userLocation}
+          ASSISTÊNCIA TÉCNICA MÉDICA{userLocation ? ` · ${userLocation}` : ""}
         </p>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-6">
