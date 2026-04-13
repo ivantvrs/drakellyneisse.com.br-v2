@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import TargetAudience from "@/components/TargetAudience";
 import ProblemSolution from "@/components/ProblemSolution";
 import Services from "@/components/Services";
 import Testimonials from "@/components/Testimonials";
@@ -23,6 +24,8 @@ const Index = () => (
     <Header />
     <main>
       <Hero />
+      <TargetAudience />
+      <SectionTransition fromColor="#0F0F0F" toColor="#0F0F0F" variant="subtle" />
       <ProblemSolution />
       <SectionTransition fromColor="#0F0F0F" toColor="#1A1A1A" />
       <Services />

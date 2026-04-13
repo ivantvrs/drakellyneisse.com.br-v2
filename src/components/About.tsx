@@ -53,6 +53,9 @@ const About = () => {
               <p>
                 Atua com foco em <strong style={{ color: '#F5F0E8' }}>perícias médicas judiciais</strong>, avaliação de incapacidade laborativa, <strong style={{ color: '#F5F0E8' }}>análise de nexo causal</strong> e elaboração de laudos técnico-periciais, oferecendo suporte com objetividade, clareza e fundamentação técnico-pericial.
               </p>
+              <p>
+                <strong style={{ color: '#F5F0E8' }}>Baseada em Uberlândia/MG</strong>, atende casos em Minas Gerais, São Paulo, Goiás, Mato Grosso e Rio Grande do Sul, com <strong style={{ color: '#F5F0E8' }}>parecer técnico digital</strong> e acompanhamento pericial remoto ou presencial.
+              </p>
             </div>
 
             {/* Credentials as text list */}

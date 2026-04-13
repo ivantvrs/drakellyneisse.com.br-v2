@@ -13,10 +13,13 @@ const Footer = () => (
             Perícia Médica
           </p>
           <p className="text-xs mt-2" style={{ color: '#8A857A' }}>
-            pericia.drakellyneisse.com.br · contato@drakellyneisse.com.br · (34) 9 9687-8758 · Uberlândia/MG
+            pericia.drakellyneisse.com.br · contato@drakellyneisse.com.br · (34) 9 9687-8758
           </p>
-          <p className="text-xs mt-1" style={{ color: '#8A857A' }}>
-            TRT-3 · TJMG · TJMT · TJSP
+          <p className="text-xs mt-1" style={{ color: '#A09A8D' }}>
+            Atendimento Nacional · TRT-3 · TJMG · TJSP · TJMT · TJGO
+          </p>
+          <p className="text-[10px] mt-1" style={{ color: '#6B665C' }}>
+            Sede administrativa: Uberlândia/MG
           </p>
         </div>
 

@@ -60,16 +60,16 @@ const Hero = () => {
     <div className="container mx-auto relative z-10" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle">
-          ASSISTÊNCIA TÉCNICA MÉDICA{userLocation ? ` · ${userLocation}` : ""}
+          ASSISTÊNCIA TÉCNICA MÉDICA · {userLocation ?? "ATENDIMENTO EM TODO O BRASIL"}
         </p>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-6">
-          <span className="gold-shine">Você vai entrar na perícia sem</span>{" "}
-          <span style={{ color: '#F5F0E8' }}>assistência técnica?</span>
+          <span className="gold-shine">A prova médica define muitos processos.</span>{" "}
+          <span style={{ color: '#F5F0E8' }}>Quem vai ler o laudo pelo seu cliente?</span>
         </h1>
 
         <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg" style={{ color: '#A09A8D' }}>
-          Parecer, quesitos estratégicos e impugnação de laudo para fortalecer seu processo.
+          Assistência técnica médica judicial para advogados, escritórios e empresas em demandas trabalhistas e cíveis.
         </p>
 
         <a

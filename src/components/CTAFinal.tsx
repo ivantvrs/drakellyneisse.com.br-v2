@@ -15,7 +15,7 @@ const CTAFinal = () => {
     >
       <div ref={ref} className={`container mx-auto text-center max-w-2xl relative z-10 fade-in-section ${isVisible ? "is-visible" : ""}`}>
         <h2 className="font-display text-3xl md:text-[2.5rem] lg:text-[3.5rem] font-bold mb-8 leading-tight gold-shine">
-          Seu processo envolve discussão médica relevante?
+          O caso do seu cliente envolve discussão médica relevante?
         </h2>
         <p className="text-base md:text-lg leading-relaxed mb-5" style={{ color: '#A09A8D' }}>
           Uma análise técnica bem conduzida traz mais clareza à prova, mais consistência à argumentação e mais segurança à condução do caso.

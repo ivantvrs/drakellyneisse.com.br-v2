@@ -1,4 +1,4 @@
-import { MapPin, Phone, Globe, Mail } from "lucide-react";
+import { Phone, Globe, Mail } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
 const InstitutionalContact = () => {
@@ -11,8 +11,11 @@ const InstitutionalContact = () => {
 
         <p className="font-display text-lg font-semibold" style={{ color: '#F5F0E8' }}>Dra. Kelly Jaqueline Neisse</p>
         <p className="font-label text-sm mt-1 mb-1" style={{ color: '#8A857A' }}>Médica Perita Judicial · CRM/MG 109153</p>
-        <p className="text-xs mb-10" style={{ color: '#8A857A' }}>
-          TRT-3 · TJMG · TJMT · TJSP
+        <p className="text-xs mb-2" style={{ color: '#A09A8D' }}>
+          Atendimento Nacional · TRT-3 · TJMG · TJSP · TJMT · TJGO
+        </p>
+        <p className="text-[11px] mb-10" style={{ color: '#6B665C' }}>
+          Sede administrativa: Uberlândia/MG
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm flex-wrap" style={{ color: '#A09A8D' }}>
@@ -45,10 +48,6 @@ const InstitutionalContact = () => {
             <Phone size={15} style={{ color: '#D4A853' }} />
             (34) 9 9687-8758
           </a>
-          <span className="inline-flex items-center gap-2">
-            <MapPin size={15} style={{ color: '#D4A853' }} />
-            Uberlândia/MG
-          </span>
         </div>
       </div>
     </section>
