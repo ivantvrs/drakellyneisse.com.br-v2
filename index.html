@@ -76,5 +76,56 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         }, 1500);
       });
     </script>
+    <!-- Engagement tracking: scroll depth + WhatsApp clicks (dataLayer → GA4 via GTM) -->
+    <script>
+      (function () {
+        window.dataLayer = window.dataLayer || [];
+
+        // 1) Scroll depth: 25 / 50 / 75 / 90
+        var thresholds = [25, 50, 75, 90];
+        var fired = {};
+        var ticking = false;
+        function checkScroll() {
+          var docH = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight
+          );
+          var denom = docH - window.innerHeight;
+          if (denom <= 0) { ticking = false; return; }
+          var percent = Math.round((window.scrollY / denom) * 100);
+          for (var i = 0; i < thresholds.length; i++) {
+            var t = thresholds[i];
+            if (percent >= t && !fired[t]) {
+              fired[t] = true;
+              window.dataLayer.push({
+                event: 'scroll_depth',
+                percent_scrolled: t
+              });
+            }
+          }
+          ticking = false;
+        }
+        window.addEventListener('scroll', function () {
+          if (!ticking) {
+            window.requestAnimationFrame(checkScroll);
+            ticking = true;
+          }
+        }, { passive: true });
+
+        // 2) WhatsApp click (delegated — funciona para elementos renderizados pelo React depois do load)
+        document.addEventListener('click', function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+          if (!a) return;
+          var href = (a.getAttribute('href') || '').toLowerCase();
+          if (href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1) {
+            window.dataLayer.push({
+              event: 'whatsapp_click',
+              event_category: 'conversao',
+              link_url: a.href
+            });
+          }
+        }, true);
+      })();
+    </script>
   </body>
 </html>
