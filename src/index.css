@@ -382,6 +382,17 @@ html {
   .fade-in-section {
     transition-duration: 0.3s;
   }
+  /* Hero: distribui o conteúdo verticalmente no mobile (centralizado) */
+  #inicio > .container.relative.z-10 {
+    padding-top: 7rem !important;
+    padding-bottom: 9rem !important;
+  }
+  #inicio h1 {
+    margin-bottom: 1.5rem !important;
+  }
+  #inicio .max-w-xl > p.text-lg {
+    margin-bottom: 2rem !important;
+  }
 }
 
 /* Reduced motion preference */
