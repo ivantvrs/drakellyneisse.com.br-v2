@@ -100,7 +100,7 @@ const Hero = () => {
       <div className="container mx-auto">
         <div className="animate-fade-up-delay-2 py-6" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.15)' }}>
           <p className="font-label text-[13px] leading-relaxed text-center md:text-left" style={{ color: '#A09A8D' }}>
-            <span className="gold-shine-subtle">Médica Perita Judicial</span> · CRM/MG 109153 · Perícia Médica · Atuação trabalhista, cível e previdenciária
+            <span className="gold-shine-subtle">Médica Perita Judicial</span> · CRM/MG 109153 · Perícia Médica · Atuação trabalhista e cível
           </p>
           <p className="font-label text-[13px] mt-1 text-center md:text-left" style={{ color: '#8A857A' }}>
             TRT-3 · TJMG · TJMT · TJSP · Nexo causal · Incapacidade laborativa · Impugnação de laudo
