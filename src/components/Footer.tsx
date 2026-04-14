@@ -18,7 +18,7 @@ const Footer = () => (
           <p className="text-xs mt-1" style={{ color: '#A09A8D' }}>
             Atendimento Nacional · TRT-3 · TJMG · TJSP · TJMT · TJGO
           </p>
-          <p className="text-[10px] mt-1" style={{ color: '#6B665C' }}>
+          <p className="text-[10px] mt-1" style={{ color: '#8A857A' }}>
             Sede administrativa: Uberlândia/MG
           </p>
         </div>

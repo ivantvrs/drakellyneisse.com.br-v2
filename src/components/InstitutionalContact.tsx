@@ -14,7 +14,7 @@ const InstitutionalContact = () => {
         <p className="text-xs mb-2" style={{ color: '#A09A8D' }}>
           Atendimento Nacional · TRT-3 · TJMG · TJSP · TJMT · TJGO
         </p>
-        <p className="text-[11px] mb-10" style={{ color: '#6B665C' }}>
+        <p className="text-[11px] mb-10" style={{ color: '#8A857A' }}>
           Sede administrativa: Uberlândia/MG
         </p>
 
