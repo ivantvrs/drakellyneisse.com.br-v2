@@ -45,7 +45,7 @@ const About = () => {
 
             <div className="space-y-5 text-base leading-relaxed mb-10" style={{ color: '#A09A8D' }}>
               <p>
-                A Dra. Kelly Jaqueline Neisse é <strong style={{ color: '#F5F0E8' }}>Médica Perita Judicial</strong> com atuação em <strong style={{ color: '#F5F0E8' }}>assistência técnica e perícia médica judicial</strong> nas áreas trabalhista, cível e previdenciária.
+                A Dra. Kelly Jaqueline Neisse é <strong style={{ color: '#F5F0E8' }}>Médica Perita Judicial</strong> com atuação em <strong style={{ color: '#F5F0E8' }}>assistência técnica e perícia médica judicial</strong> nas áreas trabalhista e cível.
               </p>
               <p>
                 Sua atuação é direcionada ao apoio técnico de advogados e escritórios que necessitam de <strong style={{ color: '#F5F0E8' }}>leitura médica qualificada</strong>, análise estratégica e fundamentação técnico-pericial aplicada ao caso concreto.

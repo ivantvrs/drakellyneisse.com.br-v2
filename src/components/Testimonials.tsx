@@ -15,7 +15,7 @@ const testimonials = [
   {
     text: "Precisei de uma impugnação de laudo com urgência. A devolutiva foi rápida, tecnicamente sólida e me deu segurança para sustentar a argumentação no recurso.",
     name: "Dr. F.A.",
-    role: "Advogado Previdenciário",
+    role: "Advogado Trabalhista",
   },
 ];
 
