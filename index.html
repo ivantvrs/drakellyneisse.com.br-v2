@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Montserrat:wght@500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&family=Montserrat:wght@500;600&display=swap" /></noscript>
-    <link rel="preload" as="image" type="image/webp" href="/src/assets/hero-dra-kelly.webp" />
     <title>Assistência Técnica Médica Judicial para Advogados | Dra. Kelly Neisse | Atendimento em todo o Brasil</title>
     <meta name="description" content="Assistência técnica médica judicial com parecer, quesitos estratégicos e impugnação de laudo. Atendimento em todo o Brasil. Dra. Kelly Neisse - CRM/MG 109153.">
     <meta name="robots" content="index, follow" />
@@ -65,11 +64,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Google Tag Manager (adiado para window.load — reduz TBT sem perder tracking) -->
+    <!-- Google Tag Manager (adiado para 1ª interação OU fallback 4s — reduz TBT sem perder tracking) -->
     <script>
-    window.addEventListener('load', function() {
-    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://gtm.drakellyneisse.com.br/5rusvnlzz.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','2=Ex5RKSI%2BWDwySVlYQj4%2FVAxHXkBHVREcRx4eDx0WGR4DFAkHBQAQXBkVAUAUAQ%3D%3D');
-    });
+    (function(){
+      var loaded = false;
+      function loadGTM(){
+        if (loaded) return;
+        loaded = true;
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://gtm.drakellyneisse.com.br/5rusvnlzz.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','2=Ex5RKSI%2BWDwySVlYQj4%2FVAxHXkBHVREcRx4eDx0WGR4DFAkHBQAQXBkVAUAUAQ%3D%3D');
+      }
+      var triggers = ['scroll','mousemove','touchstart','keydown','click'];
+      function onTrigger(){
+        triggers.forEach(function(ev){ window.removeEventListener(ev, onTrigger, true); });
+        clearTimeout(fallback);
+        loadGTM();
+      }
+      triggers.forEach(function(ev){ window.addEventListener(ev, onTrigger, { once: true, passive: true, capture: true }); });
+      var fallback = setTimeout(loadGTM, 4000);
+    })();
     </script>
     <!-- End Google Tag Manager -->
     <!-- Engagement tracking: scroll depth + WhatsApp clicks (dataLayer → GA4 via GTM) -->
