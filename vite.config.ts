@@ -43,11 +43,11 @@ export default defineConfig(({ mode }) => ({
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime"],
   },
   build: {
+    target: "es2020",
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ["react", "react-dom"],
-          router: ["react-router-dom"],
         },
       },
     },
