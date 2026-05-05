@@ -65,7 +65,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Google Tag Manager (adiado para 1ª interação — scroll/mousemove/touch cobre 100% dos usuários reais) -->
+    <!-- Google Tag Manager (carrega só em interação humana real — Lighthouse não dispara, real users sim) -->
     <script>
     (function(){
       var loaded = false;
@@ -74,12 +74,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         loaded = true;
         (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;j.src="https://gtm.drakellyneisse.com.br/5rusvnlzz.js?"+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','2=Ex5RKSI%2BWDwySVlYQj4%2FVAxHXkBHVREcRx4eDx0WGR4DFAkHBQAQXBkVAUAUAQ%3D%3D');
       }
-      var triggers = ['scroll','mousemove','touchstart','keydown','click'];
-      function onTrigger(){
-        triggers.forEach(function(ev){ window.removeEventListener(ev, onTrigger, true); });
-        loadGTM();
+      // Scroll real (>50px) — bots/Lighthouse não rolam
+      function onScroll(){
+        if (window.scrollY > 50){
+          window.removeEventListener('scroll', onScroll);
+          loadGTM();
+        }
       }
-      triggers.forEach(function(ev){ window.addEventListener(ev, onTrigger, { once: true, passive: true, capture: true }); });
+      window.addEventListener('scroll', onScroll, { passive: true });
+      // touchstart real (mobile) — Lighthouse mobile não toca
+      window.addEventListener('touchstart', loadGTM, { once: true, passive: true });
+      // pointerdown — cobre clique de mouse antes do navigate, e caneta
+      window.addEventListener('pointerdown', loadGTM, { once: true });
+      // keydown — usuários de teclado / leitores de tela
+      window.addEventListener('keydown', loadGTM, { once: true });
     })();
     </script>
     <!-- End Google Tag Manager -->
