@@ -8,9 +8,9 @@ const testimonials = [
     role: "Advogado Trabalhista",
   },
   {
-    text: "Os quesitos estratégicos elaborados pela Dra. Kelly direcionaram a perícia de forma que o laudo refletiu exatamente o que precisávamos demonstrar no processo.",
+    text: "Os quesitos formulados pela Dra. Kelly direcionaram a perícia para os pontos sensíveis da defesa. O laudo refletiu o que precisávamos demonstrar para sustentar a tese da reclamada.",
     name: "Dra. C.S.",
-    role: "Advogada Cível",
+    role: "Advogada Trabalhista — Defesa Empresarial",
   },
   {
     text: "Precisei de uma impugnação de laudo com urgência. A devolutiva foi rápida, tecnicamente sólida e me deu segurança para sustentar a argumentação no recurso.",

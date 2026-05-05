@@ -37,10 +37,10 @@ const IconLegalDept = () => (
 );
 
 const items = [
-  { Icon: IconLawyer, text: "Advogados que precisam de assistente técnico médico em perícia judicial" },
-  { Icon: IconOffice, text: "Escritórios que atuam em demandas trabalhistas e cíveis" },
-  { Icon: IconCompany, text: "Empresas respondendo processo e precisando de defesa técnica em perícia médica" },
-  { Icon: IconLegalDept, text: "Departamentos jurídicos que buscam parecer médico fundamentado para subsidiar a defesa" },
+  { Icon: IconLawyer, text: "Advogados de defesa em reclamatórias trabalhistas que precisam de assistente técnico médico" },
+  { Icon: IconOffice, text: "Escritórios especializados em direito do trabalho lado empresarial" },
+  { Icon: IconCompany, text: "Empresas respondendo reclamatória e precisando de defesa técnica em perícia médica" },
+  { Icon: IconLegalDept, text: "Departamentos jurídicos que buscam parecer médico-pericial para subsidiar a contestação" },
 ];
 
 const TargetAudience = () => {

@@ -6,8 +6,7 @@ const credentials = [
   "Perícia Médica",
   "CPEM",
   "Instituto IFH",
-  "Pós-graduação em Geriatria — PUC Minas",
-  "TRT-3 | TJMG | TJMT | TJSP",
+  "TRT-3 | TJMG | TJSP | TJMT | TJGO",
 ];
 
 const About = () => {
@@ -45,16 +44,16 @@ const About = () => {
 
             <div className="space-y-5 text-base leading-relaxed mb-10" style={{ color: '#A09A8D' }}>
               <p>
-                A Dra. Kelly Jaqueline Neisse é <strong style={{ color: '#F5F0E8' }}>Médica Perita Judicial</strong> com atuação em <strong style={{ color: '#F5F0E8' }}>assistência técnica e perícia médica judicial</strong> nas áreas trabalhista e cível.
+                A Dra. Kelly Jaqueline Neisse é <strong style={{ color: '#F5F0E8' }}>Médica Perita Judicial</strong> com atuação em <strong style={{ color: '#F5F0E8' }}>assistência técnica e perícia médica trabalhista</strong>, com foco em <strong style={{ color: '#F5F0E8' }}>defesa técnica para reclamadas</strong>.
               </p>
               <p>
-                Sua atuação é direcionada ao apoio técnico de advogados e escritórios que necessitam de <strong style={{ color: '#F5F0E8' }}>leitura médica qualificada</strong>, análise estratégica e fundamentação técnico-pericial aplicada ao caso concreto.
+                Sua atuação é direcionada ao apoio técnico de advogados, escritórios e departamentos jurídicos que necessitam de <strong style={{ color: '#F5F0E8' }}>leitura médica qualificada</strong>, análise estratégica e fundamentação técnico-pericial aplicada ao caso concreto.
               </p>
               <p>
-                Atua com foco em <strong style={{ color: '#F5F0E8' }}>perícias médicas judiciais</strong>, avaliação de incapacidade laborativa, <strong style={{ color: '#F5F0E8' }}>análise de nexo causal</strong> e elaboração de laudos técnico-periciais, oferecendo suporte com objetividade, clareza e fundamentação técnico-pericial.
+                Atua com foco em <strong style={{ color: '#F5F0E8' }}>doença ocupacional, insalubridade, periculosidade, acidente de trabalho</strong> e <strong style={{ color: '#F5F0E8' }}>análise de nexo causal</strong> — incluindo elaboração de quesitos para defesa, parecer médico-pericial e impugnação de laudo.
               </p>
               <p>
-                <strong style={{ color: '#F5F0E8' }}>Baseada em Uberlândia/MG</strong>, atende casos em Minas Gerais, São Paulo, Goiás, Mato Grosso e Rio Grande do Sul, com <strong style={{ color: '#F5F0E8' }}>parecer técnico digital</strong> e acompanhamento pericial remoto ou presencial.
+                <strong style={{ color: '#F5F0E8' }}>Baseada em Uberlândia/MG</strong>, atende casos em <strong style={{ color: '#F5F0E8' }}>todo o Brasil</strong>, com <strong style={{ color: '#F5F0E8' }}>parecer técnico digital</strong> e acompanhamento pericial remoto ou presencial.
               </p>
             </div>
 

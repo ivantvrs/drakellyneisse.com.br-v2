@@ -18,8 +18,8 @@ const faqs = [
     a: "Prontuários, relatórios médicos, exames, laudos periciais e outros documentos relacionados ao histórico clínico do caso, desde que pertinentes à demanda.",
   },
   {
-    q: "A Dra. Kelly atende apenas causas trabalhistas?",
-    a: "Não. A atuação abrange as áreas trabalhista, cível e previdenciária, sempre com foco na discussão médica do processo.",
+    q: "Quais áreas a Dra. Kelly atende?",
+    a: "Concentra-se em demandas trabalhistas com foco em defesa técnica para reclamadas — incluindo doença ocupacional, insalubridade, periculosidade, acidente de trabalho e análise de nexo causal.",
   },
   {
     q: "Como funciona o primeiro contato?",

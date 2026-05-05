@@ -7,7 +7,7 @@ const MessageCircleIcon = () => (
   </svg>
 );
 
-const WHATSAPP_URL = "https://wa.me/5534996878758?text=Olá%20Dra.%20Kelly%2C%20gostaria%20de%20enviar%20meu%20caso%20para%20análise.";
+const WHATSAPP_URL = "https://wa.me/5534996878758?text=Ol%C3%A1%20Dra.%20Kelly%2C%20gostaria%20de%20enviar%20um%20caso%20trabalhista%20para%20an%C3%A1lise%20t%C3%A9cnica.";
 
 function useGeoLocation() {
   const [location, setLocation] = useState<string | null>(null);
@@ -65,16 +65,16 @@ const Hero = () => {
     <div className="container mx-auto relative z-10" style={{ paddingTop: '8rem', paddingBottom: '6rem' }}>
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle">
-          ASSISTÊNCIA TÉCNICA MÉDICA · {userLocation ?? "ATENDIMENTO EM TODO O BRASIL"}
+          LAUDO DESFAVORÁVEL À RECLAMADA? · {userLocation ?? "ATENDIMENTO EM TODO O BRASIL"}
         </p>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-6">
           <span className="gold-shine">A prova médica define muitos processos.</span>{" "}
-          <span style={{ color: '#F5F0E8' }}>Quem vai ler o laudo pelo seu cliente?</span>
+          <span style={{ color: '#F5F0E8' }}>Sua defesa precisa de leitura técnica.</span>
         </h1>
 
         <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg" style={{ color: '#A09A8D' }}>
-          Assistência técnica médica judicial para advogados, escritórios e empresas em demandas trabalhistas e cíveis.
+          Defesa técnica em perícia médica trabalhista para advogados, escritórios e departamentos jurídicos de empresas reclamadas.
         </p>
 
         <a
@@ -105,10 +105,10 @@ const Hero = () => {
       <div className="container mx-auto">
         <div className="animate-fade-up-delay-2 py-6" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.15)' }}>
           <p className="font-label text-[13px] leading-relaxed text-center md:text-left" style={{ color: '#A09A8D' }}>
-            <span className="gold-shine-subtle">Médica Perita Judicial</span> · CRM/MG 109153 · Perícia Médica · Atuação trabalhista e cível
+            <span className="gold-shine-subtle">Médica Perita Judicial</span> · CRM/MG 109153 · Perícia Médica Trabalhista · Atendimento em todo o Brasil
           </p>
           <p className="font-label text-[13px] mt-1 text-center md:text-left" style={{ color: '#8A857A' }}>
-            TRT-3 · TJMG · TJMT · TJSP · Nexo causal · Incapacidade laborativa · Impugnação de laudo
+            TRT-3 · TJMG · TJSP · TJMT · TJGO · Doença ocupacional · Insalubridade · Nexo causal · Impugnação de laudo
           </p>
         </div>
       </div>
