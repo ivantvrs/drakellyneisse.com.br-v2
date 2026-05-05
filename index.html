@@ -65,7 +65,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <!-- Google Tag Manager (adiado para 1ª interação OU fallback 4s — reduz TBT sem perder tracking) -->
+    <!-- Google Tag Manager (adiado para 1ª interação — scroll/mousemove/touch cobre 100% dos usuários reais) -->
     <script>
     (function(){
       var loaded = false;
@@ -77,11 +77,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       var triggers = ['scroll','mousemove','touchstart','keydown','click'];
       function onTrigger(){
         triggers.forEach(function(ev){ window.removeEventListener(ev, onTrigger, true); });
-        clearTimeout(fallback);
         loadGTM();
       }
       triggers.forEach(function(ev){ window.addEventListener(ev, onTrigger, { once: true, passive: true, capture: true }); });
-      var fallback = setTimeout(loadGTM, 4000);
     })();
     </script>
     <!-- End Google Tag Manager -->
