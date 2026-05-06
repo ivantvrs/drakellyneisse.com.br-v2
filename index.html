@@ -132,13 +132,39 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
           if (!a) return;
           var href = (a.getAttribute('href') || '').toLowerCase();
-          if (href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp') !== -1) {
-            window.dataLayer.push({
-              event: 'whatsapp_click',
-              event_category: 'conversao',
-              link_url: a.href
-            });
+          if (href.indexOf('wa.me') === -1 && href.indexOf('whatsapp') === -1) return;
+
+          // ★ NOVO: envia beacon DIRETO ao GA4 — funciona sem GTM e sobrevive ao unload
+          try {
+            var cidMatch = document.cookie.match(/_ga=GA1\.\d+\.([0-9.]+)/);
+            var cid = cidMatch ? cidMatch[1] : (Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000));
+            var beaconUrl = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams({
+              v: '2',
+              tid: 'G-N6G6FSD34E',
+              cid: cid,
+              en: 'whatsapp_click',
+              'ep.event_category': 'conversao',
+              'ep.link_url': a.href,
+              'ep.transport': 'beacon_direct',
+              dl: location.href,
+              dr: document.referrer || '',
+              dt: document.title
+            }).toString();
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon(beaconUrl);
+            } else {
+              new Image().src = beaconUrl;
+            }
+          } catch (err) {
+            // não quebrar UX se algo der errado no beacon
           }
+
+          // dataLayer.push original (mantido para outros tags do GTM)
+          window.dataLayer.push({
+            event: 'whatsapp_click',
+            event_category: 'conversao',
+            link_url: a.href
+          });
         }, true);
       })();
     </script>
