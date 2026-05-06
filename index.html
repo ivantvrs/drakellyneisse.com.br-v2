@@ -64,6 +64,50 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
+    <!-- Page view via beacon — dispara imediatamente, não depende do GTM -->
+    <script>
+    (function () {
+      try {
+        var cidMatch = document.cookie.match(/_ga=GA1\.\d+\.([0-9.]+)/);
+        var cid;
+        if (cidMatch) {
+          cid = cidMatch[1];
+        } else {
+          cid = Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000);
+          // Persiste o cid no cookie _ga para o gtag usar o mesmo
+          // quando carregar mais tarde (evita split de user)
+          try {
+            document.cookie = '_ga=GA1.1.' + cid + '; path=/; max-age=63072000; SameSite=Lax';
+          } catch (_) {}
+        }
+
+        var url = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams({
+          v: '2',
+          tid: 'G-N6G6FSD34E',
+          cid: cid,
+          en: 'page_view',
+          'ep.transport': 'beacon_direct',
+          dl: location.href,
+          dr: document.referrer || '',
+          dt: document.title,
+          sr: screen.width + 'x' + screen.height,
+          ul: (navigator.language || 'pt-BR').toLowerCase(),
+          _s: '1'
+        }).toString();
+
+        if (navigator.sendBeacon) {
+          navigator.sendBeacon(url);
+        } else {
+          new Image().src = url;
+        }
+
+        // Sentinel para GTM identificar e poder dedupar a tag GA4 page_view depois
+        window.__pv_sent_via_beacon = true;
+      } catch (e) {
+        // nunca quebrar UX
+      }
+    })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
     <!-- Google Tag Manager (carrega só em interação humana real — Lighthouse não dispara, real users sim) -->
     <script>
