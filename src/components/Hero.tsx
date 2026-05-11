@@ -10,7 +10,7 @@ const WHATSAPP_URL = "https://wa.me/5534996878758?text=Ol%C3%A1%20Dra.%20Kelly%2
 
 const Hero = () => {
   return (
-  <section id="inicio" className="relative overflow-hidden min-h-screen flex items-start md:items-center">
+  <section id="inicio" className="relative overflow-hidden flex items-start md:items-center md:min-h-screen">
     {/* Background photo */}
     <div className="absolute inset-0 z-0">
       <img
