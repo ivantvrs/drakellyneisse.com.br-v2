@@ -10,7 +10,7 @@ const WHATSAPP_URL = "https://wa.me/5534996878758?text=Ol%C3%A1%20Dra.%20Kelly%2
 
 const Hero = () => {
   return (
-  <section id="inicio" className="relative overflow-hidden flex items-start md:items-center md:min-h-screen">
+  <section id="inicio" className="relative overflow-hidden min-h-screen flex items-start md:items-center">
     {/* Background photo */}
     <div className="absolute inset-0 z-0">
       <img
@@ -34,7 +34,7 @@ const Hero = () => {
     </div>
 
     {/* Content */}
-    <div className="container mx-auto relative z-10 pt-24 pb-12 md:pt-32 md:pb-24">
+    <div className="container mx-auto relative z-10 pt-24 pb-24 md:pt-32">
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle">
           Assistente técnica em perícia médica trabalhista
@@ -73,7 +73,7 @@ const Hero = () => {
     </div>
 
     {/* Credential strip */}
-    <div className="relative z-10 md:absolute md:bottom-0 md:left-0 md:right-0">
+    <div className="absolute bottom-0 left-0 right-0 z-10">
       <div className="container mx-auto">
         <div className="animate-fade-up-delay-2 py-6" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.15)' }}>
           <p className="font-label text-[13px] text-center md:text-left" style={{ color: '#8A857A' }}>
