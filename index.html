@@ -64,43 +64,93 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 </noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="root"></div>
+    <!-- Tracking helper — resolve/memoiza cid, session_id e gclid p/ todos os beacons GA4 (sem libs de terceiros) -->
+    <script>
+    (function () {
+      try {
+        var T = (window.__tvrs = window.__tvrs || {});
+        var MID = 'G-N6G6FSD34E';
+        var ck = document.cookie;
+        var TWO_YEARS = '; path=/; max-age=63072000; SameSite=Lax';
+
+        // client_id — cookie _ga (formato GA1.<x>.<cid>); se não houver, gera e persiste
+        var cidM = ck.match(/_ga=GA1\.\d+\.([0-9.]+)/);
+        if (cidM) {
+          T.cid = cidM[1];
+          T.newUser = false;
+        } else {
+          T.cid = Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000);
+          T.newUser = true;
+          // persiste para o gtag reusar o mesmo client_id quando carregar depois (evita split de user)
+          try { document.cookie = '_ga=GA1.1.' + T.cid + TWO_YEARS; } catch (_) {}
+        }
+
+        // session_id + session_count — cookie _ga_N6G6FSD34E (formato GA4 GS1.1.<sid>.<sct>....)
+        var sM = ck.match(/_ga_N6G6FSD34E=GS1\.1\.(\d+)\.(\d+)/);
+        if (sM) {
+          T.sid = sM[1];
+          T.sct = sM[2];
+          T.newSession = false;
+        } else {
+          // sessão ainda não criada pelo gtag — cria no formato GA4 p/ o gtag reaproveitar
+          // a MESMA sessão quando carregar depois (evita page_view/sessão duplicados)
+          T.sid = String(Math.floor(Date.now() / 1000));
+          T.sct = '1';
+          T.newSession = true;
+          try { document.cookie = '_ga_N6G6FSD34E=GS1.1.' + T.sid + '.1.1.' + T.sid + '.0.0.0' + TWO_YEARS; } catch (_) {}
+        }
+
+        // gclid + utm — só estão na URL da 1ª página; persiste em sessionStorage e relê nos hits seguintes
+        function keep(key, val) {
+          try {
+            if (val) { sessionStorage.setItem(key, val); return val; }
+            return sessionStorage.getItem(key) || '';
+          } catch (_) { return val || ''; }
+        }
+        var q;
+        try { q = new URLSearchParams(location.search); } catch (_) { q = null; }
+        function fromUrl(k) { return q ? (q.get(k) || '') : ''; }
+        T.gclid = keep('_tvrs_gclid', fromUrl('gclid'));
+        T.utm_source = keep('_tvrs_utm_source', fromUrl('utm_source'));
+        T.utm_medium = keep('_tvrs_utm_medium', fromUrl('utm_medium'));
+        T.utm_campaign = keep('_tvrs_utm_campaign', fromUrl('utm_campaign'));
+
+        // params base de sessão reutilizados por todos os beacons
+        T.base = function () {
+          var p = { v: '2', tid: MID, cid: T.cid, sid: T.sid, sct: T.sct, seg: '1' };
+          if (T.gclid) p.gclid = T.gclid; // chave da atribuição google/cpc
+          return p;
+        };
+
+        // envia um hit ao Measurement Protocol (/g/collect) via sendBeacon, com fallback Image
+        T.send = function (params) {
+          try {
+            var u = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams(params).toString();
+            if (navigator.sendBeacon) { navigator.sendBeacon(u); } else { new Image().src = u; }
+          } catch (_) {}
+        };
+      } catch (e) { /* nunca quebrar UX */ }
+    })();
+    </script>
     <!-- Page view via beacon — dispara imediatamente, não depende do GTM -->
     <script>
     (function () {
       try {
-        var cidMatch = document.cookie.match(/_ga=GA1\.\d+\.([0-9.]+)/);
-        var cid;
-        if (cidMatch) {
-          cid = cidMatch[1];
-        } else {
-          cid = Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000);
-          // Persiste o cid no cookie _ga para o gtag usar o mesmo
-          // quando carregar mais tarde (evita split de user)
-          try {
-            document.cookie = '_ga=GA1.1.' + cid + '; path=/; max-age=63072000; SameSite=Lax';
-          } catch (_) {}
-        }
-
-        var url = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams({
-          v: '2',
-          tid: 'G-N6G6FSD34E',
-          cid: cid,
-          en: 'page_view',
-          'ep.transport': 'beacon_direct',
-          dl: location.href,
-          dr: document.referrer || '',
-          dt: document.title,
-          sr: screen.width + 'x' + screen.height,
-          ul: (navigator.language || 'pt-BR').toLowerCase(),
-          _s: '1'
-        }).toString();
-
-        if (navigator.sendBeacon) {
-          navigator.sendBeacon(url);
-        } else {
-          new Image().src = url;
-        }
-
+        var T = window.__tvrs;
+        if (!T || !T.base) return;
+        var p = T.base();
+        p.en = 'page_view';
+        p._et = '1';                  // sinal mínimo de engajamento
+        p._s = '1';                   // hit number na request
+        if (T.newSession) p._ss = '1'; // session start só quando a sessão é nova (evita inflar em reload)
+        if (T.newUser) p._fv = '1';    // first visit só p/ usuário novo
+        p['ep.transport'] = 'beacon_direct';
+        p.dl = location.href;          // carrega utm/gclid da URL p/ o GA4 derivar a fonte
+        p.dr = document.referrer || '';
+        p.dt = document.title;
+        p.sr = screen.width + 'x' + screen.height;
+        p.ul = (navigator.language || 'pt-BR').toLowerCase();
+        T.send(p);
         // Sentinel para GTM identificar e poder dedupar a tag GA4 page_view depois
         window.__pv_sent_via_beacon = true;
       } catch (e) {
@@ -156,6 +206,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             var t = thresholds[i];
             if (percent >= t && !fired[t]) {
               fired[t] = true;
+              // beacon direto ao GA4 — sobrevive mesmo quando o GTM não carrega
+              try {
+                var T = window.__tvrs;
+                if (T && T.base) {
+                  var p = T.base();
+                  p.en = 'scroll_depth';
+                  p._et = String(Math.max(1, Math.round(performance.now())));
+                  p['epn.percent_scrolled'] = t;
+                  p.dl = location.href;
+                  p.dt = document.title;
+                  T.send(p);
+                }
+              } catch (_) {}
+              // dataLayer.push original (mantido como fallback p/ outras tags do GTM)
               window.dataLayer.push({
                 event: 'scroll_depth',
                 percent_scrolled: t
@@ -178,26 +242,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           var href = (a.getAttribute('href') || '').toLowerCase();
           if (href.indexOf('wa.me') === -1 && href.indexOf('whatsapp') === -1) return;
 
-          // ★ NOVO: envia beacon DIRETO ao GA4 — funciona sem GTM e sobrevive ao unload
+          // ★ envia beacon DIRETO ao GA4 — funciona sem GTM e sobrevive ao unload
           try {
-            var cidMatch = document.cookie.match(/_ga=GA1\.\d+\.([0-9.]+)/);
-            var cid = cidMatch ? cidMatch[1] : (Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000));
-            var beaconUrl = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams({
-              v: '2',
-              tid: 'G-N6G6FSD34E',
-              cid: cid,
-              en: 'whatsapp_click',
-              'ep.event_category': 'conversao',
-              'ep.link_url': a.href,
-              'ep.transport': 'beacon_direct',
-              dl: location.href,
-              dr: document.referrer || '',
-              dt: document.title
-            }).toString();
-            if (navigator.sendBeacon) {
-              navigator.sendBeacon(beaconUrl);
-            } else {
-              new Image().src = beaconUrl;
+            var T = window.__tvrs;
+            if (T && T.base) {
+              var p = T.base();
+              p.en = 'whatsapp_click';
+              p._et = String(Math.max(1, Math.round(performance.now()))); // tempo real desde o load (ms)
+              p['ep.event_category'] = 'conversao';
+              p['ep.link_url'] = a.href;
+              p['ep.transport'] = 'beacon_direct';
+              p.dl = location.href;
+              p.dr = document.referrer || '';
+              p.dt = document.title;
+              T.send(p);
             }
           } catch (err) {
             // não quebrar UX se algo der errado no beacon
