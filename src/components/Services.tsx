@@ -94,7 +94,7 @@ const services = [
   },
 ];
 
-const WHATSAPP_URL = "https://wa.me/5534996878758?text=Olá%20Dra.%20Kelly%2C%20gostaria%20de%20enviar%20meu%20caso%20para%20análise.";
+const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/5aee426e-4379-4a3c-ada4-ee117bf7133f";
 
 const Services = () => {
   const { ref, isVisible } = useInView();

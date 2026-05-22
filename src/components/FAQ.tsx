@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ChevronDown, MessageCircle } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
-const WHATSAPP_URL = "https://wa.me/5534996878758?text=Ol%C3%A1%2C%20tenho%20uma%20d%C3%BAvida%20sobre%20assist%C3%AAncia%20t%C3%A9cnica%20m%C3%A9dica%20judicial.";
+const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/77da2716-be21-4957-ac7d-338e5dbd1e6c";
 
 const faqs = [
   {

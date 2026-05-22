@@ -1,7 +1,7 @@
 import { MessageCircle } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 
-const WHATSAPP_URL = "https://wa.me/5534996878758?text=Olá%20Dra.%20Kelly%2C%20gostaria%20de%20enviar%20meu%20caso%20para%20análise.";
+const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/1048d0d3-67de-4823-be97-b5ad93a44820";
 
 const CTAFinal = () => {
   const { ref, isVisible } = useInView();

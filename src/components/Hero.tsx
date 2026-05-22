@@ -6,7 +6,7 @@ const MessageCircleIcon = () => (
   </svg>
 );
 
-const WHATSAPP_URL = "https://wa.me/5534996878758?text=Ol%C3%A1%20Dra.%20Kelly%2C%20gostaria%20de%20enviar%20um%20caso%20trabalhista%20para%20an%C3%A1lise%20t%C3%A9cnica.";
+const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/da16a3e0-467d-43f7-8bb6-3a76bb87ded3";
 
 const Hero = () => {
   return (

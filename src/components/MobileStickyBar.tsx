@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { MessageCircle } from "lucide-react";
 
-const WHATSAPP_URL = "https://wa.me/5534996878758?text=Ol%C3%A1%2C%20gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20assist%C3%AAncia%20t%C3%A9cnica%20m%C3%A9dica%20judicial.";
+const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/4342e64e-304b-40eb-8abc-1d0c4a6a1b1a";
 
 const MobileStickyBar = () => {
   const [show, setShow] = useState(false);
