@@ -115,6 +115,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         T.utm_medium = keep('_tvrs_utm_medium', fromUrl('utm_medium'));
         T.utm_campaign = keep('_tvrs_utm_campaign', fromUrl('utm_campaign'));
 
+        // first-touch: guarda a query string inteira da 1ª página (utm, gclid, network, device, matchtype...)
+        T.qs = (function () {
+          try {
+            var saved = sessionStorage.getItem('_tvrs_qs');
+            if (saved) return saved;
+            var s = (location.search || '').replace(/^\?/, '');
+            if (s) { sessionStorage.setItem('_tvrs_qs', s); }
+            return s;
+          } catch (_) { return (location.search || '').replace(/^\?/, ''); }
+        })();
+
         // params base de sessão reutilizados por todos os beacons
         T.base = function () {
           var p = { v: '2', tid: MID, cid: T.cid, sid: T.sid, sct: T.sct, seg: '1' };
@@ -241,6 +252,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           if (!a) return;
           var href = (a.getAttribute('href') || '').toLowerCase();
           if (href.indexOf('wa.me') === -1 && href.indexOf('whatsapp') === -1) return;
+
+          // repassa os parâmetros de origem (utm, gclid, etc.) para o link do TinTim, antes da navegação
+          try {
+            if (a.href.indexOf('tintim') !== -1 && !a.dataset.tvrsTagged) {
+              var _url = new URL(a.href);
+              var _src = new URLSearchParams((window.__tvrs && window.__tvrs.qs) || '');
+              _src.forEach(function (val, key) {
+                if (val && !_url.searchParams.has(key)) _url.searchParams.set(key, val);
+              });
+              var _g = window.__tvrs && window.__tvrs.gclid;
+              if (_g && !_url.searchParams.has('gclid')) _url.searchParams.set('gclid', _g);
+              a.href = _url.toString();
+              a.dataset.tvrsTagged = '1';
+            }
+          } catch (_) {}
 
           // ★ envia beacon DIRETO ao GA4 — funciona sem GTM e sobrevive ao unload
           try {
