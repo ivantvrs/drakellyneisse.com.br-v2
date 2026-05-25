@@ -38,7 +38,7 @@ const CTAFinal = () => {
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(37, 211, 102, 0.4)"; }}
           >
             <MessageCircle size={20} />
-            Falar no WhatsApp
+            Quero suporte técnico no meu caso →
           </a>
         </div>
         <p className="text-xs" style={{ color: '#8A857A' }}>

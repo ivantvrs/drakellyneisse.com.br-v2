@@ -150,7 +150,7 @@ const Services = () => {
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 12px rgba(37, 211, 102, 0.35)"; }}
           >
             <MessageCircle size={18} />
-            Falar com a Dra. Kelly no WhatsApp
+            Analisar caso no WhatsApp →
           </a>
         </div>
       </div>

@@ -101,7 +101,7 @@ const Header = () => {
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 3px 10px rgba(37, 211, 102, 0.3)"; }}
           >
             <MessageCircle size={16} />
-            Falar no WhatsApp
+            Analisar caso
           </a>
         </nav>
 
@@ -149,7 +149,7 @@ const Header = () => {
             }}
           >
             <MessageCircle size={16} />
-            Falar no WhatsApp
+            Analisar caso
           </a>
         </nav>
       )}

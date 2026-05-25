@@ -41,12 +41,15 @@ const Hero = () => {
         </p>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-6">
-          <span className="gold-shine">Laudo pericial desfavorável</span>{" "}
-          <span style={{ color: '#F5F0E8' }}>não é sentença.</span>
+          <span style={{ color: '#F5F0E8' }}>Muitos processos são decididos na</span>{" "}
+          <span className="gold-shine">perícia médica</span>.
         </h1>
 
-        <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg" style={{ color: '#A09A8D' }}>
-          Pareceres, quesitos e impugnação de laudo para escritórios e departamentos jurídicos — em todo o Brasil.
+        <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg hidden md:block" style={{ color: '#A09A8D' }}>
+          Assistência técnica médica em casos de doença ocupacional, LER/DORT, nexo causal e incapacidade laboral. Atuação antes, durante e após a perícia, para escritórios e departamentos jurídicos em todo o Brasil.
+        </p>
+        <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg md:hidden" style={{ color: '#A09A8D' }}>
+          Assistência técnica médica em doença ocupacional, LER/DORT, nexo causal e incapacidade laboral. Para escritórios e departamentos jurídicos em todo o Brasil.
         </p>
 
         <a
@@ -63,7 +66,7 @@ const Hero = () => {
           aria-label="Falar com a Dra. Kelly no WhatsApp — Hero"
         >
           <MessageCircleIcon />
-          Falar com a Dra. Kelly no WhatsApp
+          Analisar caso no WhatsApp →
         </a>
 
         <p className="text-sm mt-5" style={{ color: '#8A857A' }}>
@@ -77,7 +80,7 @@ const Hero = () => {
       <div className="container mx-auto">
         <div className="animate-fade-up-delay-2 py-6" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.15)' }}>
           <p className="font-label text-[13px] text-center md:text-left" style={{ color: '#8A857A' }}>
-            TRT-3 · TJMG · TJSP · TJMT · TJGO · Doença ocupacional · Insalubridade · Nexo causal · Impugnação de laudo
+            Em doença ocupacional, nexo causal ou impugnação de laudo, o seu processo não precisa enfrentar a discussão técnica sem suporte médico.
           </p>
         </div>
       </div>
