@@ -70,10 +70,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
       try {
         var T = (window.__tvrs = window.__tvrs || {});
         var MID = 'G-N6G6FSD34E';
+        var SESS = '_ga_N6G6FSD34E';
         var ck = document.cookie;
-        var TWO_YEARS = '; path=/; max-age=63072000; SameSite=Lax';
+        var TWO_YEARS  = '; path=/; max-age=63072000; SameSite=Lax';
+        var NINETY_DAY = '; path=/; max-age=7776000; SameSite=Lax';  // janela de conversao do gclid
+        var THIRTY_MIN = '; path=/; max-age=1800; SameSite=Lax';     // timeout real de sessao do GA4
 
-        // client_id — cookie _ga (formato GA1.<x>.<cid>); se não houver, gera e persiste
+        // client_id — cookie _ga (GA1.<x>.<cid>); 2 anos (correto, NAO mexer)
         var cidM = ck.match(/_ga=GA1\.\d+\.([0-9.]+)/);
         if (cidM) {
           T.cid = cidM[1];
@@ -81,41 +84,51 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         } else {
           T.cid = Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000);
           T.newUser = true;
-          // persiste para o gtag reusar o mesmo client_id quando carregar depois (evita split de user)
           try { document.cookie = '_ga=GA1.1.' + T.cid + TWO_YEARS; } catch (_) {}
         }
 
-        // session_id + session_count — cookie _ga_N6G6FSD34E (formato GA4 GS1.1.<sid>.<sct>....)
+        // session_id + session_count — cookie _ga_N6G6FSD34E com TIMEOUT REAL DE 30 MIN,
+        // renovado a cada hit (em T.send) p/ deslizar a janela enquanto a sessao esta ativa.
+        function writeSession() {
+          try {
+            document.cookie = SESS + '=GS1.1.' + T.sid + '.' + T.sct + '.1.' +
+              Math.floor(Date.now() / 1000) + '.0.0.0' + THIRTY_MIN;
+          } catch (_) {}
+        }
         var sM = ck.match(/_ga_N6G6FSD34E=GS1\.1\.(\d+)\.(\d+)/);
         if (sM) {
+          // sessao ainda viva (cookie de 30 min nao expirou) -> reaproveita
           T.sid = sM[1];
           T.sct = sM[2];
           T.newSession = false;
         } else {
-          // sessão ainda não criada pelo gtag — cria no formato GA4 p/ o gtag reaproveitar
-          // a MESMA sessão quando carregar depois (evita page_view/sessão duplicados)
+          // sem cookie = sessao expirou (>30 min) ou 1a visita -> NOVA sessao
           T.sid = String(Math.floor(Date.now() / 1000));
-          T.sct = '1';
+          var prev = (ck.match(/_tvrs_sct=(\d+)/) || [])[1];
+          T.sct = String((parseInt(prev, 10) || 0) + 1); // numero da sessao do usuario
           T.newSession = true;
-          try { document.cookie = '_ga_N6G6FSD34E=GS1.1.' + T.sid + '.1.1.' + T.sid + '.0.0.0' + TWO_YEARS; } catch (_) {}
+          try { document.cookie = '_tvrs_sct=' + T.sct + TWO_YEARS; } catch (_) {}
         }
+        writeSession();
 
-        // gclid + utm — só estão na URL da 1ª página; persiste em sessionStorage e relê nos hits seguintes
-        function keep(key, val) {
+        // gclid + utm — em COOKIE FIRST-PARTY de 90 dias (antes era sessionStorage,
+        // que morria ao fechar a aba e fazia quem voltava perder a atribuicao do Ads)
+        function persist(name, val) {
           try {
-            if (val) { sessionStorage.setItem(key, val); return val; }
-            return sessionStorage.getItem(key) || '';
+            if (val) { document.cookie = name + '=' + encodeURIComponent(val) + NINETY_DAY; return val; }
+            var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+            return m ? decodeURIComponent(m[1]) : '';
           } catch (_) { return val || ''; }
         }
         var q;
         try { q = new URLSearchParams(location.search); } catch (_) { q = null; }
         function fromUrl(k) { return q ? (q.get(k) || '') : ''; }
-        T.gclid = keep('_tvrs_gclid', fromUrl('gclid'));
-        T.utm_source = keep('_tvrs_utm_source', fromUrl('utm_source'));
-        T.utm_medium = keep('_tvrs_utm_medium', fromUrl('utm_medium'));
-        T.utm_campaign = keep('_tvrs_utm_campaign', fromUrl('utm_campaign'));
+        T.gclid        = persist('_tvrs_gclid', fromUrl('gclid'));
+        T.utm_source   = persist('_tvrs_utm_source', fromUrl('utm_source'));
+        T.utm_medium   = persist('_tvrs_utm_medium', fromUrl('utm_medium'));
+        T.utm_campaign = persist('_tvrs_utm_campaign', fromUrl('utm_campaign'));
 
-        // first-touch: guarda a query string inteira da 1ª página (utm, gclid, network, device, matchtype...)
+        // first-touch: query string inteira da 1a pagina (UTM+gclid p/ links do TinTim) — INALTERADO
         T.qs = (function () {
           try {
             var saved = sessionStorage.getItem('_tvrs_qs');
@@ -126,16 +139,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
           } catch (_) { return (location.search || '').replace(/^\?/, ''); }
         })();
 
-        // params base de sessão reutilizados por todos os beacons
+        // params base de sessao reutilizados por todos os beacons
         T.base = function () {
           var p = { v: '2', tid: MID, cid: T.cid, sid: T.sid, sct: T.sct, seg: '1' };
-          if (T.gclid) p.gclid = T.gclid; // chave da atribuição google/cpc
+          if (T.gclid) p.gclid = T.gclid; // chave da atribuicao google/cpc
           return p;
         };
 
-        // envia um hit ao Measurement Protocol (/g/collect) via sendBeacon, com fallback Image
+        // envia hit ao Measurement Protocol (/g/collect) + RENOVA o cookie de sessao (mais 30 min)
         T.send = function (params) {
           try {
+            writeSession();
             var u = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams(params).toString();
             if (navigator.sendBeacon) { navigator.sendBeacon(u); } else { new Image().src = u; }
           } catch (_) {}
