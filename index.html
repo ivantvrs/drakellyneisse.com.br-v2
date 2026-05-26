@@ -54,6 +54,17 @@
   <meta name="twitter:title" content="Assistência Técnica Médica Judicial para Advogados | Dra. Kelly Neisse | Atendimento em todo o Brasil">
   <meta property="og:description" content="Assistência técnica médica judicial com parecer, quesitos estratégicos e impugnação de laudo. Atendimento em todo o Brasil. Dra. Kelly Neisse - CRM/MG 109153.">
   <meta name="twitter:description" content="Assistência técnica médica judicial com parecer, quesitos estratégicos e impugnação de laudo. Atendimento em todo o Brasil. Dra. Kelly Neisse - CRM/MG 109153.">
+
+  <!-- Google Ads (AW-only) — gtag carregado async p/ permitir que conversion firing
+       use transport_type:'beacon' e sobreviva ao unload no clique do WhatsApp.
+       GA4 continua via beacon manual (/g/collect); este gtag NAO emite page_view. -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16690821688"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-16690821688', { 'send_page_view': false });
+  </script>
 </head>
 
   <body>
@@ -299,6 +310,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             }
           } catch (err) {
             // não quebrar UX se algo der errado no beacon
+          }
+
+          // ★ conversao Google Ads — gtag.js (AW-only) carregado no <head>.
+          // transport_type:'beacon' garante envio sob unload (anchor navega p/ WhatsApp).
+          try {
+            if (typeof gtag === 'function') {
+              gtag('event', 'conversion', {
+                'send_to': 'AW-16690821688/3YOPCNG72c8ZELj05pY-',
+                'value': 1.0,
+                'currency': 'BRL',
+                'transport_type': 'beacon'
+              });
+            }
+          } catch (_) {
+            // nao quebrar UX se gtag falhar
           }
 
           // dataLayer.push original (mantido para outros tags do GTM)
