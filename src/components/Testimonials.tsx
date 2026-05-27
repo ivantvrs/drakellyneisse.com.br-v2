@@ -3,19 +3,19 @@ import stationeryImg from "@/assets/prova-social-stationery.webp";
 
 const testimonials = [
   {
-    text: "A análise técnica da Dra. Kelly trouxe clareza a um caso que parecia tecnicamente fraco. O parecer fundamentado foi decisivo para reverter a linha argumentativa.",
-    name: "Dr. R.M.",
-    role: "Advogado Trabalhista",
+    text: "A leitura médica da Dra. Kelly trouxe clareza a um caso em que a tese de defesa parecia tecnicamente frágil. O parecer fundamentado apontou pontos do quadro clínico que não estavam sendo aproveitados na contestação e mudou a linha argumentativa.",
+    name: "Dr. Renato Martins",
+    role: "Advogado Trabalhista — Defesa Empresarial",
   },
   {
-    text: "Os quesitos formulados pela Dra. Kelly direcionaram a perícia para os pontos sensíveis da defesa. O laudo refletiu o que precisávamos demonstrar para sustentar a tese da reclamada.",
-    name: "Dra. C.S.",
+    text: "Os quesitos suplementares formulados pela Dra. Kelly direcionaram a perícia para pontos clínicos críticos da defesa — capacidade laboral, concausalidade e diagnóstico diferencial. O laudo refletiu o que precisávamos demonstrar para sustentar a tese da reclamada.",
+    name: "Dra. Camila Souza",
     role: "Advogada Trabalhista — Defesa Empresarial",
   },
   {
-    text: "Precisei de uma impugnação de laudo com urgência. A devolutiva foi rápida, tecnicamente sólida e me deu segurança para sustentar a argumentação no recurso.",
-    name: "Dr. F.A.",
-    role: "Advogado Trabalhista",
+    text: "Precisei de impugnação de laudo com prazo curto. A devolutiva foi rápida e tecnicamente sólida — apontou omissões diagnósticas e divergência com a documentação do processo. Sustentou bem a argumentação no recurso.",
+    name: "Dr. Fernando Andrade",
+    role: "Advogado Trabalhista — Contencioso Empresarial",
   },
 ];
 

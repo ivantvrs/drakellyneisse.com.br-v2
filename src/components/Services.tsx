@@ -63,34 +63,34 @@ const svcIcons = [SvcIcon1, SvcIcon2, SvcIcon3, SvcIcon4, SvcIcon5, SvcIcon6];
 
 const services = [
   {
-    title: "Análise técnica do processo",
-    description: "Leitura estratégica dos elementos médicos para identificar pontos de apoio, fragilidades e oportunidades argumentativas.",
-    benefit: "Clareza para orientar a condução técnica da demanda.",
+    title: "Análise médica do processo",
+    description: "Leitura especializada de prontuários, exames, CAT, atestados, laudos prévios e documentação clínica do reclamante. Identifica pontos frágeis do quadro médico, contradições internas no histórico clínico, ausência de critérios diagnósticos objetivos e inconsistências com a prova documental. Entregue como parecer reservado para orientar a estratégia processual antes de a perícia ser designada.",
+    benefit: "Visão clara do que sustentar, do que evitar e do que pedir ao perito do juízo.",
   },
   {
-    title: "Quesitos estratégicos personalizados",
-    description: "Elaboração de quesitos claros, objetivos e tecnicamente direcionados à realidade do processo.",
-    benefit: "Precisão na condução da prova pericial.",
+    title: "Quesitos suplementares e estratégicos",
+    description: "Formulação de quesitos médico-periciais para perícia oficial em causas trabalhistas, construídos a partir da análise do caso concreto e direcionados a fatos clínicos críticos para a defesa. Cobre nexo causal, concausalidade, capacidade laboral, diagnóstico diferencial e literatura médica de referência. Entregue dentro do prazo do saneador, no formato aceito pelo juízo.",
+    benefit: "Perícia direcionada para os pontos clínicos que decidem o processo.",
   },
   {
-    title: "Parecer médico-técnico",
-    description: "Parecer fundamentado para subsidiar manifestações, recursos e construções argumentativas.",
-    benefit: "Consistência técnica para sustentar a discussão médica do caso.",
+    title: "Parecer médico-técnico fundamentado",
+    description: "Parecer médico judicial elaborado para subsidiar contestação, manifestação sobre laudo, embargos de declaração ou recurso. Trata nexo causal, doença ocupacional, insalubridade, periculosidade, capacidade laboral e análise crítica de quantum indenizatório, a partir do quadro clínico documentado e da literatura médica aplicável. Estruturado em linguagem técnica acessível ao operador do Direito e com fundamentação citável.",
+    benefit: "Documento médico que sustenta a tese da reclamada em qualquer fase do processo.",
   },
   {
-    title: "Impugnação de laudo judicial",
-    description: "Análise crítica do laudo pericial com foco em omissões, contradições e inconsistências técnicas.",
-    benefit: "Base sólida para questionar conclusões periciais frágeis ou incompletas.",
+    title: "Impugnação de laudo pericial",
+    description: "Análise crítica do laudo do perito do juízo com foco em omissões diagnósticas, contradições internas, ausência de critérios objetivos, divergência com a prova documental do processo e literatura médica não considerada. Cada questionamento é fundamentado com referência citável. Entregue no prazo de manifestação processual.",
+    benefit: "Argumento técnico para o juiz reconsiderar conclusão pericial desfavorável.",
   },
   {
-    title: "Acompanhamento em perícia oficial",
-    description: "Atuação técnica no acompanhamento pericial, garantindo uma leitura técnica precisa dos elementos médicos do processo.",
-    benefit: "Atenção técnica nos pontos sensíveis da discussão pericial.",
+    title: "Acompanhamento de perícia médica judicial",
+    description: "Atuação técnica durante a perícia designada pelo juízo, presencial ou remoto, conforme o caso. Observa pontos sensíveis combinados previamente com o advogado, registra inconsistências em ata e formula quesitos suplementares orais quando admitidos. Reduz a margem de surpresa pericial e cria registro processual de divergência técnica.",
+    benefit: "Defesa presente onde a prova técnica é produzida.",
   },
   {
-    title: "Apoio estratégico ao advogado",
-    description: "Suporte técnico durante a condução do caso, com linguagem acessível e alinhamento com a necessidade jurídica.",
-    benefit: "Segurança para integrar prova médica e estratégia processual.",
+    title: "Apoio técnico em audiência de esclarecimentos",
+    description: "Preparação do advogado para audiência em que o perito do juízo é chamado a esclarecer pontos do laudo. Inclui mapeamento prévio das perguntas técnicas a fazer, fundamentação científica das objeções e municiamento com argumentos médicos objetivos para questionamento direto ao perito. Para o momento em que o esclarecimento é a última via de produção de prova técnica.",
+    benefit: "Advogado entra em audiência munido de contraprova médica organizada.",
   },
 ];
 
@@ -104,10 +104,10 @@ const Services = () => {
       <div ref={ref} className={`container mx-auto fade-in-section ${isVisible ? "is-visible" : ""}`}>
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <h2 className="font-display text-2xl md:text-[2rem] lg:text-[2.5rem] font-bold mb-5 leading-tight gold-shine">
-            Soluções técnicas para apoiar sua atuação no processo
+            Serviços de assistência técnica médica em perícia trabalhista
           </h2>
           <p className="text-base md:text-lg" style={{ color: '#A09A8D' }}>
-            Análise, estratégia e fundamentação médica aplicada ao caso concreto.
+            Análise médica do caso, quesitos para perícia, parecer técnico e impugnação de laudo, produzidos sobre a documentação concreta do processo, no prazo que o processo exige.
           </p>
         </div>
 

@@ -3,10 +3,9 @@ import { useInView } from "@/hooks/useInView";
 
 const credentials = [
   "CRM/MG 109153",
-  "Perícia Médica",
-  "CPEM",
-  "Instituto IFH",
-  "TRT-3 | TJMG | TJSP | TJMT | TJGO",
+  "Formação em Perícia Médica (CPEM)",
+  "Formação em Medicina do Trabalho (Instituto IFH)",
+  "Perita judicial cadastrada: TRT-3, TJMG, TJSP, TJMT, TJGO",
 ];
 
 const About = () => {
@@ -39,21 +38,21 @@ const About = () => {
               <h2 className="font-display text-2xl md:text-[2rem] lg:text-[2.5rem] font-bold leading-tight gold-shine">
                 Sobre a Dra. Kelly Jaqueline Neisse
               </h2>
-              <p className="font-label text-sm mt-3" style={{ color: '#D4A853' }}>Médica Perita Judicial · CRM/MG 109153</p>
+              <p className="font-label text-sm mt-3" style={{ color: '#D4A853' }}>Médica Perita Judicial · CRM/MG 109153 · Atuação exclusiva em Perícia Trabalhista</p>
             </div>
 
             <div className="space-y-5 text-base leading-relaxed mb-10" style={{ color: '#A09A8D' }}>
               <p>
-                A Dra. Kelly Jaqueline Neisse é <strong style={{ color: '#F5F0E8' }}>Médica Perita Judicial</strong> com atuação em <strong style={{ color: '#F5F0E8' }}>assistência técnica e perícia médica trabalhista</strong>, com foco em <strong style={{ color: '#F5F0E8' }}>defesa técnica para reclamadas</strong>.
+                Dra. Kelly Jaqueline Neisse é <strong style={{ color: '#F5F0E8' }}>Médica Perita Judicial</strong> (CRM/MG 109153) com <strong style={{ color: '#F5F0E8' }}>atuação exclusiva em perícia médica trabalhista</strong> — dedicada à assistência técnica para advogados, escritórios e departamentos jurídicos e partes envolvidas.
               </p>
               <p>
-                Sua atuação é direcionada ao apoio técnico de advogados, escritórios e departamentos jurídicos que necessitam de <strong style={{ color: '#F5F0E8' }}>leitura médica qualificada</strong>, análise estratégica e fundamentação técnico-pericial aplicada ao caso concreto.
+                O trabalho concentra-se em quatro frentes: <strong style={{ color: '#F5F0E8' }}>análise médica do processo, formulação de quesitos suplementares, impugnação de laudo pericial e parecer médico-técnico</strong> para subsidiar contestação, recurso e audiência de esclarecimentos. Cada entrega é construída sobre a documentação concreta do caso — não em modelos genéricos.
               </p>
               <p>
-                Atua com foco em <strong style={{ color: '#F5F0E8' }}>doença ocupacional, insalubridade, periculosidade, acidente de trabalho</strong> e <strong style={{ color: '#F5F0E8' }}>análise de nexo causal</strong> — incluindo elaboração de quesitos para defesa, parecer médico-pericial e impugnação de laudo.
+                As áreas cobertas incluem <strong style={{ color: '#F5F0E8' }}>doença ocupacional, LER/DORT, nexo causal, insalubridade, periculosidade, acidente de trabalho</strong> e <strong style={{ color: '#F5F0E8' }}>análise de capacidade laboral</strong>. Formação em Perícia Médica (CPEM) e Medicina do Trabalho (Instituto IFH). Atuação em <strong style={{ color: '#F5F0E8' }}>TRT-3, TJMG, TJSP, TJMT e TJGO</strong> — credenciais que comprovam competência em causas trabalhistas, com cobertura nacional presencial e remota.
               </p>
               <p>
-                <strong style={{ color: '#F5F0E8' }}>Baseada em Uberlândia/MG</strong>, atende casos em <strong style={{ color: '#F5F0E8' }}>todo o Brasil</strong>, com <strong style={{ color: '#F5F0E8' }}>parecer técnico digital</strong> e acompanhamento pericial remoto ou presencial.
+                <strong style={{ color: '#F5F0E8' }}>Sede em Uberlândia/MG</strong>, com <strong style={{ color: '#F5F0E8' }}>atendimento em todo o Brasil</strong>. O atendimento remoto cobre análise documental, parecer, quesitos e impugnação — formatos que independem de presença física. Análise inicial e orçamento em até 24h úteis pelo WhatsApp.
               </p>
             </div>
 

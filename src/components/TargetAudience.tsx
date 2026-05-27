@@ -37,10 +37,26 @@ const IconLegalDept = () => (
 );
 
 const items = [
-  { Icon: IconLawyer, text: "Advogados de defesa em reclamatórias trabalhistas que precisam de assistente técnico médico" },
-  { Icon: IconOffice, text: "Escritórios especializados em direito do trabalho lado empresarial" },
-  { Icon: IconCompany, text: "Empresas respondendo reclamatória e precisando de defesa técnica em perícia médica" },
-  { Icon: IconLegalDept, text: "Departamentos jurídicos que buscam parecer médico-pericial para subsidiar a contestação" },
+  {
+    Icon: IconOffice,
+    title: "Tem audiência pericial marcada ou saneador aberto",
+    text: "Quesitos suplementares precisam ser formulados em prazo curto e direcionados a fatos clínicos críticos para a defesa da reclamada.",
+  },
+  {
+    Icon: IconLawyer,
+    title: "Recebeu laudo pericial desfavorável à empresa que defende",
+    text: "Há prazo para impugnar com fundamento médico e a tese de defesa depende de leitura especializada do laudo do juízo.",
+  },
+  {
+    Icon: IconCompany,
+    title: "Precisa contestar nexo causal, insalubridade ou doença ocupacional",
+    text: "A defesa exige análise médica de prontuários, exames, CAT, atestados e B91 — antes da perícia, durante o acompanhamento ou no recurso.",
+  },
+  {
+    Icon: IconLegalDept,
+    title: "Atua para empresa-reclamada com volume recorrente",
+    text: "O jurídico (escritório, departamento interno ou contencioso de massa) precisa de assistência técnica médica integrada à estratégia processual.",
+  },
 ];
 
 const TargetAudience = () => {
@@ -54,21 +70,30 @@ const TargetAudience = () => {
         </h2>
 
         <div className="space-y-8">
-          {items.map(({ Icon, text }, i) => (
+          {items.map(({ Icon, title, text }, i) => (
             <div
-              key={text}
+              key={title}
               className="flex gap-4 stagger-item"
               style={{ transitionDelay: `${i * 100}ms` }}
             >
               <span className="flex-shrink-0 mt-0.5" style={{ color: '#D4A853' }}>
                 <Icon />
               </span>
-              <p className="text-base md:text-lg leading-relaxed" style={{ color: '#A09A8D' }}>
-                {text}
-              </p>
+              <div>
+                <h3 className="font-display text-lg md:text-xl font-semibold mb-2 leading-snug" style={{ color: '#F5F0E8' }}>
+                  {title}
+                </h3>
+                <p className="text-base md:text-lg leading-relaxed" style={{ color: '#A09A8D' }}>
+                  {text}
+                </p>
+              </div>
             </div>
           ))}
         </div>
+
+        <p className="text-sm md:text-base leading-relaxed text-center mt-12 italic max-w-2xl mx-auto" style={{ color: '#8A857A' }}>
+          Atendimento exclusivo para advogados, escritórios e departamentos jurídicos e partes envolvidas em algum processo trabalhista.
+        </p>
       </div>
     </section>
   );

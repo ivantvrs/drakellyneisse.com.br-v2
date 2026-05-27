@@ -10,22 +10,19 @@ const Footer = () => (
             Médica Perita Judicial · CRM/MG 109153
           </p>
           <p className="text-xs mt-1" style={{ color: '#8A857A' }}>
-            Perícia Médica
+            Assistência técnica médica em perícia trabalhista
           </p>
           <p className="text-xs mt-2" style={{ color: '#8A857A' }}>
-            pericia.drakellyneisse.com.br · contato@drakellyneisse.com.br · (34) 9 9687-8758
-          </p>
-          <p className="text-xs mt-1" style={{ color: '#A09A8D' }}>
-            Atendimento Nacional · TRT-3 · TJMG · TJSP · TJMT · TJGO
+            drakellyneisse.com.br · contato@drakellyneisse.com.br · (34) 9 9687-8758
           </p>
           <p className="text-[10px] mt-1" style={{ color: '#8A857A' }}>
-            Sede administrativa: Uberlândia/MG
+            Sede em Uberlândia/MG · Atendimento em todo o Brasil (presencial e remoto)
           </p>
         </div>
 
         <div className="flex gap-6 text-xs" style={{ color: '#8A857A' }}>
           <a
-            href="https://pericia.drakellyneisse.com.br/politica-de-privacidade/"
+            href="https://drakellyneisse.com.br/politica-de-privacidade/"
             className="transition-colors"
             onMouseEnter={(e) => { e.currentTarget.style.color = '#E8C77B'; }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#6B665C'; }}
@@ -33,7 +30,7 @@ const Footer = () => (
             Política de Privacidade
           </a>
           <a
-            href="https://pericia.drakellyneisse.com.br/termos-de-uso/"
+            href="https://drakellyneisse.com.br/termos-de-uso/"
             className="transition-colors"
             onMouseEnter={(e) => { e.currentTarget.style.color = '#E8C77B'; }}
             onMouseLeave={(e) => { e.currentTarget.style.color = '#6B665C'; }}

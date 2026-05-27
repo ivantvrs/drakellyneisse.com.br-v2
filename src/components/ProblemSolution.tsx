@@ -51,20 +51,20 @@ const painIcons = [PainIcon1, PainIcon2, PainIcon3, PainIcon4];
 
 const pains = [
   {
-    title: "Um laudo mal interpretado enfraquece uma tese juridicamente boa",
-    text: "Quando a prova médica não é lida com precisão, até o melhor argumento jurídico perde sustentação.",
+    title: "Um laudo pericial mal interpretado enfraquece uma tese juridicamente sólida",
+    text: "Sem leitura médica especializada do laudo do juízo, pontos sensíveis, nexo causal frágil, ausência de critérios diagnósticos objetivos, divergência com a prova documental, passam batido. A tese da reclamada perde sustentação onde mais importa.",
   },
   {
-    title: "Quesitos mal formulados limitam a produção de prova útil",
-    text: "Perguntas genéricas geram respostas genéricas. Quesitos estratégicos direcionam o laudo a favor do caso.",
+    title: "Quesitos genéricos produzem perícia genérica",
+    text: "O prazo do saneador raramente é tempo para formular quesitos suplementares que direcionem o perito do juízo aos pontos críticos do caso. Quesitos mal calibrados fecham portas que não se reabrem na fase recursal.",
   },
   {
-    title: "Impugnação sem precisão técnica perde força",
-    text: "Contestar um laudo exige mais do que discordância — exige fundamentação médica objetiva.",
+    title: "Impugnação de laudo sem fundamento médico é só discordância",
+    text: "Para o juiz reconsiderar conclusão pericial, a impugnação precisa apontar omissões objetivas, contradições técnicas e literatura médica não considerada. Objeção jurídica isolada não move prova técnica.",
   },
   {
-    title: "Inconsistências e omissões no laudo passam despercebidas",
-    text: "Contradições técnicas, dados ignorados e conclusões sem base passam despercebidos sem leitura especializada.",
+    title: "CAT, atestados convergentes e B91 chegam combinados",
+    text: "Reclamante apresenta Comunicação de Acidente de Trabalho, sequência de atestados convergentes e benefício acidentário B91 ativo. Sem contraprova técnica organizada antes da perícia, a defesa entra em desvantagem probatória.",
   },
 ];
 
@@ -106,7 +106,7 @@ const ProblemSolution = () => {
 
       <div ref={ref} className={`container mx-auto max-w-3xl fade-in-section relative z-10 ${isVisible ? "is-visible" : ""}`}>
         <h2 className="font-display text-2xl md:text-[2rem] lg:text-[2.5rem] font-bold text-center mb-16 leading-tight gold-shine">
-          A fragilidade do processo nem sempre está no direito — muitas vezes está na leitura da prova médica.
+          A fragilidade da defesa nem sempre está no direito, está em como a prova médica chega ao processo.
         </h2>
 
         <div className="space-y-10 mb-16">
@@ -135,7 +135,7 @@ const ProblemSolution = () => {
         </div>
 
         <p className="text-center text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: '#A09A8D' }}>
-          A assistência técnica médica judicial oferece o suporte que transforma informação médica em argumento técnico consistente dentro do processo.
+          A assistência técnica médica em causas trabalhistas existe para que a defesa da reclamada chegue à perícia, à audiência e ao recurso com contraprova médica fundamentada, antes que o laudo desfavorável vire pressão para acordo.
         </p>
       </div>
     </section>

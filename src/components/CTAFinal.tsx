@@ -15,13 +15,13 @@ const CTAFinal = () => {
     >
       <div ref={ref} className={`container mx-auto text-center max-w-2xl relative z-10 fade-in-section ${isVisible ? "is-visible" : ""}`}>
         <h2 className="font-display text-3xl md:text-[2.5rem] lg:text-[3.5rem] font-bold mb-8 leading-tight gold-shine">
-          O caso do seu cliente envolve discussão médica relevante?
+          Seu caso tem prazo rodando para impugnar laudo, formular quesitos ou produzir parecer médico?
         </h2>
         <p className="text-base md:text-lg leading-relaxed mb-5" style={{ color: '#A09A8D' }}>
-          Uma análise técnica bem conduzida traz mais clareza à prova, mais consistência à argumentação e mais segurança à condução do caso.
+          Análise médica especializada da documentação do processo, impugnação fundamentada do laudo do juízo, quesitos suplementares antes da perícia ou parecer técnico para recurso, o que o seu caso precisa, entregue no formato e prazo que o processo exige.
         </p>
         <p className="text-sm md:text-base leading-relaxed mb-12 font-medium" style={{ color: '#8A857A' }}>
-          Prazos processuais não esperam. Se o seu caso precisa de fundamentação técnica, o momento de buscar apoio é agora.
+          Prazos processuais não esperam. Quanto antes a assistência técnica entra no caso, maior o controle sobre a produção da prova médica — e menor o risco de surpresa pericial.
         </p>
         <div className="flex justify-center mb-8">
           <a
@@ -38,11 +38,11 @@ const CTAFinal = () => {
             onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 16px rgba(37, 211, 102, 0.4)"; }}
           >
             <MessageCircle size={20} />
-            Quero suporte técnico no meu caso →
+            Analisar caso no WhatsApp →
           </a>
         </div>
         <p className="text-xs" style={{ color: '#8A857A' }}>
-          Envie um resumo da demanda e a documentação disponível para avaliação inicial.
+          Envie um resumo do caso e a documentação disponível. Análise inicial e orçamento em até 24h úteis. Sem custo.
         </p>
       </div>
     </section>

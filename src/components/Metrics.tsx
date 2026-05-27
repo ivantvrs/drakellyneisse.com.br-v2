@@ -34,10 +34,10 @@ const MetricIcon4 = () => (
 const metricIcons = [MetricIcon1, MetricIcon2, MetricIcon3, MetricIcon4];
 
 const metrics = [
-  { value: "TRT-3 · TJMG\nTJMT · TJSP", label: "", sub: "cadastro ativo" },
-  { value: "CRM/MG", label: "109153", sub: "registro ativo" },
-  { value: "24h", label: "resposta", sub: "dias úteis" },
-  { value: "Nacional", label: "presencial", sub: "e remoto" },
+  { value: "TRT-3 · TJMG · TJSP\nTJMT · TJGO", label: "Atuação em tribunais", sub: "Credenciais de perita judicial" },
+  { value: "CRM/MG 109153", label: "Registro médico ativo", sub: "Atuação em Perícia Médica Trabalhista" },
+  { value: "24h", label: "Análise inicial pelo WhatsApp", sub: "Dias úteis · sem custo" },
+  { value: "Nacional", label: "Atendimento em todo o Brasil", sub: "Presencial ou remoto · conforme o caso" },
 ];
 
 const Metrics = () => {

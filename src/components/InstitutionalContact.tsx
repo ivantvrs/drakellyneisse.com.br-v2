@@ -12,15 +12,15 @@ const InstitutionalContact = () => {
         <p className="font-display text-lg font-semibold" style={{ color: '#F5F0E8' }}>Dra. Kelly Jaqueline Neisse</p>
         <p className="font-label text-sm mt-1 mb-1" style={{ color: '#8A857A' }}>Médica Perita Judicial · CRM/MG 109153</p>
         <p className="text-xs mb-2" style={{ color: '#A09A8D' }}>
-          Atendimento Nacional · TRT-3 · TJMG · TJSP · TJMT · TJGO
+          Atendimento em todo o Brasil — presencial ou remoto
         </p>
         <p className="text-[11px] mb-10" style={{ color: '#8A857A' }}>
-          Sede administrativa: Uberlândia/MG
+          Sede em Uberlândia/MG
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-sm flex-wrap" style={{ color: '#A09A8D' }}>
           <a
-            href="https://pericia.drakellyneisse.com.br"
+            href="https://drakellyneisse.com.br"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 transition-colors"
@@ -28,7 +28,7 @@ const InstitutionalContact = () => {
             onMouseLeave={(e) => { e.currentTarget.style.color = '#A09A8D'; }}
           >
             <Globe size={15} style={{ color: '#D4A853' }} />
-            pericia.drakellyneisse.com.br
+            drakellyneisse.com.br
           </a>
           <a
             href="mailto:contato@drakellyneisse.com.br"

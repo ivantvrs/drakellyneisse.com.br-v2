@@ -4,27 +4,27 @@ const steps = [
   {
     num: "01",
     title: "Envio inicial do caso",
-    desc: "O advogado encaminha os documentos e apresenta a necessidade técnica relacionada ao processo.",
+    desc: "O advogado envia pelo WhatsApp um resumo do caso e a documentação disponível — laudo pericial (se houver), peça inicial, contestação, exames, prontuário, atestados, CAT. Confirmação de recebimento no mesmo dia útil.",
   },
   {
     num: "02",
-    title: "Entendimento da demanda",
-    desc: "É avaliado o tipo de suporte mais adequado, de acordo com o estágio do caso e com a finalidade da análise.",
+    title: "Análise preliminar em 24h úteis",
+    desc: "A Dra. Kelly retorna em até 24h úteis com diagnóstico técnico do que o caso pede — impugnação, quesitos, parecer ou acompanhamento — escopo de trabalho, prazo de entrega e orçamento.",
   },
   {
     num: "03",
     title: "Definição do escopo",
-    desc: "São alinhados o objetivo do trabalho, os documentos necessários e o formato de apoio técnico mais pertinente.",
+    desc: "Escopo, formato de entrega e prazo são definidos por escrito antes do início. Documentação complementar é solicitada apenas se necessária. Sem orçamento surpresa ao longo do trabalho.",
   },
   {
     num: "04",
-    title: "Execução da análise",
-    desc: "A documentação é analisada com foco nos pontos técnicos que podem contribuir para a compreensão do caso.",
+    title: "Execução técnica",
+    desc: "A análise médica é conduzida sobre a documentação concreta do caso e a fundamentação é estruturada com base na literatura médica aplicável. O material — impugnação, quesitos, parecer ou laudo crítico — é entregue em formato pronto para juntada processual.",
   },
   {
     num: "05",
-    title: "Devolutiva técnica",
-    desc: "O advogado recebe o retorno técnico dentro do escopo definido, com clareza e direcionamento para uso prático na condução do caso.",
+    title: "Devolutiva e acompanhamento",
+    desc: "O advogado recebe o material no prazo combinado. Dúvidas pontuais sobre o conteúdo técnico após a entrega são respondidas sem custo adicional, dentro do escopo do trabalho contratado.",
   },
 ];
 
@@ -90,7 +90,7 @@ const HowItWorks = () => {
         </div>
 
         <p className="text-sm text-center mt-16 italic max-w-2xl mx-auto" style={{ color: '#8A857A' }}>
-          Cada caso exige leitura individualizada. A atuação técnica respeita a complexidade e as particularidades de cada processo.
+          Cada caso é tratado individualmente, não há trabalho padronizado. A análise médica é feita sobre a documentação concreta do processo, não sobre modelos genéricos.
         </p>
       </div>
     </section>

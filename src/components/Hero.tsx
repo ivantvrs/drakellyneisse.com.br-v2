@@ -37,19 +37,19 @@ const Hero = () => {
     <div className="container mx-auto relative z-10 pt-24 pb-24 md:pt-32">
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle">
-          Assistente técnica em perícia médica trabalhista
+          Assistente técnica médica em perícia trabalhista
         </p>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-6">
-          <span style={{ color: '#F5F0E8' }}>Muitos processos são decididos na</span>{" "}
-          <span className="gold-shine">perícia médica</span>.
+          <span style={{ color: '#F5F0E8' }}>Médica perita e assistente técnico médico em</span>{" "}
+          <span className="gold-shine">perícia trabalhista</span>.
         </h1>
 
         <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg hidden md:block" style={{ color: '#A09A8D' }}>
-          Assistência técnica médica em casos de doença ocupacional, LER/DORT, nexo causal e incapacidade laboral. Atuação antes, durante e após a perícia, para escritórios e departamentos jurídicos em todo o Brasil.
+          Impugnação de laudo, quesitos suplementares e parecer médico-pericial para advogados da reclamada em causas trabalhistas — doença ocupacional, LER/DORT, nexo causal, insalubridade e acidente de trabalho.
         </p>
         <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg md:hidden" style={{ color: '#A09A8D' }}>
-          Assistência técnica médica em doença ocupacional, LER/DORT, nexo causal e incapacidade laboral. Para escritórios e departamentos jurídicos em todo o Brasil.
+          Impugnação de laudo, quesitos e parecer médico-pericial para advogados da reclamada. Doença ocupacional, LER/DORT, nexo causal, insalubridade.
         </p>
 
         <a
@@ -70,7 +70,7 @@ const Hero = () => {
         </a>
 
         <p className="text-sm mt-5" style={{ color: '#8A857A' }}>
-          Resposta em até 24h úteis · CRM/MG 109153
+          Resposta em até 24h úteis
         </p>
       </div>
     </div>
@@ -80,7 +80,7 @@ const Hero = () => {
       <div className="container mx-auto">
         <div className="animate-fade-up-delay-2 py-6" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.15)' }}>
           <p className="font-label text-[13px] text-center md:text-left" style={{ color: '#8A857A' }}>
-            Em doença ocupacional, nexo causal ou impugnação de laudo, o seu processo não precisa enfrentar a discussão técnica sem suporte médico.
+            Em casos de doença ocupacional, nexo causal contestado, insalubridade ou laudo pericial desfavorável, a defesa da reclamada precisa de prova médica fundamentada, antes que o laudo vire pressão para acordo.
           </p>
         </div>
       </div>
