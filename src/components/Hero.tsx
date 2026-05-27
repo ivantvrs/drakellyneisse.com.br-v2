@@ -41,8 +41,8 @@ const Hero = () => {
         </p>
 
         <h1 className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-6">
-          <span style={{ color: '#F5F0E8' }}>Médica perita e assistente técnico médico em</span>{" "}
-          <span className="gold-shine">perícia trabalhista</span>.
+          <span style={{ color: '#F5F0E8' }}>Muitos processos trabalhistas são</span>{" "}
+          <span className="gold-shine">decididos na perícia médica</span>.
         </h1>
 
         <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-lg hidden md:block" style={{ color: '#A09A8D' }}>
