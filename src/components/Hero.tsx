@@ -1,4 +1,6 @@
 import heroImage from "@/assets/hero-dra-kelly.webp";
+import heroImageMobile from "@/assets/hero-dra-kelly-m.webp";
+import heroImageMd from "@/assets/hero-dra-kelly-md.webp";
 
 const MessageCircleIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -15,6 +17,8 @@ const Hero = () => {
     <div className="absolute inset-0 z-0">
       <img
         src={heroImage}
+        srcSet={`${heroImageMobile} 828w, ${heroImageMd} 1280w, ${heroImage} 1920w`}
+        sizes="100vw"
         alt="Dra. Kelly Jaqueline Neisse, Médica Perita Judicial"
         width={1920}
         height={1080}
