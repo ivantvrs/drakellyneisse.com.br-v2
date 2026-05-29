@@ -10,6 +10,10 @@ const faqs = [
     a: "Não. A assistência técnica médica produz prova técnica, quesitos, parecer médico, impugnação de laudo, análise especializada de documentação clínica — que dá ao advogado fundamento médico para sustentar a tese de defesa. A estratégia processual, a peça e a postulação seguem sendo do advogado.",
   },
   {
+    q: "Qual a diferença entre o médico perito e o assistente técnico médico?",
+    a: "O médico perito é o perito do juízo — profissional nomeado pela vara para produzir o laudo oficial, com equidistância das partes. O assistente técnico médico, por sua vez, é contratado pelo advogado para atuar ao lado da defesa: analisa o laudo do perito, formula quesitos, aponta omissões e fundamenta a impugnação. São papéis distintos e complementares — a Dra. Kelly atua como assistente técnica médica da reclamada, não como perita do juízo.",
+  },
+  {
     q: "Em quais momentos do processo a assistência técnica é mais útil?",
     a: "Quatro pontos críticos: (1) antes da perícia, para mapear o risco médico do caso e formular quesitos suplementares; (2) durante a perícia oficial, no acompanhamento técnico; (3) após laudo desfavorável, para fundamentar impugnação; (4) em audiência de esclarecimentos, para municiar o advogado com argumentos médicos objetivos. Quanto mais cedo a assistência entra, maior o controle sobre a produção da prova.",
   },
