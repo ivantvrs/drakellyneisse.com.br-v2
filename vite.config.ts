@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode, isSsrBuild }) => ({
   server: {
     host: "::",
     port: 8080,
@@ -29,11 +29,15 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: "es2020",
     rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ["preact", "preact/compat", "preact/hooks"],
-        },
-      },
+      // manualChunks só faz sentido no bundle do client; no build SSR (entry-server,
+      // usado apenas no prerender) ele atrapalha e não tem efeito útil.
+      output: isSsrBuild
+        ? {}
+        : {
+            manualChunks: {
+              vendor: ["preact", "preact/compat", "preact/hooks"],
+            },
+          },
     },
   },
 }));
