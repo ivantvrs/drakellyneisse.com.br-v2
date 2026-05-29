@@ -5,7 +5,8 @@
 //   1. build do client  -> dist/ (index.html com scripts de tracking intactos, #root vazio)
 //   2. build SSR do entry-server -> dist-ssr/ (só usado aqui, não vai pro deploy)
 //   3. renderiza o App ("/") para HTML e injeta dentro do <div id="root"> do dist/index.html
-//   4. remove dist-ssr/
+//   4. injeta <link rel=preload> da imagem do hero (elemento de LCP no mobile)
+//   5. remove dist-ssr/
 //
 // Resultado: dist/index.html já contém o conteúdo real (H1, parágrafos, copy do negócio)
 // no markup estático, sem precisar executar JS. O client hidrata por cima (main.tsx).
@@ -29,6 +30,14 @@ async function findServerEntry() {
     throw new Error(`entry-server.* não encontrado em ${SERVER_OUT} (achei: ${files.join(", ")})`);
   }
   return path.join(SERVER_OUT, entry);
+}
+
+// acha o nome content-hashed da imagem do hero (não hardcodar o hash)
+async function findHeroHref() {
+  const files = await readdir(path.join(ROOT, "dist", "assets"));
+  const hero = files.find((f) => /^hero-dra-kelly-.*\.webp$/.test(f));
+  if (!hero) throw new Error("hero-dra-kelly-*.webp não encontrado em dist/assets");
+  return `/assets/${hero}`;
 }
 
 async function main() {
@@ -61,12 +70,22 @@ async function main() {
     throw new Error('marcador <div id="root"></div> não encontrado em dist/index.html');
   }
   html = html.replace(ROOT_RE, `<div id="root">${appHtml}</div>`);
+
+  // 4) preload da imagem do hero (elemento de LCP no mobile — corrige o resource load delay).
+  //    Resource hint INERTE: não executa JS, não toca em nenhum <script>. Injeta cedo no <head>.
+  const heroHref = await findHeroHref();
+  html = html.replace(
+    /<head>/i,
+    `<head>\n    <link rel="preload" as="image" type="image/webp" href="${heroHref}" fetchpriority="high" />`
+  );
+  console.log(`[build] preload do hero: ${heroHref}`);
+
   await writeFile(DIST_INDEX, html, "utf8");
 
-  // 4) limpa o bundle de servidor (não deve ir pro deploy)
+  // 5) limpa o bundle de servidor (não deve ir pro deploy)
   await rm(SERVER_OUT, { recursive: true, force: true });
 
-  console.log(`[build] OK — ${appHtml.length} chars de HTML injetados em dist/index.html`);
+  console.log(`[build] OK — ${appHtml.length} chars no #root; preload do hero injetado`);
 }
 
 main().catch((err) => {
