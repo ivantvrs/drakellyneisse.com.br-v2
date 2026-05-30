@@ -49,7 +49,7 @@ async function findServerEntry() {
 
 // monta o srcset (3 larguras) com os nomes content-hashed das variantes do hero (sem hardcodar
 // hash): hero-dra-kelly-m-[h] (828w), hero-dra-kelly-md-[h] (1280w), hero-dra-kelly-[h] (1920w).
-async function findHeroSrcset() {
+async function findHeroSrcsets() {
   const files = await readdir(path.join(ROOT, "dist", "assets"));
   const pick = (re) => {
     const f = files.find((x) => re.test(x));
@@ -57,10 +57,13 @@ async function findHeroSrcset() {
     return `/assets/${f}`;
   };
   // [^.]+ p/ aceitar hashes do Vite que contêm hífen (ex.: hero-dra-kelly-md-ChV-7Fu3.webp)
-  const m = pick(/^hero-dra-kelly-m-[^.]+\.webp$/);
-  const md = pick(/^hero-dra-kelly-md-[^.]+\.webp$/);
-  const full = pick(/^hero-dra-kelly-(?!m-|md-)[^.]+\.webp$/);
-  return `${m} 828w, ${md} 1280w, ${full} 1920w`;
+  const srcset = (ext) => {
+    const m = pick(new RegExp(`^hero-dra-kelly-m-[^.]+\\.${ext}$`));
+    const md = pick(new RegExp(`^hero-dra-kelly-md-[^.]+\\.${ext}$`));
+    const full = pick(new RegExp(`^hero-dra-kelly-(?!m-|md-)[^.]+\\.${ext}$`));
+    return `${m} 828w, ${md} 1280w, ${full} 1920w`;
+  };
+  return { avif: srcset("avif"), webp: srcset("webp") };
 }
 
 // usa o beasties APENAS para COMPUTAR a string de CSS crítico (descarta o resto do output dele).
@@ -147,12 +150,14 @@ async function main() {
   html = html.replace(ROOT_RE, `<div id="root">${appHtml}</div>`);
 
   // 4) preload RESPONSIVO da imagem do hero (elemento de LCP no mobile). imagesrcset espelha
-  //    o srcset do <img>, então o browser pré-carrega a MESMA variante que vai usar (mobile ~17KB).
-  //    Resource hint INERTE: não executa JS, não toca em nenhum <script>. Injeta cedo no <head>.
-  const heroSrcset = await findHeroSrcset();
-  const heroPreload = `<link rel="preload" as="image" imagesrcset="${heroSrcset}" imagesizes="100vw" fetchpriority="high" />`;
+  //    o srcset AVIF do <picture>, então o browser pré-carrega a MESMA variante que vai usar
+  //    (mobile ~9.6KB). type="image/avif" garante que SÓ navegadores com suporte a AVIF baixem
+  //    este preload; os demais caem no <source webp> do <picture> e descobrem a imagem cedo via
+  //    HTML pré-renderizado, sem download duplicado. Resource hint INERTE: não executa JS.
+  const heroSrcsets = await findHeroSrcsets();
+  const heroPreload = `<link rel="preload" as="image" type="image/avif" imagesrcset="${heroSrcsets.avif}" imagesizes="100vw" fetchpriority="high" />`;
   html = html.replace(/<head>/i, `<head>\n    ${heroPreload}`);
-  console.log(`[build] preload responsivo do hero: ${heroSrcset}`);
+  console.log(`[build] preload AVIF do hero: ${heroSrcsets.avif}`);
 
   // 5) CSS crítico inline (Fase B) — remove o render-blocking. SKIP_CRITICAL=1 pula (A/B).
   if (process.env.SKIP_CRITICAL !== "1") {
