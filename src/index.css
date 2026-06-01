@@ -366,12 +366,7 @@ html {
     object-position: 70% 30% !important;
   }
   .hero-overlay {
-    background: linear-gradient(
-      to bottom,
-      rgba(15, 15, 15, 0.50) 0%,
-      rgba(15, 15, 15, 0.70) 50%,
-      rgba(15, 15, 15, 0.90) 100%
-    ) !important;
+    display: none !important;
   }
   .animate-fade-up,
   .animate-fade-up-delay-1,
@@ -382,16 +377,72 @@ html {
   .fade-in-section {
     transition-duration: 0.3s;
   }
-  /* Hero: distribui o conteúdo verticalmente no mobile (centralizado) */
+  /* ===== Hero mobile: grade editorial (múltiplos de 8px) =====
+     Ordem: Categoria → Headline → Parágrafo → Botão → Microcopy → Bloco informativo.
+     Coluna de leitura à esquerda (margem ~32px via container); bloco informativo
+     como 2ª camada. Texto final (faixa de credencial) é o fechamento absolute. */
   #inicio > .container.relative.z-10 {
-    padding-top: 7rem !important;
-    padding-bottom: 9rem !important;
+    padding-top: 6rem !important;     /* abaixo do header fixo */
+    padding-bottom: 9rem !important;  /* espaço p/ a faixa de credencial */
+    padding-left: 2rem !important;    /* 32px — eixo da coluna de leitura */
+    padding-right: 2rem !important;   /* área segura lateral */
   }
-  #inicio h1 {
+  /* Bloco de conversão (Categoria → Bloco informativo) como uma coluna única à esquerda. */
+  #inicio .max-w-xl {
+    max-width: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  /* Hierarquia de espaçamento — grade de 8px, sem buracos entre os elementos do CTA. */
+  #inicio .max-w-xl > p.gold-shine-subtle { margin-bottom: 1rem !important; }  /* Categoria */
+  #inicio h1 {                                                                 /* Headline */
+    font-size: 1.875rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: 1rem !important;
+  }
+  #inicio .max-w-xl > p.text-lg {            /* Parágrafo de apoio (âncora) */
     margin-bottom: 1.5rem !important;
   }
-  #inicio .max-w-xl > p.text-lg {
-    margin-bottom: 2rem !important;
+  #inicio .max-w-xl > a {                    /* Botão — mesmo eixo do texto, toque confortável */
+    order: 1;
+    align-self: stretch;                     /* largura da coluna: intencional, > parágrafo */
+    padding: 0.875rem 1.5rem !important;     /* ~46px de altura */
+    margin-bottom: 0 !important;
+  }
+  #inicio .max-w-xl > p.text-sm {            /* Microcopy — colada ao CTA (12px) */
+    order: 2;
+    margin-top: 0.75rem !important;
+    margin-bottom: 0 !important;
+  }
+  #inicio .max-w-xl > p.text-base {          /* Bloco informativo — 2ª camada, centralizada, com respiro */
+    order: 3;
+    align-self: stretch;
+    text-align: center;
+    margin-top: 2.5rem !important;
+    margin-bottom: 0 !important;
+  }
+  /* Legibilidade mobile APENAS por tipografia: text-shadow refinado + micro
+     text-stroke sutil. SEM pseudo-elemento de fundo, sem caixa/faixa/halo/overlay. */
+  #inicio .max-w-xl > p.gold-shine-subtle {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  }
+  /* Bloco informativo inferior — cruza roupa/pele clara: sombra mais firme */
+  #inicio .max-w-xl > p.text-base {
+    color: rgba(245, 238, 226, 0.96) !important;
+    text-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.92),
+      0 2px 6px rgba(0, 0, 0, 0.55),
+      0 0 10px rgba(0, 0, 0, 0.18);
+    -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.22);
+  }
+  /* Faixa final "Laudo frágil..." — sombra média */
+  #inicio .animate-fade-up-delay-2 > p {
+    color: rgba(232, 220, 205, 0.92) !important;
+    text-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.88),
+      0 2px 4px rgba(0, 0, 0, 0.42);
+    -webkit-text-stroke: 0.2px rgba(0, 0, 0, 0.22);
   }
 }
 

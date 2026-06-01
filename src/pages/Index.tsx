@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
+import PositioningStatement from "@/components/PositioningStatement";
 import TargetAudience from "@/components/TargetAudience";
 import SectionTransition from "@/components/SectionTransition";
 
@@ -25,6 +26,7 @@ const Index = () => (
     <Header />
     <main>
       <Hero />
+      <PositioningStatement />
       <TargetAudience />
       <Suspense fallback={null}>
         <SectionTransition fromColor="#0F0F0F" toColor="#0F0F0F" variant="subtle" />

@@ -63,7 +63,18 @@ async function findHeroSrcsets() {
     const full = pick(new RegExp(`^hero-dra-kelly-(?!m-|md-)[^.]+\\.${ext}$`));
     return `${m} 828w, ${md} 1280w, ${full} 1920w`;
   };
-  return { avif: srcset("avif"), webp: srcset("webp") };
+  // Arte dirigida do mobile (< 768px): hero-mob (828w) + hero-mob-2x (1280w).
+  const mobileSrcset = (ext) => {
+    const m1 = pick(new RegExp(`^hero-mob-(?!2x-)[^.]+\\.${ext}$`));
+    const m2 = pick(new RegExp(`^hero-mob-2x-[^.]+\\.${ext}$`));
+    return `${m1} 828w, ${m2} 1280w`;
+  };
+  return {
+    avif: srcset("avif"),
+    webp: srcset("webp"),
+    mobileAvif: mobileSrcset("avif"),
+    mobileWebp: mobileSrcset("webp"),
+  };
 }
 
 // usa o beasties APENAS para COMPUTAR a string de CSS crítico (descarta o resto do output dele).
@@ -149,15 +160,20 @@ async function main() {
   }
   html = html.replace(ROOT_RE, `<div id="root">${appHtml}</div>`);
 
-  // 4) preload RESPONSIVO da imagem do hero (elemento de LCP no mobile). imagesrcset espelha
-  //    o srcset AVIF do <picture>, então o browser pré-carrega a MESMA variante que vai usar
-  //    (mobile ~9.6KB). type="image/avif" garante que SÓ navegadores com suporte a AVIF baixem
-  //    este preload; os demais caem no <source webp> do <picture> e descobrem a imagem cedo via
-  //    HTML pré-renderizado, sem download duplicado. Resource hint INERTE: não executa JS.
+  // 4) preload RESPONSIVO da imagem do hero (elemento de LCP no mobile). Como o <picture> usa
+  //    ARTE DIRIGIDA (imagem diferente no mobile < 768px vs desktop), são DOIS preloads com
+  //    `media` complementar: o browser baixa só o que casa com o viewport — mobile pré-carrega
+  //    a imagem do retrato (~9KB), desktop pré-carrega a cena larga. imagesrcset espelha o srcset
+  //    AVIF de cada <source>, garantindo a MESMA variante (sem download duplicado). type=avif faz
+  //    SÓ navegadores com AVIF baixarem; os demais caem no <source webp> e descobrem a imagem cedo
+  //    pelo HTML pré-renderizado. Resource hints INERTES: não executam JS.
   const heroSrcsets = await findHeroSrcsets();
-  const heroPreload = `<link rel="preload" as="image" type="image/avif" imagesrcset="${heroSrcsets.avif}" imagesizes="100vw" fetchpriority="high" />`;
+  const heroPreload =
+    `<link rel="preload" as="image" media="(max-width: 767.98px)" type="image/avif" imagesrcset="${heroSrcsets.mobileAvif}" imagesizes="100vw" fetchpriority="high" />` +
+    `<link rel="preload" as="image" media="(min-width: 768px)" type="image/avif" imagesrcset="${heroSrcsets.avif}" imagesizes="100vw" fetchpriority="high" />`;
   html = html.replace(/<head>/i, `<head>\n    ${heroPreload}`);
-  console.log(`[build] preload AVIF do hero: ${heroSrcsets.avif}`);
+  console.log(`[build] preload AVIF hero — mobile: ${heroSrcsets.mobileAvif}`);
+  console.log(`[build] preload AVIF hero — desktop: ${heroSrcsets.avif}`);
 
   // 5) CSS crítico inline (Fase B) — remove o render-blocking. SKIP_CRITICAL=1 pula (A/B).
   if (process.env.SKIP_CRITICAL !== "1") {

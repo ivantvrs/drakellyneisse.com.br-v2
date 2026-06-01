@@ -104,7 +104,7 @@ const Services = () => {
       <div ref={ref} className={`container mx-auto fade-in-section ${isVisible ? "is-visible" : ""}`}>
         <div className="text-center mb-16 max-w-2xl mx-auto">
           <h2 className="font-display text-2xl md:text-[2rem] lg:text-[2.5rem] font-bold mb-5 leading-tight gold-shine">
-            Serviços de assistência técnica médica em perícia trabalhista
+            Assistência técnica médica em perícia trabalhista
           </h2>
           <p className="text-base md:text-lg" style={{ color: '#A09A8D' }}>
             Análise médica do caso, quesitos para perícia, parecer técnico e impugnação de laudo, produzidos sobre a documentação concreta do processo, no prazo que o processo exige.
