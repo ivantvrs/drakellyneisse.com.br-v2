@@ -277,26 +277,31 @@ html {
   opacity: 0;
 }
 
-/* Fade-in section (IntersectionObserver) */
-.fade-in-section {
+/* Fade-in section (IntersectionObserver) — progressive enhancement.
+   Estado PADRÃO = visível: o HTML pré-renderizado (SSG) e qualquer cenário sem JS
+   renderizam o conteúdo sem dobra preta (essencial p/ o robô do Google / QS).
+   O hook só "arma" a animação no cliente (.fade-armed); a entrada por scroll
+   acontece via .is-visible. O arme não tem transição (esconde instantâneo, sem
+   flicker); só a revelação anima. */
+.fade-in-section.fade-armed {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 .fade-in-section.is-visible {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* Stagger cards */
-.stagger-item {
+/* Stagger cards — mesma lógica: só escondem com o pai "armado", revelam com .is-visible. */
+.fade-armed .stagger-item {
   opacity: 0;
   transform: translateY(16px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 .is-visible .stagger-item {
   opacity: 1;
   transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 /* WhatsApp pulse */
@@ -374,7 +379,8 @@ html {
   .animate-fade-up-delay-3 {
     animation-duration: 0.4s;
   }
-  .fade-in-section {
+  .fade-in-section.is-visible,
+  .is-visible .stagger-item {
     transition-duration: 0.3s;
   }
   /* ===== Hero mobile: grade editorial (múltiplos de 8px) =====
@@ -455,15 +461,13 @@ html {
     animation: none;
     opacity: 1;
   }
-  .fade-in-section {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-  .stagger-item {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .fade-in-section,
+  .fade-in-section.fade-armed,
+  .stagger-item,
+  .fade-armed .stagger-item {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
