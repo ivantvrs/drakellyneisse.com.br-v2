@@ -15,6 +15,18 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
+    // DEV-only (apply:"serve"): mapeia a URL limpa /empresa -> /empresa.html no dev server,
+    // espelhando o rewrite do vercel.json. Não tem efeito no build de produção.
+    {
+      name: "empresa-dev-rewrite",
+      apply: "serve",
+      configureServer(server) {
+        server.middlewares.use((req, _res, next) => {
+          if (req.url === "/empresa" || req.url === "/empresa/") req.url = "/empresa.html";
+          next();
+        });
+      },
+    },
   ].filter(Boolean),
   resolve: {
     alias: {
