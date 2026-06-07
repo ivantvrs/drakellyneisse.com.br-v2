@@ -24,6 +24,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
 const DIST_INDEX = path.join(DIST, "index.html");
+const DIST_EMPRESA = path.join(DIST, "empresa.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
 const ROOT_RE = /<div id="root">\s*<\/div>/;
 
@@ -32,6 +33,15 @@ const TRACKING_PRIMITIVES = [
   "__tvrs", "G-N6G6FSD34E", "google-analytics.com/g/collect", "whatsapp_click",
   "scroll_depth", "page_view", "GTM-NH3564MJ", "AW-16690821688", "tvrsTagged",
   "dataLayer", "navigator.sendBeacon", "gtm.drakellyneisse.com.br",
+];
+
+// Funil EMPRESA (dist/empresa.html): mesmos primitivos + as assinaturas próprias da /empresa.
+// Os dois conversion labels reais do Ads são checados como primitivo (o da ligação começa com
+// hífen logo após a barra — `/-JqLC...` — parte do label; o gate garante que não se perca).
+const TRACKING_PRIMITIVES_EMPRESA = [
+  ...TRACKING_PRIMITIVES,
+  "whatsapp_click_empresa", "call_click_empresa", 'href^="tel:"',
+  "AW-16690821688/x1FJCIOxxLocELj05pY-", "AW-16690821688/-JqLCIaxxLocELj05pY-",
 ];
 
 const extractScripts = (s) => s.match(/<script[\s\S]*?<\/script>/gi) || [];
@@ -95,13 +105,14 @@ async function computeCriticalCss(html) {
 // Injeção CIRÚRGICA do CSS crítico (Fase B): insere <style id=critical-css> e reescreve SÓ a
 // linha do <link rel=stylesheet> do app p/ carga async (preload swap + <noscript>). NENHUM
 // <script> passa por parser — o gate byte-a-byte aborta o build se algum mudar 1 byte.
-async function inlineCriticalCss(html) {
+async function inlineCriticalCss(html, trackingPrimitives) {
   const css = await computeCriticalCss(html);
   const scriptsBefore = extractScripts(html);
 
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/index-[^"]+\.css)"[^>]*>/i;
+  // entry CSS do app: index-*.css (LP advogado) ou empresa-*.css (build isolado da /empresa).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
-  if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index.css>) não encontrado");
+  if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa.css>) não encontrado");
   const href = m[1];
   const cross = /crossorigin/i.test(m[0]) ? " crossorigin" : "";
 
@@ -122,7 +133,7 @@ async function inlineCriticalCss(html) {
       throw new Error(`Fase B alterou o <script> #${i} (gate byte-a-byte FALHOU) — abortando`);
     }
   }
-  for (const sig of TRACKING_PRIMITIVES) {
+  for (const sig of trackingPrimitives) {
     if (!out.includes(sig)) throw new Error(`primitivo de tracking sumiu após Fase B: ${sig}`);
   }
   console.log(`[build] CSS crítico inline (cirúrgico): ${css.length} chars; ${scriptsAfter.length} <script> byte-idênticos ✓`);
@@ -130,9 +141,24 @@ async function inlineCriticalCss(html) {
 }
 
 async function main() {
-  // 1) client
-  console.log("[build] client…");
+  // 1) client (LP advogado) — index.html exatamente como antes (output byte-idêntico).
+  console.log("[build] client (index)…");
   await build();
+
+  // 1b) client (porta empresário) — build ISOLADO de empresa.html no MESMO dist/, sem limpar
+  //     o build do index (emptyOutDir:false). Mantém a LP do advogado intocada: o entry/CSS do
+  //     index continua `index-*`; a empresa ganha seu próprio `empresa-*`. Chunks compartilhados
+  //     (vendor/preact) têm conteúdo idêntico -> mesmo hash -> overwrite inofensivo.
+  console.log("[build] client (empresa)…");
+  await build({
+    build: {
+      outDir: "dist",
+      emptyOutDir: false,
+      rollupOptions: {
+        input: { empresa: path.join(ROOT, "empresa.html") },
+      },
+    },
+  });
 
   // 2) SSR (entry-server) — isSsrBuild fica true no vite.config.
   //    noExternal: true faz o Vite EMPACOTAR as deps (lucide-react, preact, etc.) aplicando
@@ -148,17 +174,10 @@ async function main() {
     },
   });
 
-  // 3) renderiza e injeta no #root
+  // 3) renderiza e injeta no #root — uma vez por página (cada uma tem seu próprio gate).
   console.log("[build] prerender…");
   const serverEntry = await findServerEntry();
   const { render } = await import(pathToFileURL(serverEntry).href);
-  const appHtml = await render("/");
-
-  let html = await readFile(DIST_INDEX, "utf8");
-  if (!ROOT_RE.test(html)) {
-    throw new Error('marcador <div id="root"></div> não encontrado em dist/index.html');
-  }
-  html = html.replace(ROOT_RE, `<div id="root">${appHtml}</div>`);
 
   // 4) preload RESPONSIVO da imagem do hero (elemento de LCP no mobile). Como o <picture> usa
   //    ARTE DIRIGIDA (imagem diferente no mobile < 768px vs desktop), são DOIS preloads com
@@ -167,27 +186,45 @@ async function main() {
   //    AVIF de cada <source>, garantindo a MESMA variante (sem download duplicado). type=avif faz
   //    SÓ navegadores com AVIF baixarem; os demais caem no <source webp> e descobrem a imagem cedo
   //    pelo HTML pré-renderizado. Resource hints INERTES: não executam JS.
+  //    As duas páginas usam os MESMOS assets de hero, então o preload é idêntico p/ ambas.
   const heroSrcsets = await findHeroSrcsets();
   const heroPreload =
     `<link rel="preload" as="image" media="(max-width: 767.98px)" type="image/avif" imagesrcset="${heroSrcsets.mobileAvif}" imagesizes="100vw" fetchpriority="high" />` +
     `<link rel="preload" as="image" media="(min-width: 768px)" type="image/avif" imagesrcset="${heroSrcsets.avif}" imagesizes="100vw" fetchpriority="high" />`;
-  html = html.replace(/<head>/i, `<head>\n    ${heroPreload}`);
   console.log(`[build] preload AVIF hero — mobile: ${heroSrcsets.mobileAvif}`);
   console.log(`[build] preload AVIF hero — desktop: ${heroSrcsets.avif}`);
 
-  // 5) CSS crítico inline (Fase B) — remove o render-blocking. SKIP_CRITICAL=1 pula (A/B).
+  // a LP do advogado ("/") é processada com a MESMA lógica de sempre (output inalterado);
+  // a porta do empresário ("/empresa") roda a pipeline idêntica sobre seu próprio HTML/gate.
+  await processPage({ pathname: "/",        distFile: DIST_INDEX,   label: "index",   render, heroPreload, trackingPrimitives: TRACKING_PRIMITIVES });
+  await processPage({ pathname: "/empresa", distFile: DIST_EMPRESA, label: "empresa", render, heroPreload, trackingPrimitives: TRACKING_PRIMITIVES_EMPRESA });
+
+  // 6) limpa o bundle de servidor (não deve ir pro deploy)
+  await rm(SERVER_OUT, { recursive: true, force: true });
+}
+
+// Processa UMA página: render → injeta #root → preload do hero → CSS crítico (com gate
+// byte-a-byte próprio) → grava. Cada página tem gate independente; mexer numa não afeta a outra.
+async function processPage({ pathname, distFile, label, render, heroPreload, trackingPrimitives }) {
+  const appHtml = await render(pathname);
+
+  let html = await readFile(distFile, "utf8");
+  if (!ROOT_RE.test(html)) {
+    throw new Error(`marcador <div id="root"></div> não encontrado em ${distFile}`);
+  }
+  html = html.replace(ROOT_RE, `<div id="root">${appHtml}</div>`);
+
+  html = html.replace(/<head>/i, `<head>\n    ${heroPreload}`);
+
+  // CSS crítico inline (Fase B) — remove o render-blocking. SKIP_CRITICAL=1 pula (A/B).
   if (process.env.SKIP_CRITICAL !== "1") {
-    html = await inlineCriticalCss(html);
+    html = await inlineCriticalCss(html, trackingPrimitives);
   } else {
     console.log("[build] SKIP_CRITICAL=1 — pulei o CSS crítico");
   }
 
-  await writeFile(DIST_INDEX, html, "utf8");
-
-  // 6) limpa o bundle de servidor (não deve ir pro deploy)
-  await rm(SERVER_OUT, { recursive: true, force: true });
-
-  console.log(`[build] OK — ${appHtml.length} chars no #root; hero responsivo + CSS crítico aplicados`);
+  await writeFile(distFile, html, "utf8");
+  console.log(`[build] OK (${label}) — ${appHtml.length} chars no #root; hero responsivo + CSS crítico aplicados`);
 }
 
 main().catch((err) => {

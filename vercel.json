@@ -21,6 +21,8 @@
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/empresa", "destination": "/empresa.html" },
+    { "source": "/empresa/", "destination": "/empresa.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
