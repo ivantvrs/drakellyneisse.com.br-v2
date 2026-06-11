@@ -1,14 +1,14 @@
-import heroImage from "@/assets/hero-dra-kelly.webp";
-import heroImageMobile from "@/assets/hero-dra-kelly-m.webp";
-import heroImageMd from "@/assets/hero-dra-kelly-md.webp";
-import heroImageAvif from "@/assets/hero-dra-kelly.avif";
-import heroImageMobileAvif from "@/assets/hero-dra-kelly-m.avif";
-import heroImageMdAvif from "@/assets/hero-dra-kelly-md.avif";
-// Arte dirigida: imagem própria do mobile (< 768px) — retrato fechado da Dra. Kelly.
-import heroMob from "@/assets/hero-mob.webp";
-import heroMob2x from "@/assets/hero-mob-2x.webp";
-import heroMobAvif from "@/assets/hero-mob.avif";
-import heroMob2xAvif from "@/assets/hero-mob-2x.avif";
+import heroRecorte from "@/assets/kelly-hero-recorte.webp";
+import heroRecorteAvif from "@/assets/kelly-hero-recorte.avif";
+import heroMobNew from "@/assets/kelly-hero-mobile.webp";
+import heroMobNewAvif from "@/assets/kelly-hero-mobile.avif";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
+
+// 1x1 transparente: o <img> do <picture> só o usa quando NENHUM <source media> casa.
+// Assim o hero mobile NÃO baixa no desktop e o recorte desktop NÃO baixa no mobile
+// (antes os dois baixavam — display:none não impede o fetch da <img> — competindo banda
+// no Slow 4G e atrasando o LCP do hero visível).
+const HERO_FALLBACK = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
 
 const EmblemIcon = () => (
   <svg width="18" height="18" viewBox="0 0 360 360" fill="#D4A853" aria-hidden="true" className="flex-shrink-0" style={{ WebkitTextFillColor: 'initial' }}>
@@ -16,69 +16,120 @@ const EmblemIcon = () => (
   </svg>
 );
 
-const MessageCircleIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
-  </svg>
-);
-
 const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/da16a3e0-467d-43f7-8bb6-3a76bb87ded3";
 
 const Hero = () => {
   return (
-  <section id="inicio" className="relative overflow-hidden flex items-start md:items-center md:min-h-screen">
-    {/* Background photo */}
-    <div className="absolute inset-0 z-0">
-      <picture className="contents">
-        {/* MOBILE (< 768px): retrato fechado da Dra. Kelly (arte dirigida).
-            Vem ANTES e com media query, então tem prioridade em qualquer celular,
-            independente do DPR. 828w p/ telas ~2x, 1280w p/ telas ~3x. */}
-        <source
-          media="(max-width: 767.98px)"
-          type="image/avif"
-          srcSet={`${heroMobAvif} 828w, ${heroMob2xAvif} 1280w`}
-          sizes="100vw"
-        />
-        <source
-          media="(max-width: 767.98px)"
-          type="image/webp"
-          srcSet={`${heroMob} 828w, ${heroMob2x} 1280w`}
-          sizes="100vw"
-        />
-        {/* TABLET/DESKTOP (>= 768px): composição larga original (inalterada). */}
-        <source
-          type="image/avif"
-          srcSet={`${heroImageMobileAvif} 828w, ${heroImageMdAvif} 1280w, ${heroImageAvif} 1920w`}
-          sizes="100vw"
-        />
-        <source
-          type="image/webp"
-          srcSet={`${heroImageMobile} 828w, ${heroImageMd} 1280w, ${heroImage} 1920w`}
-          sizes="100vw"
-        />
+  <section id="inicio" className="relative overflow-hidden flex flex-col md:flex-row md:items-center md:min-h-screen" style={{ backgroundColor: '#0F0F0F' }}>
+    {/* ░░ Fundo DESKTOP (≥768px) — halo + recorte da Dra. ░░ */}
+    <div className="hidden md:block absolute inset-0 z-0">
+      <div
+        className="absolute pointer-events-none"
+        style={{
+          right: '-4%', top: '-2%', width: '46%', height: '86%', zIndex: 0,
+          background: 'radial-gradient(closest-side, rgba(212,168,83,0.30), rgba(212,168,83,0.09) 54%, transparent 80%)',
+        }}
+      />
+      <picture>
+        <source media="(min-width: 768px)" srcSet={heroRecorteAvif} type="image/avif" />
+        <source media="(min-width: 768px)" srcSet={heroRecorte} type="image/webp" />
         <img
-          src={heroImage}
+          src={HERO_FALLBACK}
           alt="Dra. Kelly Jaqueline Neisse, Médica Perita Judicial"
-          width={1920}
-          height={1400}
+          width={1024}
+          height={1536}
           loading="eager"
           fetchPriority="high"
           decoding="async"
-          className="w-full h-full object-cover hero-bg-photo"
+          className="absolute bottom-0 right-0 h-full w-auto max-w-[52%] object-contain object-bottom"
+          style={{ zIndex: 1, filter: 'drop-shadow(0 34px 50px rgba(0,0,0,0.55))' }}
         />
       </picture>
-      {/* Gradient overlay — dark on left (text), revealing on right (photo) */}
-      <div className="absolute inset-0 hero-overlay" style={{
-        background: 'linear-gradient(to right, rgba(15,15,15,0.6) 0%, rgba(15,15,15,0.3) 30%, rgba(15,15,15,0.05) 60%, transparent 100%)',
-      }} />
-      {/* Bottom fade to next section */}
-      <div className="absolute bottom-0 left-0 right-0 h-32" style={{
-        background: 'linear-gradient(to top, #0F0F0F 0%, transparent 100%)',
-      }} />
+      {/* Fade inferior p/ a próxima seção */}
+      <div className="absolute bottom-0 left-0 right-0 h-32" style={{ background: 'linear-gradient(to top, #0F0F0F 0%, transparent 100%)' }} />
     </div>
 
-    {/* Content */}
-    <div className="container mx-auto relative z-10 pt-24 pb-24 md:pt-32">
+    {/* ░░ MOBILE — Área da imagem (rosto preservado, label + headline + CTA) ░░ */}
+    <div className="md:hidden relative w-full flex flex-col min-h-[74svh] px-7 pt-20 pb-9 overflow-hidden">
+      {/* foto full-bleed */}
+      <picture>
+        <source media="(max-width: 767.98px)" srcSet={heroMobNewAvif} type="image/avif" />
+        <source media="(max-width: 767.98px)" srcSet={heroMobNew} type="image/webp" />
+        <img
+          src={HERO_FALLBACK}
+          alt="Dra. Kelly Jaqueline Neisse, Médica Perita Judicial"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ objectPosition: '50% 20%' }}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+        />
+      </picture>
+      {/* overlay dirigido: topo p/ label, leve sobre o rosto, base p/ headline */}
+      <div
+        className="absolute inset-0"
+        style={{ background: 'linear-gradient(to bottom, rgba(15,15,15,0.5) 0%, rgba(15,15,15,0.16) 20%, rgba(15,15,15,0.05) 40%, rgba(15,15,15,0.45) 60%, rgba(15,15,15,0.9) 86%, #141311 100%)' }}
+      />
+
+      {/* label (topo) */}
+      <p className="relative z-10 font-label text-[11px] tracking-[0.24em] uppercase gold-shine-subtle inline-flex items-center gap-2">
+        <EmblemIcon />
+        <span>Assistência técnica médica ·<br />Perícia trabalhista</span>
+      </p>
+
+      {/* respiro que preserva o rosto */}
+      <div className="flex-1 min-h-[20vh]" aria-hidden="true" />
+
+      {/* headline + subheadline + CTA */}
+      <div className="relative z-10 animate-fade-up">
+        <h1 className="font-display text-[2.15rem] font-bold leading-[1.06] mb-3.5">
+          <span style={{ color: '#F5F0E8' }}>Não enfrente a perícia sem </span>
+          <span className="gold-shine">um médico do seu lado</span>
+          <span style={{ color: '#F5F0E8' }}>.</span>
+        </h1>
+
+        <p className="text-[18px] leading-snug mb-7 max-w-[20rem]" style={{ color: '#C9C3B6' }}>
+          Dos quesitos à impugnação do laudo. A prova médica é o que sustenta a sua tese.
+        </p>
+
+        <div className="flex flex-col items-center">
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-wa flex items-center justify-center gap-2 text-white font-label text-sm font-semibold py-4 rounded-md w-full max-w-[320px]"
+            style={{ boxShadow: '0 8px 20px -10px rgba(34,195,92,0.38)' }}
+            aria-label="Falar com a Dra. Kelly no WhatsApp — Hero"
+          >
+            <WhatsAppIcon size={18} />
+            Analisar caso no WhatsApp →
+          </a>
+          <p className="text-[13px] mt-3" style={{ color: '#8A857A' }}>
+            Resposta em até 24h úteis
+          </p>
+        </div>
+      </div>
+    </div>
+
+    {/* ░░ MOBILE — Painel editorial inferior (fluxo normal, sem corte) ░░ */}
+    <div
+      className="md:hidden relative px-7 pt-8 pb-12"
+      style={{ background: 'linear-gradient(180deg, #141311 0%, #100f0d 100%)', borderTop: '1px solid rgba(212,168,83,0.18)' }}
+    >
+      <p className="text-[15.5px] leading-relaxed" style={{ color: '#A09A8D' }}>
+        Impugnação de laudo, quesitos e parecer médico-pericial para advogados trabalhistas.
+        Doença ocupacional · LER/DORT · nexo causal · insalubridade · acidente de trabalho.
+      </p>
+      <div className="mt-6 pt-5 relative">
+        <span aria-hidden="true" className="absolute left-0 top-0" style={{ width: 48, height: 1, background: 'linear-gradient(90deg, rgba(212,168,83,0.7), transparent)' }} />
+        <p className="font-label text-[14px] leading-relaxed" style={{ color: '#8A857A' }}>
+          <span className="gold-shine">Laudo</span> frágil ou desfavorável se enfrenta com contraprova médica fundamentada — não só com argumento jurídico.
+        </p>
+      </div>
+    </div>
+
+    {/* ░░ Content DESKTOP (≥768px) ░░ */}
+    <div className="hidden md:block container mx-auto relative z-10 pt-24 pb-24 md:pt-32">
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle inline-flex items-center gap-2">
           <EmblemIcon />
@@ -103,16 +154,10 @@ const Hero = () => {
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 text-white font-label text-sm font-semibold px-8 py-4 rounded-md transition-all duration-300 hover:-translate-y-[3px] active:translate-y-[-1px]"
-          style={{
-            background: "linear-gradient(180deg, #2ed671 0%, #25D366 40%, #1fb855 100%)",
-            boxShadow: "0 4px 14px rgba(37, 211, 102, 0.35)",
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 25px rgba(37, 211, 102, 0.5)"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 4px 14px rgba(37, 211, 102, 0.35)"; }}
+          className="btn-wa inline-flex items-center justify-center gap-2 text-white font-label text-sm font-semibold px-8 py-4 rounded-md"
           aria-label="Falar com a Dra. Kelly no WhatsApp — Hero"
         >
-          <MessageCircleIcon />
+          <WhatsAppIcon size={18} />
           Analisar caso no WhatsApp →
         </a>
 
@@ -122,8 +167,8 @@ const Hero = () => {
       </div>
     </div>
 
-    {/* Credential strip */}
-    <div className="absolute bottom-0 left-0 right-0 z-10">
+    {/* Credential strip (desktop) */}
+    <div className="hidden md:block absolute bottom-0 left-0 right-0 z-10">
       <div className="container mx-auto">
         <div className="animate-fade-up-delay-2 py-6" style={{ borderTop: '1px solid rgba(212, 168, 83, 0.15)' }}>
           <p className="font-label text-[13px] text-center md:text-left" style={{ color: '#8A857A' }}>

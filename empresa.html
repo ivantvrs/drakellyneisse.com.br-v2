@@ -395,5 +395,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         }, true);
       })();
     </script>
+    <!-- Botão flutuante balança (FAB) — contato WhatsApp. Arquivo autossuficiente em /public. -->
+    <script>
+      window.BALANCA_FAB = {
+        phone: "5534996878758",
+        accent: "#D4A853",
+        name: "Dra. Kelly Neisse",
+        subtitle: "Assistência técnica médica · responde em breve",
+        greeting: "Olá! O juiz marcou perícia médica contra sua empresa? Me conte o caso que retorno em breve.",
+        tooltip: "Falar no WhatsApp"
+      };
+    </script>
+    <!-- FAB da balança: carregado FORA do caminho crítico (após o load, no idle) — não bloqueia
+         render nem interatividade. Reescreve o CTA pro deeplink Tintim da /empresa assim que monta. -->
+    <script>
+      (function () {
+        var TINTIM = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/97d0dfa8-386f-4229-b6bc-9791576888f0";
+        function applyTintim() {
+          var a = document.querySelector(".bfab-cta");
+          if (a) { a.setAttribute("href", TINTIM); return true; }
+          return false;
+        }
+        function loadFab() {
+          var s = document.createElement("script");
+          s.src = "/balanca-fab.js";
+          s.onload = function () {
+            if (applyTintim()) return;
+            var n = 0, t = setInterval(function () {
+              if (applyTintim() || ++n > 50) clearInterval(t);
+            }, 100);
+          };
+          document.body.appendChild(s);
+        }
+        function schedule() {
+          var fired = false;
+          function go() {
+            if (fired) return;
+            fired = true;
+            window.removeEventListener("scroll", onScroll);
+            window.removeEventListener("pointerdown", go);
+            window.removeEventListener("touchstart", go);
+            loadFab();
+          }
+          function onScroll() {
+            // só dispara quando o lead DESCE ~meia dobra (rumo à 2ª seção). Antes disso o FAB
+            // (1,35 MB) nem começa a baixar — 1ª pintura do mobile fica o mais leve possível.
+            if ((window.scrollY || window.pageYOffset || 0) > window.innerHeight * 0.5) go();
+          }
+          window.addEventListener("scroll", onScroll, { passive: true });
+          // toque/click também dispara (lead que interage sem rolar). Sem timeout: máxima leveza —
+          // quem não rola nem toca usa a barra fixa de contato; o FAB simplesmente não carrega.
+          window.addEventListener("pointerdown", go, { passive: true });
+          window.addEventListener("touchstart", go, { passive: true });
+        }
+        schedule();
+      })();
+    </script>
   </body>
 </html>

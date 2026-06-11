@@ -25,6 +25,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
 const DIST_INDEX = path.join(DIST, "index.html");
 const DIST_EMPRESA = path.join(DIST, "empresa.html");
+const DIST_AT = path.join(DIST, "at.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
 const ROOT_RE = /<div id="root">\s*<\/div>/;
 
@@ -44,6 +45,15 @@ const TRACKING_PRIMITIVES_EMPRESA = [
   "AW-16690821688/x1FJCIOxxLocELj05pY-", "AW-16690821688/-JqLCIaxxLocELj05pY-",
 ];
 
+// Funil AT (dist/at.html — LP nacional): mesmos primitivos + as assinaturas próprias da /at.
+// OBS: os conversion LABELS do Ads da /at ainda são PLACEHOLDER (COLE_LABEL_*_AT em at.html).
+// Por isso o gate aqui valida os SINAIS ESTÁVEIS (eventos + handler tel:), NÃO os labels —
+// assim, ao colar os labels reais no painel, basta editar at.html (não precisa mexer aqui).
+const TRACKING_PRIMITIVES_AT = [
+  ...TRACKING_PRIMITIVES,
+  "whatsapp_click_at", "call_click_at", 'href^="tel:"',
+];
+
 const extractScripts = (s) => s.match(/<script[\s\S]*?<\/script>/gi) || [];
 
 async function findServerEntry() {
@@ -57,33 +67,18 @@ async function findServerEntry() {
   return path.join(SERVER_OUT, entry);
 }
 
-// monta o srcset (3 larguras) com os nomes content-hashed das variantes do hero (sem hardcodar
-// hash): hero-dra-kelly-m-[h] (828w), hero-dra-kelly-md-[h] (1280w), hero-dra-kelly-[h] (1920w).
-async function findHeroSrcsets() {
+// localiza os arquivos content-hashed do hero novo (recorte desktop + foto mobile).
+async function findHeroAssets() {
   const files = await readdir(path.join(ROOT, "dist", "assets"));
   const pick = (re) => {
     const f = files.find((x) => re.test(x));
-    if (!f) throw new Error(`variante do hero não encontrada (${re}) em dist/assets`);
+    if (!f) throw new Error(`asset do hero não encontrado (${re}) em dist/assets`);
     return `/assets/${f}`;
   };
-  // [^.]+ p/ aceitar hashes do Vite que contêm hífen (ex.: hero-dra-kelly-md-ChV-7Fu3.webp)
-  const srcset = (ext) => {
-    const m = pick(new RegExp(`^hero-dra-kelly-m-[^.]+\\.${ext}$`));
-    const md = pick(new RegExp(`^hero-dra-kelly-md-[^.]+\\.${ext}$`));
-    const full = pick(new RegExp(`^hero-dra-kelly-(?!m-|md-)[^.]+\\.${ext}$`));
-    return `${m} 828w, ${md} 1280w, ${full} 1920w`;
-  };
-  // Arte dirigida do mobile (< 768px): hero-mob (828w) + hero-mob-2x (1280w).
-  const mobileSrcset = (ext) => {
-    const m1 = pick(new RegExp(`^hero-mob-(?!2x-)[^.]+\\.${ext}$`));
-    const m2 = pick(new RegExp(`^hero-mob-2x-[^.]+\\.${ext}$`));
-    return `${m1} 828w, ${m2} 1280w`;
-  };
   return {
-    avif: srcset("avif"),
-    webp: srcset("webp"),
-    mobileAvif: mobileSrcset("avif"),
-    mobileWebp: mobileSrcset("webp"),
+    mobile: pick(/^kelly-hero-mobile-[^.]+\.webp$/),
+    mobileAvif: pick(/^kelly-hero-mobile-[^.]+\.avif$/),
+    desktop: pick(/^kelly-hero-recorte-[^.]+\.webp$/),
   };
 }
 
@@ -109,10 +104,10 @@ async function inlineCriticalCss(html, trackingPrimitives) {
   const css = await computeCriticalCss(html);
   const scriptsBefore = extractScripts(html);
 
-  // entry CSS do app: index-*.css (LP advogado) ou empresa-*.css (build isolado da /empresa).
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa)-[^"]+\.css)"[^>]*>/i;
+  // entry CSS do app: index-*.css (LP advogado), empresa-*.css (porta /empresa) ou at-*.css (porta /at).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|at)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
-  if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa.css>) não encontrado");
+  if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|at.css>) não encontrado");
   const href = m[1];
   const cross = /crossorigin/i.test(m[0]) ? " crossorigin" : "";
 
@@ -160,6 +155,19 @@ async function main() {
     },
   });
 
+  // 1c) client (porta /at — LP nacional) — build ISOLADO de at.html no MESMO dist/, idêntico
+  //     ao passo da empresa. Mantém index/empresa intocados: a /at ganha seu próprio `at-*`.
+  console.log("[build] client (at)…");
+  await build({
+    build: {
+      outDir: "dist",
+      emptyOutDir: false,
+      rollupOptions: {
+        input: { at: path.join(ROOT, "at.html") },
+      },
+    },
+  });
+
   // 2) SSR (entry-server) — isSsrBuild fica true no vite.config.
   //    noExternal: true faz o Vite EMPACOTAR as deps (lucide-react, preact, etc.) aplicando
   //    o alias react->preact/compat. Sem isso, o Node carregaria o React real de lucide-react
@@ -179,25 +187,28 @@ async function main() {
   const serverEntry = await findServerEntry();
   const { render } = await import(pathToFileURL(serverEntry).href);
 
-  // 4) preload RESPONSIVO da imagem do hero (elemento de LCP no mobile). Como o <picture> usa
-  //    ARTE DIRIGIDA (imagem diferente no mobile < 768px vs desktop), são DOIS preloads com
-  //    `media` complementar: o browser baixa só o que casa com o viewport — mobile pré-carrega
-  //    a imagem do retrato (~9KB), desktop pré-carrega a cena larga. imagesrcset espelha o srcset
-  //    AVIF de cada <source>, garantindo a MESMA variante (sem download duplicado). type=avif faz
-  //    SÓ navegadores com AVIF baixarem; os demais caem no <source webp> e descobrem a imagem cedo
-  //    pelo HTML pré-renderizado. Resource hints INERTES: não executam JS.
-  //    As duas páginas usam os MESMOS assets de hero, então o preload é idêntico p/ ambas.
-  const heroSrcsets = await findHeroSrcsets();
-  const heroPreload =
-    `<link rel="preload" as="image" media="(max-width: 767.98px)" type="image/avif" imagesrcset="${heroSrcsets.mobileAvif}" imagesizes="100vw" fetchpriority="high" />` +
-    `<link rel="preload" as="image" media="(min-width: 768px)" type="image/avif" imagesrcset="${heroSrcsets.avif}" imagesizes="100vw" fetchpriority="high" />`;
-  console.log(`[build] preload AVIF hero — mobile: ${heroSrcsets.mobileAvif}`);
-  console.log(`[build] preload AVIF hero — desktop: ${heroSrcsets.avif}`);
+  // 4) preload do hero (elemento de LCP) — POR PÁGINA.
+  //    index/at usam kelly-hero-mobile.webp (foto full-bleed mobile). Preloadamos SÓ o mobile:
+  //    é o LCP no celular, onde a conexão é lenta e o CWV do Google é medido. O recorte desktop
+  //    NÃO é preloadado de propósito — ele carrega pelo <picture> (eager + fetchpriority high) e,
+  //    sem preload do recorte, NENHUM browser o baixa no mobile (nem os que ignoram `media` em
+  //    <link rel=preload>), eliminando o cross-download dos dois heros que inflava o LCP.
+  //    A /empresa tem hero AVIF próprio (hero-dra-kelly-*) e é descoberto cedo pelo preload
+  //    scanner do <picture>; por isso NÃO recebe preload de kelly-hero — antes ela baixava ~285KB
+  //    de um hero que nem exibe.
+  const heroAssets = await findHeroAssets();
+  // Preload em AVIF + `type="image/avif"`: browsers que suportam AVIF (95%+) já puxam a versão
+  // leve; os que não suportam IGNORAM o preload (pelo type) e caem no WebP do <picture> via
+  // preload scanner. Sem media no desktop p/ não baixar nada errado no mobile (ver comentário acima).
+  const heroPreloadKelly =
+    `<link rel="preload" as="image" media="(max-width: 767.98px)" type="image/avif" href="${heroAssets.mobileAvif}" fetchpriority="high" />`;
+  console.log(`[build] preload hero (index/at) — mobile AVIF: ${heroAssets.mobileAvif}`);
 
   // a LP do advogado ("/") é processada com a MESMA lógica de sempre (output inalterado);
   // a porta do empresário ("/empresa") roda a pipeline idêntica sobre seu próprio HTML/gate.
-  await processPage({ pathname: "/",        distFile: DIST_INDEX,   label: "index",   render, heroPreload, trackingPrimitives: TRACKING_PRIMITIVES });
-  await processPage({ pathname: "/empresa", distFile: DIST_EMPRESA, label: "empresa", render, heroPreload, trackingPrimitives: TRACKING_PRIMITIVES_EMPRESA });
+  await processPage({ pathname: "/",        distFile: DIST_INDEX,   label: "index",   render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES });
+  await processPage({ pathname: "/empresa", distFile: DIST_EMPRESA, label: "empresa", render, heroPreload: "",               trackingPrimitives: TRACKING_PRIMITIVES_EMPRESA });
+  await processPage({ pathname: "/at",      distFile: DIST_AT,      label: "at",      render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
 
   // 6) limpa o bundle de servidor (não deve ir pro deploy)
   await rm(SERVER_OUT, { recursive: true, force: true });
