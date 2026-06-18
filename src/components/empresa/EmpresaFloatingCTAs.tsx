@@ -32,21 +32,8 @@ const EmpresaFloatingCTAs = () => {
 
   return (
     <>
-      {/* Desktop: WhatsApp flutuante */}
-      <a
-        href={EMPRESA_WHATSAPP_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Falar no WhatsApp — botão flutuante"
-        className="fixed bottom-6 right-6 z-50 hidden lg:flex w-14 h-14 rounded-full items-center justify-center transition-all duration-300 hover:-translate-y-[3px]"
-        style={{
-          animation: "waEntry 0.4s ease-out",
-          background: "linear-gradient(180deg, #2ed671 0%, #25D366 40%, #1fb855 100%)",
-          boxShadow: "0 4px 15px rgba(37, 211, 102, 0.45)",
-        }}
-      >
-        <WhatsAppIcon size={28} />
-      </a>
+      {/* Desktop: o botão flutuante redondo agora vem do FAB vanilla (public/balanca-fab.js),
+          incluído em empresa.html. Mantemos aqui APENAS a barra fixa mobile (WhatsApp + Ligar). */}
 
       {/* Mobile: barra fixa com WhatsApp + Ligar */}
       {showBar && (
@@ -64,7 +51,7 @@ const EmpresaFloatingCTAs = () => {
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — barra fixa mobile"
             className="w-1/2 flex items-center justify-center gap-2 py-3 text-white font-label text-sm font-semibold"
-            style={{ background: "linear-gradient(180deg, #2ed671 0%, #25D366 40%, #1fb855 100%)" }}
+            style={{ background: "linear-gradient(180deg, #2ed671 0%, #22c35c 100%)" }}
           >
             <WhatsAppIcon size={20} />
             WhatsApp

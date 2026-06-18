@@ -356,6 +356,46 @@ html {
   background: #D4A853;
 }
 
+/* ===== CTA WhatsApp — botão verde padronizado =====
+   Antes: cada CTA repetia gradiente + sombra + handlers onMouseEnter/onMouseLeave inline
+   (3 variantes ligeiramente diferentes, falhas em touch). Agora uma única classe com :hover
+   real, idêntica em todas as seções e nos dois funis (/ e /empresa). */
+.btn-wa {
+  background: linear-gradient(180deg, #2ed671 0%, #22c35c 100%);
+  box-shadow: 0 6px 18px -4px rgba(34, 195, 92, 0.45);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-wa:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -6px rgba(34, 195, 92, 0.55);
+}
+.btn-wa:active {
+  transform: translateY(-1px);
+}
+
+/* CTA secundário — "Ligar" (outline dourado), usado na porta /empresa */
+.btn-call {
+  color: #e8c77b;
+  border: 1px solid rgba(212, 168, 83, 0.5);
+  background: rgba(212, 168, 83, 0.04);
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+.btn-call:hover {
+  transform: translateY(-2px);
+  border-color: rgba(212, 168, 83, 0.9);
+  background: rgba(212, 168, 83, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-wa,
+  .btn-wa:hover,
+  .btn-wa:active,
+  .btn-call,
+  .btn-call:hover {
+    transform: none;
+  }
+}
+
 .hero-bg-photo {
   object-position: center 10% !important;
   transform: scale(1);
@@ -480,5 +520,172 @@ html {
   .testimonials-bg,
   .problem-solution-bg {
     background-position: center center;
+  }
+}
+
+/* FAB balança (contato) — oculto no mobile (a MobileStickyBar já cobre contato);
+   evita o símbolo grande/invasivo no canto inferior direito. Desktop mantém. */
+@media (max-width: 767px) {
+  .bfab-wrap {
+    display: none !important;
+  }
+}
+
+/* ============================================================================
+   HERO LIGHT FX — experimento de luz animada (?fx=1 | ?fx=2 | ?fx=3)
+   Montado dentro do bloco desktop do Hero (z-0, atrás de figura e texto).
+   Animações só com transform/opacity (compositor GPU); blur é fixo, nunca animado.
+   ============================================================================ */
+.hero-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Brilho ambiente quente ao centro (como na referência) — atrás das ondas */
+.hero-fx-1::before,
+.hero-fx-2::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(58% 52% at 62% 50%, rgba(212, 168, 83, 0.10), transparent 70%);
+}
+
+/* --- Ondas SVG (fx=1 fluxo livre, fx=2 scroll) --- */
+.hero-fx-waves {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.hero-fx-scroll,
+.hero-fx-wavegroup {
+  will-change: transform;
+}
+/* Fluxo contínuo da seda (fx=1 e fx=2). -1440px = -VB_W (um período) → loop sem
+   emenda. Na fx=2 ele roda no grupo INTERNO; o scroll move o grupo externo. */
+.hero-fx-1 .hero-fx-wavegroup,
+.hero-fx-2 .hero-fx-wavegroup {
+  animation: heroFxFlow 40s linear infinite;
+}
+@keyframes heroFxFlow {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-1440px); }
+}
+/* "Shiny": faixa de luz que cruza o feixe, clareando as linhas (screen). */
+.hero-fx-shimmer {
+  mix-blend-mode: screen;
+  will-change: transform, opacity;
+  animation: heroFxShine 11s ease-in-out infinite;
+}
+@keyframes heroFxShine {
+  0%   { transform: translateX(-1440px); opacity: 0; }
+  45%  { opacity: 0.5; }
+  55%  { opacity: 0.5; }
+  100% { transform: translateX(1440px);  opacity: 0; }
+}
+/* nó de luz pulsando suavemente */
+.hero-fx-knot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: heroFxKnotPulse 6.5s ease-in-out infinite;
+}
+@keyframes heroFxKnotPulse {
+  0%, 100% { opacity: 0.65; transform: scale(0.9); }
+  50%      { opacity: 1;    transform: scale(1.12); }
+}
+
+/* --- Aurora difusa (fx=3) — manchas de luz, sem linhas --- */
+.hero-fx-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  will-change: transform, opacity;
+}
+.hero-fx-blob-a {
+  width: 42vw; height: 42vw; right: -6%; top: -8%;
+  background: radial-gradient(closest-side, rgba(212, 168, 83, 0.26), transparent 70%);
+  animation: heroFxFloatA 26s ease-in-out infinite;
+}
+.hero-fx-blob-b {
+  width: 32vw; height: 32vw; right: 16%; top: 28%;
+  background: radial-gradient(closest-side, rgba(232, 199, 123, 0.18), transparent 70%);
+  animation: heroFxFloatB 34s ease-in-out infinite;
+}
+.hero-fx-blob-c {
+  width: 26vw; height: 26vw; right: 0%; bottom: -8%;
+  background: radial-gradient(closest-side, rgba(184, 146, 63, 0.16), transparent 70%);
+  animation: heroFxFloatC 30s ease-in-out infinite;
+}
+@keyframes heroFxFloatA {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1);    opacity: 0.9; }
+  50%      { transform: translate3d(-4%, 6%, 0) scale(1.12); opacity: 1; }
+}
+@keyframes heroFxFloatB {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1);    opacity: 0.7; }
+  50%      { transform: translate3d(6%, -5%, 0) scale(1.08); opacity: 1; }
+}
+@keyframes heroFxFloatC {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1);    opacity: 0.6; }
+  50%      { transform: translate3d(-5%, -4%, 0) scale(1.15); opacity: 0.95; }
+}
+
+/* --- Meteoros dourados (fx=4): chuva VERTICAL, lenta e sutil, na PÁGINA TODA ---
+   Overlay fixo (PageRainFX) montado no topo da página, não no Hero. z-index baixo:
+   sobre o conteúdo das seções, abaixo de header/FABs (z-30+). pointer-events:none. */
+.page-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.page-rain-meteor {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  border-radius: 9999px;
+  background: rgba(245, 230, 192, 0.85);
+  box-shadow: 0 0 5px 1px rgba(232, 199, 123, 0.4);
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: pageRain;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  /* animation-duration e -delay vêm inline por meteoro */
+}
+.page-rain-meteor::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0; /* ancorado na cabeça; a cauda sobe e some */
+  transform: translateX(-50%);
+  width: 1px;
+  height: 80px;
+  background: linear-gradient(to top, rgba(212, 168, 83, 0.4), transparent);
+}
+@keyframes pageRain {
+  0%   { transform: translateY(-80px); opacity: 0; }
+  6%   { opacity: 1; }
+  92%  { opacity: 1; }
+  100% { transform: translateY(108vh); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-fx-wavegroup,
+  .hero-fx-knot,
+  .hero-fx-shimmer,
+  .hero-fx-blob,
+  .page-rain-meteor {
+    animation: none !important;
+  }
+  .hero-fx-shimmer {
+    opacity: 0 !important;
+  }
+  .page-rain-meteor {
+    opacity: 0 !important; /* sem movimento, meteoros somem (não viram traços parados) */
   }
 }

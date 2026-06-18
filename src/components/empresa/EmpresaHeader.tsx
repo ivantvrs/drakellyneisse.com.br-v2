@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { Menu, X, MessageCircle } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { EMPRESA_WHATSAPP_URL } from "./cta";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const navLinks = [
   { label: "Início", href: "#inicio" },
@@ -71,15 +72,9 @@ const EmpresaHeader = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — menu"
-            className="inline-flex items-center gap-2 text-white font-label text-sm font-semibold px-5 py-2.5 rounded-md transition-all duration-300 hover:-translate-y-[2px]"
-            style={{
-              background: "linear-gradient(180deg, #2ed671 0%, #25D366 40%, #1fb855 100%)",
-              boxShadow: "0 3px 10px rgba(37, 211, 102, 0.3)",
-            }}
-            onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 6px 18px rgba(37, 211, 102, 0.5)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 3px 10px rgba(37, 211, 102, 0.3)"; }}
+            className="btn-wa inline-flex items-center gap-2 text-white font-label text-sm font-semibold px-5 py-2.5 rounded-md"
           >
-            <MessageCircle size={16} />
+            <WhatsAppIcon size={16} />
             Falar no WhatsApp
           </a>
         </nav>
@@ -118,13 +113,9 @@ const EmpresaHeader = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — menu mobile"
-            className="inline-flex items-center gap-2 text-white font-label text-sm font-semibold px-5 py-2.5 rounded-md w-full justify-center transition-all duration-300"
-            style={{
-              background: "linear-gradient(180deg, #2ed671 0%, #25D366 40%, #1fb855 100%)",
-              boxShadow: "0 3px 10px rgba(37, 211, 102, 0.3)",
-            }}
+            className="btn-wa inline-flex items-center gap-2 text-white font-label text-sm font-semibold px-5 py-2.5 rounded-md w-full justify-center"
           >
-            <MessageCircle size={16} />
+            <WhatsAppIcon size={16} />
             Falar no WhatsApp
           </a>
         </nav>

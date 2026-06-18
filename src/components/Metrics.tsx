@@ -34,43 +34,63 @@ const MetricIcon4 = () => (
 const metricIcons = [MetricIcon1, MetricIcon2, MetricIcon3, MetricIcon4];
 
 const metrics = [
-  { value: "TRT-3 · TJMG · TJSP\nTJMT · TJGO", label: "Atuação em tribunais", sub: "Credenciais de perita judicial" },
-  { value: "CRM/MG 109153", label: "Registro médico ativo", sub: "Atuação em Perícia Médica Trabalhista" },
-  { value: "24h", label: "Análise inicial pelo WhatsApp", sub: "Dias úteis · sem custo" },
-  { value: "Nacional", label: "Atendimento em todo o Brasil", sub: "Presencial ou remoto · conforme o caso" },
+  { value: "TRT-3 · TJMG · TJSP\nTJMT · TJGO", label: "Atuação em tribunais", sub: "Credenciais de perita judicial", big: false },
+  { value: "CRM/MG 109153", label: "Registro médico ativo", sub: "Perícia Médica Trabalhista", big: false },
+  { value: "24h", label: "Análise inicial pelo WhatsApp", sub: "Dias úteis · sem custo", big: true },
+  { value: "Nacional", label: "Atendimento em todo o Brasil", sub: "Presencial ou remoto", big: true },
 ];
 
 const Metrics = () => {
   const { ref, isVisible } = useInView();
 
   return (
-    <section className="py-16 md:py-20" style={{ backgroundColor: '#0F0F0F' }}>
-      <div ref={ref} className={`container mx-auto fade-in-section ${isVisible ? "is-visible" : ""}`}>
-        {/* Thin gold line top */}
-        <div className="mb-14" style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(212,168,83,0.25), transparent)' }} />
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background: 'radial-gradient(circle at 16% 12%, rgba(255,255,255,.05) 0, rgba(255,255,255,.02) 18%, transparent 42%), radial-gradient(circle at 80% 8%, rgba(176,141,87,.13) 0, transparent 38%), linear-gradient(135deg,#0e0d0b 0%,#221f1b 54%,#0c0b09 100%)',
+        padding: '72px 0',
+      }}
+    >
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: 'radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px)',
+        backgroundSize: '14px 14px',
+        opacity: 0.10,
+        zIndex: 0,
+      }} />
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
-          {metrics.map(({ value, label, sub }, i) => {
+      <div ref={ref} className={`container mx-auto relative z-10 fade-in-section ${isVisible ? "is-visible" : ""}`}>
+        {/* Top hr-bronze */}
+        <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(176,141,87,0.4), transparent)', marginBottom: 48 }} />
+
+        <div className="grid grid-cols-2 lg:grid-cols-4">
+          {metrics.map(({ value, label, sub, big }, i) => {
             const Icon = metricIcons[i];
             return (
               <div
                 key={value + label}
                 className="text-center stagger-item"
-                style={{ transitionDelay: `${i * 80}ms` }}
+                style={{
+                  padding: '8px 22px',
+                  borderLeft: i > 0 ? '1px solid rgba(191,160,104,0.18)' : 'none',
+                  transitionDelay: `${i * 80}ms`,
+                }}
               >
-                <span className="inline-block mb-3" style={{ color: '#D4A853' }}>
+                <span className="flex justify-center mb-3.5" style={{ color: '#C79A5C' }}>
                   <Icon />
                 </span>
-                <p className={`font-display font-bold mb-1 gold-shine-subtle ${value.includes('\n') ? 'text-base md:text-lg leading-snug' : 'text-2xl md:text-3xl'}`} style={{ whiteSpace: 'pre-line' }}>{value}</p>
-                {label && <p className="font-label text-sm font-medium" style={{ color: '#F5F0E8' }}>{label}</p>}
-                <p className="font-label text-xs mt-0.5" style={{ color: '#8A857A' }}>{sub}</p>
+                <p className={`font-display font-semibold mb-2.5 ${big ? 'text-3xl' : 'text-base md:text-lg leading-snug'}`}
+                  style={{ color: '#D8C49A', whiteSpace: 'pre-line' }}>
+                  {value}
+                </p>
+                <p className="font-label text-[13px] font-medium mb-1" style={{ color: '#F1EAD9' }}>{label}</p>
+                <p className="font-label text-[11px]" style={{ color: '#9D9485' }}>{sub}</p>
               </div>
             );
           })}
         </div>
 
-        {/* Thin gold line bottom */}
-        <div className="mt-14" style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(212,168,83,0.25), transparent)' }} />
+        {/* Bottom hr-bronze */}
+        <div style={{ height: 1, background: 'linear-gradient(to right, transparent, rgba(176,141,87,0.4), transparent)', marginTop: 48 }} />
       </div>
     </section>
   );

@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { ChevronDown, MessageCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { EMPRESA_WHATSAPP_URL } from "./cta";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const faqs = [
   {
     q: "Preciso disso mesmo se meu caso já está ganho?",
-    a: "Caso ganho se perde numa perícia mal conduzida. Sem um assistente técnico, o laudo do perito do juízo entra no processo sem contraponto médico — e é nele que o juiz se baseia.",
+    a: "Caso ganho se perde numa perícia mal conduzida. Sem um assistente técnico, o laudo do perito do juízo entra no processo sem contraponto médico, e é nele que o juiz se baseia.",
   },
   {
     q: "Quanto custa?",
@@ -31,9 +32,9 @@ const FAQEmpresa = () => {
   const { ref, isVisible } = useInView();
 
   return (
-    <section id="faq" className="py-24 md:py-32" style={{ backgroundColor: '#0F0F0F' }}>
+    <section id="faq" className="py-16 md:py-24" style={{ backgroundColor: '#F5F0E8' }}>
       <div ref={ref} className={`container mx-auto max-w-3xl fade-in-section ${isVisible ? "is-visible" : ""}`}>
-        <h2 className="font-display text-2xl md:text-[2rem] lg:text-[2.5rem] font-bold text-center mb-16 leading-tight gold-shine">
+        <h2 className="font-display text-2xl md:text-[2rem] lg:text-[2.5rem] font-bold text-center mb-16 leading-tight" style={{ color: '#27221B', letterSpacing: '-0.018em' }}>
           Perguntas frequentes
         </h2>
 
@@ -43,7 +44,7 @@ const FAQEmpresa = () => {
             return (
               <div
                 key={i}
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}
+                style={{ borderBottom: '1px solid rgba(39,34,27,0.12)' }}
                 itemScope
                 itemProp="mainEntity"
                 itemType="https://schema.org/Question"
@@ -53,21 +54,23 @@ const FAQEmpresa = () => {
                   className="w-full flex items-center justify-between py-6 text-left min-h-[44px]"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-body text-base md:text-lg font-medium pr-6" style={{ color: '#F5F0E8' }} itemProp="name">
+                  <span className="font-body text-base md:text-lg font-medium pr-6" style={{ color: '#27221B' }} itemProp="name">
                     {q}
                   </span>
                   <ChevronDown
                     size={18}
                     className={`flex-shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
-                    style={{ color: '#D4A853' }}
+                    style={{ color: '#9C7C43' }}
                   />
                 </button>
                 <div
-                  className="overflow-hidden transition-all duration-300 ease-in-out"
-                  style={{ maxHeight: isOpen ? "1000px" : "0px" }}
+                  className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+                  style={{ gridTemplateRows: isOpen ? "1fr" : "0fr" }}
                 >
-                  <div className="pb-6" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
-                    <p className="text-base leading-relaxed" style={{ color: '#A09A8D' }} itemProp="text">{a}</p>
+                  <div className="overflow-hidden min-h-0">
+                    <div className="pb-6" itemScope itemProp="acceptedAnswer" itemType="https://schema.org/Answer">
+                      <p className="text-base leading-relaxed" style={{ color: '#6B6358' }} itemProp="text">{a}</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -81,11 +84,11 @@ const FAQEmpresa = () => {
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 font-label text-sm transition-colors"
-            style={{ color: '#A09A8D' }}
-            onMouseEnter={(e) => { e.currentTarget.style.color = '#F5F0E8'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.color = '#A09A8D'; }}
+            style={{ color: '#6B6358' }}
+            onMouseEnter={(e) => { e.currentTarget.style.color = '#27221B'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.color = '#6B6358'; }}
           >
-            <MessageCircle size={16} style={{ color: '#D4A853' }} />
+            <span style={{ color: '#9C7C43' }}><WhatsAppIcon size={16} /></span>
             Tem outra dúvida sobre seu caso? Pergunte pelo WhatsApp.
           </a>
         </div>

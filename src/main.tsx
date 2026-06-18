@@ -7,8 +7,12 @@ const pathname = window.location.pathname;
 
 // O HTML do "/" é pré-renderizado em build time (SSG via preact-render-to-string),
 // então HIDRATAMOS para reaproveitar o DOM já pintado (sem flash/repaint).
-// Rotas que caem no shell do "/" via rewrite do Vercel (ex.: 404) renderizam do zero.
-if (pathname === "/" || pathname === "") {
+// Em DEV (e em rotas que caem no shell via rewrite, ex.: 404) o #root vem VAZIO —
+// hidratar contra DOM vazio quebra o Preact (TypeError em diffChildren) e aborta a
+// cauda da árvore. Por isso só hidratamos quando há conteúdo pré-renderizado;
+// caso contrário renderizamos do zero. Produção (com SSG) continua hidratando.
+const isPrerendered = container.childElementCount > 0;
+if ((pathname === "/" || pathname === "") && isPrerendered) {
   hydrateRoot(container, <App pathname={pathname} />);
 } else {
   container.innerHTML = "";

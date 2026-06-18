@@ -10,5 +10,32 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# Crawlers de IA generativa (citação em ChatGPT, Gemini, Perplexity, Claude, AI Overviews)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
 User-agent: *
 Allow: /
+
+Sitemap: https://www.drakellyneisse.com.br/sitemap.xml

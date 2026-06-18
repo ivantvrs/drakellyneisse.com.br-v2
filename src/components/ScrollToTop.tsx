@@ -16,10 +16,17 @@ const ScrollToTop = () => {
     <button
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Voltar ao topo"
-      className="fixed bottom-6 left-6 z-40 w-10 h-10 rounded-full bg-brand-primary-700 text-primary-foreground flex items-center justify-center shadow-card hover:scale-105 transition-transform"
-      style={{ animation: "waEntry 0.3s ease-out" }}
+      className="fixed left-5 lg:left-6 bottom-24 lg:bottom-6 z-30 w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 hover:-translate-y-0.5"
+      style={{
+        background: "radial-gradient(120% 120% at 50% 22%, #2A2419 0%, #1A1610 55%, #100D08 100%)",
+        border: "1px solid rgba(212, 168, 83, 0.55)",
+        color: "#D4A853",
+        backdropFilter: "blur(6px)",
+        boxShadow: "0 8px 22px rgba(0,0,0,.5), inset 0 0 0 1px rgba(212,168,83,.18)",
+        animation: "waEntry 0.3s ease-out",
+      }}
     >
-      <ChevronUp size={20} />
+      <ChevronUp size={20} strokeWidth={1.8} />
     </button>
   );
 };

@@ -58,21 +58,21 @@
     + "border:1px solid " + accent + "66;background:radial-gradient(circle at 50% 36%,#2a2218 0%,#16110c 60%,#0d0a08 100%);"
     + "box-shadow:0 10px 26px rgba(0,0,0,.5);transition:transform .18s ease,box-shadow .18s ease}"
     + ".bfab-btn:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.6);border-color:" + green + "}"
-    + ".bfab-btn:hover .bfab-ring{border-color:" + green + " !important}"
+    + ".bfab-btn:hover .bfab-ring{color:" + green + " !important}"
     + ".bfab-btn:active{transform:translateY(0)}"
     + ".bfab-clip{position:absolute;inset:0;border-radius:50%;overflow:hidden}"
     + ".bfab-stage{position:absolute;left:50%;top:50%;width:" + STAGE_W + "px;height:" + STAGE_H + "px;"
     + "transform-origin:center center}"
     + ".bfab-stage img{position:absolute;inset:0;width:" + STAGE_W + "px;height:" + STAGE_H + "px;"
     + "filter:drop-shadow(0 4px 5px rgba(0,0,0,.45));will-change:transform}"
-    + ".bfab-ring{position:absolute;inset:-1px;border-radius:50%;border:1.5px solid " + accent + ";"
+    + ".bfab-ring{position:absolute;inset:-1px;display:block;overflow:visible;color:" + accent + ";"
     + "pointer-events:none;animation:bfabRing 2.8s ease-in-out infinite}"
     + "@keyframes bfabRing{"
-    + "0%{border-color:" + accent + ";transform:scale(1);opacity:0}"
-    + "14%{border-color:" + accent + ";transform:scale(1);opacity:.6}"
-    + "52%{border-color:" + green + ";transform:scale(1);opacity:.9}"
-    + "60%{border-color:" + green + ";transform:scale(1.04);opacity:.9}"
-    + "100%{border-color:" + green + ";transform:scale(1.7);opacity:0}}"
+    + "0%{color:" + accent + ";transform:scale(1);opacity:0}"
+    + "14%{color:" + accent + ";transform:scale(1);opacity:.6}"
+    + "52%{color:" + green + ";transform:scale(1);opacity:.9}"
+    + "60%{color:" + green + ";transform:scale(1.04);opacity:.9}"
+    + "100%{color:" + green + ";transform:scale(1.7);opacity:0}}"
     + ".bfab-tip{position:absolute;right:calc(100% + 14px);top:50%;transform:translateY(-50%) translateX(6px);"
     + "white-space:nowrap;pointer-events:none;opacity:0;font-size:12px;color:" + green + ";padding:9px 14px;"
     + "border-radius:10px;background:#0c1a12;border:1px solid " + green + ";box-shadow:0 10px 24px rgba(0,0,0,.45);"
@@ -126,13 +126,32 @@
     + '<a class="bfab-cta" href="' + waLink() + '" target="_blank" rel="noopener">'
     + waSvg + 'Enviar caso pelo WhatsApp</a>';
 
+  // ── anel pulsante: círculo + rabinho do WhatsApp (bico no canto inferior-esquerdo) ──
+  // Mesma animação/cor/espessura do anel antigo; só troca a forma (border -> contorno SVG).
+  var RS = D + 2; // anel cobre o botão + o inset:-1px de cada lado
+  var ringPath = (function () {
+    var cx = RS / 2, cy = RS / 2, r = RS / 2 - 0.75; // outer do traço encosta na borda, igual ao border antigo
+    function pt(deg, rad) {
+      var a = deg * Math.PI / 180;
+      return [(cx + rad * Math.cos(a)).toFixed(2), (cy + rad * Math.sin(a)).toFixed(2)];
+    }
+    var a1 = 112, a2 = 160, tipDeg = 134, tipR = r * 1.16; // beak no quadrante inferior-esquerdo
+    var p1 = pt(a1, r), p2 = pt(a2, r), tip = pt(tipDeg, tipR);
+    return "M" + p2[0] + " " + p2[1]
+      + "A" + r.toFixed(2) + " " + r.toFixed(2) + " 0 1 1 " + p1[0] + " " + p1[1] // arco: todo o círculo menos o trecho do bico
+      + "L" + tip[0] + " " + tip[1]   // sai até a ponta do rabinho
+      + "L" + p2[0] + " " + p2[1] + "Z"; // volta e fecha
+  })();
+  var ringSvg = '<svg class="bfab-ring" viewBox="0 0 ' + RS + ' ' + RS + '" fill="none" aria-hidden="true">'
+    + '<path d="' + ringPath + '" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+
   var btn = document.createElement("button");
   btn.className = "bfab-btn";
   btn.setAttribute("aria-label", CFG.tooltip);
   btn.style.width = D + "px";
   btn.style.height = D + "px";
   btn.innerHTML =
-    '<span class="bfab-ring"></span>'
+    ringSvg
     + '<span class="bfab-clip"><span class="bfab-stage" style="transform:translate(-50%,-50%) scale(' + fit + ')">'
     + '<picture><source srcset="' + PANL_AV + '" type="image/avif"><img class="bfab-pl" src="' + PANL + '" draggable="false" style="transform-origin:' + PIVL.x + 'px ' + PIVL.y + 'px"></picture>'
     + '<picture><source srcset="' + PANR_AV + '" type="image/avif"><img class="bfab-pr" src="' + PANR + '" draggable="false" style="transform-origin:' + PIVR.x + 'px ' + PIVR.y + 'px"></picture>'

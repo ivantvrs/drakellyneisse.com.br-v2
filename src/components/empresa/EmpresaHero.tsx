@@ -11,7 +11,7 @@ import heroMob2xAvif from "@/assets/hero-mob-2x.avif";
 import EmpresaCTAs from "./EmpresaCTAs";
 
 const EmblemIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 360 360" fill="#D4A853" aria-hidden="true" className="flex-shrink-0" style={{ WebkitTextFillColor: 'initial' }}>
+  <svg width="23" height="23" viewBox="0 0 360 360" fill="#D4A853" aria-hidden="true" className="flex-shrink-0" style={{ WebkitTextFillColor: 'initial' }}>
     <path fillRule="evenodd" d="M171 5C142 20 90 39 52 49c-22 6-20-1-20 52 0 94 11 130 60 186 24 26 80 70 90 70 7 0 57-37 77-58 51-50 63-87 63-190l1-55-21-6q-51-13-105-38c-21-9-20-9-26-5m-10 15A687 687 0 0 1 43 62c-2 2 0 96 1 107q19 102 128 172l9 5 5-2c63-35 111-94 122-150 4-20 4-26 5-79 0-61 2-54-11-56-29-7-79-25-116-43-8-4-8-4-25 4" />
   </svg>
 );
@@ -59,7 +59,7 @@ const EmpresaHero = () => {
           </h1>
 
           <p className="text-lg md:text-xl leading-relaxed mb-10 max-w-xl" style={{ color: '#C9C3B6' }}>
-            Nem você nem o seu advogado podem entrar na sala do exame — só um médico.
+            Nem você nem o seu advogado podem entrar na sala do exame, só um médico.
             O assistente técnico médico é o <strong style={{ color: '#F5F0E8' }}>seu olho técnico dentro da perícia</strong>.
           </p>
 

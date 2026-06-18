@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { MessageCircle } from "lucide-react";
+import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const WHATSAPP_URL = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/4342e64e-304b-40eb-8abc-1d0c4a6a1b1a";
 
@@ -33,9 +33,9 @@ const MobileStickyBar = () => {
         rel="noopener noreferrer"
         aria-label="Falar no WhatsApp — barra fixa mobile"
         className="w-full flex items-center justify-center gap-2 py-3 text-white font-label text-sm font-semibold"
-        style={{ background: "linear-gradient(180deg, #2ed671 0%, #25D366 40%, #1fb855 100%)" }}
+        style={{ background: "linear-gradient(180deg, #2ed671 0%, #22c35c 100%)" }}
       >
-        <MessageCircle size={16} />
+        <WhatsAppIcon size={16} />
         WhatsApp
       </a>
     </div>

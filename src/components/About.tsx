@@ -107,10 +107,10 @@ const About = () => {
 
             <div className="space-y-4 text-[15px] leading-[1.75] mb-8 max-w-[44ch]" style={{ color: "#5E6470" }}>
               <p>
-                É <strong style={{ color: "#1F252B", fontWeight: 600 }}>Médica Perita Judicial</strong> (CRM/MG 109153) com <strong style={{ color: "#1F252B", fontWeight: 600 }}>atuação exclusiva em perícia médica trabalhista</strong> — dedicada à assistência técnica para advogados, escritórios, departamentos jurídicos e partes envolvidas.
+                É <strong style={{ color: "#1F252B", fontWeight: 600 }}>Médica Perita Judicial</strong> (CRM/MG 109153) com <strong style={{ color: "#1F252B", fontWeight: 600 }}>atuação exclusiva em perícia médica trabalhista</strong>, dedicada à assistência técnica para advogados, escritórios, departamentos jurídicos e partes envolvidas.
               </p>
               <p>
-                O trabalho concentra-se em quatro frentes: <strong style={{ color: "#1F252B", fontWeight: 600 }}>análise médica do processo, formulação de quesitos, impugnação de laudo e parecer médico-técnico</strong> para subsidiar contestação, recurso e audiência. Cada entrega é construída sobre a documentação concreta do caso — não em modelos genéricos.
+                O trabalho concentra-se em quatro frentes: <strong style={{ color: "#1F252B", fontWeight: 600 }}>análise médica do processo, formulação de quesitos, impugnação de laudo e parecer médico-técnico</strong> para subsidiar contestação, recurso e audiência. Cada entrega é construída sobre a documentação concreta do caso, não em modelos genéricos.
               </p>
               <p>
                 As áreas cobertas incluem <strong style={{ color: "#1F252B", fontWeight: 600 }}>doença ocupacional, LER/DORT, nexo causal, insalubridade, periculosidade, acidente de trabalho</strong> e análise de capacidade laboral. Formação em Perícia Médica (CPEM) e Medicina do Trabalho (Instituto IFH). Sede em Uberlândia/MG, com atendimento em todo o Brasil.

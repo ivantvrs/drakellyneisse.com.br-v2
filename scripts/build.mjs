@@ -46,12 +46,13 @@ const TRACKING_PRIMITIVES_EMPRESA = [
 ];
 
 // Funil AT (dist/at.html — LP nacional): mesmos primitivos + as assinaturas próprias da /at.
-// OBS: os conversion LABELS do Ads da /at ainda são PLACEHOLDER (COLE_LABEL_*_AT em at.html).
-// Por isso o gate aqui valida os SINAIS ESTÁVEIS (eventos + handler tel:), NÃO os labels —
-// assim, ao colar os labels reais no painel, basta editar at.html (não precisa mexer aqui).
+// Conversão WhatsApp da /at = "[Contato] WhatsApp — AT" (Ads id 7652180840), criada 17/06.
+// Label real espelhado abaixo como safety-net (o gate garante que o build não perca o send_to).
+// A /at NÃO usa conversão de ligação (decisão do Ivan): sem label/handler de tel:.
 const TRACKING_PRIMITIVES_AT = [
   ...TRACKING_PRIMITIVES,
-  "whatsapp_click_at", "call_click_at", 'href^="tel:"',
+  "whatsapp_click_at",
+  "AW-16690821688/zjEbCOiG7MAcELj05pY-",
 ];
 
 const extractScripts = (s) => s.match(/<script[\s\S]*?<\/script>/gi) || [];
