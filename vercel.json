@@ -19,6 +19,10 @@
       ]
     }
   ],
+  "redirects": [
+    { "source": "/at", "destination": "https://www.drakellyneisse.com.br/", "permanent": true },
+    { "source": "/at/:path*", "destination": "https://www.drakellyneisse.com.br/", "permanent": true }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
     { "source": "/empresa", "destination": "/empresa.html" },
