@@ -39,13 +39,15 @@ export function useInView(threshold = 0.1) {
     //   • ainda abaixo da dobra  -> mantém armado, espera o scroll
     let done = false;
     let raf = 0;
-    const timers: number[] = [];
+    let ro: ResizeObserver | null = null;
+    let safety = 0;
 
     const cleanup = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
+      if (ro) ro.disconnect();
       if (raf) cancelAnimationFrame(raf);
-      timers.forEach(clearTimeout);
+      if (safety) clearTimeout(safety);
     };
     const reveal = () => {
       if (done) return;
@@ -65,10 +67,19 @@ export function useInView(threshold = 0.1) {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
-    // Checagem imediata + de assentamento: cobre "montou já visível/passado" mesmo quando o usuário
-    // está parado (sem scroll), inclusive enquanto o #root ainda cresce com a hidratação dos lazy.
-    check();
-    [150, 600, 1600].forEach((d) => timers.push(window.setTimeout(check, d) as unknown as number));
+    // ResizeObserver no documento: as dobras lazy montam escalonadas e EMPURRAM as de baixo
+    // conforme o #root cresce. Isso muda a POSIÇÃO (top) de cada dobra SEM gerar scroll — então
+    // timers fixos não bastam (o layout pode assentar depois deles). O RO dispara a cada
+    // crescimento do layout, re-checando a geometria por evento até a dobra revelar. Esta é a peça
+    // que faltava: cobre "a dobra monta tarde com o usuário parado" (a dobra fantasma residual).
+    if (typeof ResizeObserver !== "undefined") {
+      ro = new ResizeObserver(onScroll);
+      ro.observe(document.documentElement);
+    }
+    check(); // imediato: cobre "montou já visível/passado"
+    // Rede de segurança final: NADA pode ficar preso invisível. Se em 2,5s nada acima revelou a
+    // dobra (caso patológico que escape de scroll+resize+RO), revela incondicionalmente.
+    safety = window.setTimeout(reveal, 2500) as unknown as number;
 
     return cleanup;
   }, [threshold]);
