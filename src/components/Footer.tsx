@@ -1,4 +1,6 @@
-const Footer = () => (
+// `tagline` muda por porta: a HOME ("/") é a AT (Assistência Técnica Médica, perícia judicial
+// guarda-chuva) e a /trabalhista é a página específica (default). Mantém o footer único.
+const Footer = ({ tagline = "Assistência técnica médica em perícia trabalhista" }: { tagline?: string }) => (
   <footer
     className="relative overflow-hidden"
     aria-label="Rodapé"
@@ -18,7 +20,7 @@ const Footer = () => (
             Médica Perita Judicial · CRM/MG 109153
           </p>
           <p className="text-[12px] mt-2.5 leading-[1.7]" style={{ color: '#8d8474' }}>
-            Assistência técnica médica em perícia trabalhista<br />
+            {tagline}<br />
             drakellyneisse.com.br · contato@drakellyneisse.com.br · (34) 9 9687-8758<br />
             Sede em Uberlândia/MG · Atendimento em todo o Brasil (presencial e remoto)
           </p>

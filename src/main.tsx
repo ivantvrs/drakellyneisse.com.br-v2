@@ -2,17 +2,18 @@ import { createRoot, hydrateRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 
+// Entry CLIENT da porta /trabalhista (perícia trabalhista, antiga home). trabalhista.html é
+// servida só em /trabalhista (rewrite do vercel.json), então o pathname aqui é sempre
+// "/trabalhista" — passado ao App p/ ele renderizar <Index /> (e não NotFound).
 const container = document.getElementById("root")!;
 const pathname = window.location.pathname;
 
-// O HTML do "/" é pré-renderizado em build time (SSG via preact-render-to-string),
+// O HTML de /trabalhista é pré-renderizado em build time (SSG via preact-render-to-string),
 // então HIDRATAMOS para reaproveitar o DOM já pintado (sem flash/repaint).
-// Em DEV (e em rotas que caem no shell via rewrite, ex.: 404) o #root vem VAZIO —
-// hidratar contra DOM vazio quebra o Preact (TypeError em diffChildren) e aborta a
-// cauda da árvore. Por isso só hidratamos quando há conteúdo pré-renderizado;
-// caso contrário renderizamos do zero. Produção (com SSG) continua hidratando.
+// Em DEV o #root vem VAZIO — hidratar contra DOM vazio quebra o Preact (TypeError em
+// diffChildren); por isso só hidratamos quando há conteúdo pré-renderizado.
 const isPrerendered = container.childElementCount > 0;
-if ((pathname === "/" || pathname === "") && isPrerendered) {
+if (isPrerendered) {
   hydrateRoot(container, <App pathname={pathname} />);
 } else {
   container.innerHTML = "";

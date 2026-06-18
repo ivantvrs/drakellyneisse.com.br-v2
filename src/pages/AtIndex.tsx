@@ -36,7 +36,7 @@ const AtIndex = () => (
       </Suspense>
     </main>
     <Suspense fallback={null}>
-      <Footer />
+      <Footer tagline="Assistência técnica médica em perícia judicial — trabalhista e cível" />
       <AtFloatingCTAs />
     </Suspense>
     {/* Chuva de meteoros dourados na página toda (sempre ligado, desktop) */}

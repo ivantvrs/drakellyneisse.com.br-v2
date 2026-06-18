@@ -15,15 +15,15 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    // DEV-only (apply:"serve"): mapeia as URLs limpas /empresa e /at -> *.html no dev server,
-    // espelhando os rewrites do vercel.json. Não tem efeito no build de produção.
+    // DEV-only (apply:"serve"): mapeia as URLs limpas /empresa e /trabalhista -> *.html no dev
+    // server, espelhando os rewrites do vercel.json. Não tem efeito no build de produção.
     {
       name: "portas-paralelas-dev-rewrite",
       apply: "serve",
       configureServer(server) {
         server.middlewares.use((req, _res, next) => {
           if (req.url === "/empresa" || req.url === "/empresa/") req.url = "/empresa.html";
-          if (req.url === "/at" || req.url === "/at/") req.url = "/at.html";
+          if (req.url === "/trabalhista" || req.url === "/trabalhista/") req.url = "/trabalhista.html";
           next();
         });
       },

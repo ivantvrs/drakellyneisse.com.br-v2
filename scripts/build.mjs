@@ -25,7 +25,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
 const DIST_INDEX = path.join(DIST, "index.html");
 const DIST_EMPRESA = path.join(DIST, "empresa.html");
-const DIST_AT = path.join(DIST, "at.html");
+const DIST_TRABALHISTA = path.join(DIST, "trabalhista.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
 const ROOT_RE = /<div id="root">\s*<\/div>/;
 
@@ -45,14 +45,23 @@ const TRACKING_PRIMITIVES_EMPRESA = [
   "AW-16690821688/x1FJCIOxxLocELj05pY-", "AW-16690821688/-JqLCIaxxLocELj05pY-",
 ];
 
-// Funil AT (dist/at.html — LP nacional): mesmos primitivos + as assinaturas próprias da /at.
-// Conversão WhatsApp da /at = "[Contato] WhatsApp — AT" (Ads id 7652180840), criada 17/06.
+// Funil da HOME ("/" — dist/index.html: assistência técnica em perícia judicial; antiga /at):
+// mesmos primitivos + as assinaturas próprias dessa porta.
+// Conversão WhatsApp = "[Contato] WhatsApp — AT" (Ads id 7652180840), criada 17/06.
 // Label real espelhado abaixo como safety-net (o gate garante que o build não perca o send_to).
-// A /at NÃO usa conversão de ligação (decisão do Ivan): sem label/handler de tel:.
+// Esta porta NÃO usa conversão de ligação (decisão do Ivan): sem label/handler de tel:.
 const TRACKING_PRIMITIVES_AT = [
   ...TRACKING_PRIMITIVES,
   "whatsapp_click_at",
   "AW-16690821688/zjEbCOiG7MAcELj05pY-",
+];
+
+// Funil /trabalhista (antiga home): base + o label REAL de conversão do WhatsApp dessa porta,
+// fixado p/ o gate falhar se o send_to for trocado/removido (espelha AT e EMPRESA; antes a base
+// só checava o substring "whatsapp_click", deixando o label 3YOP sem proteção contra regressão).
+const TRACKING_PRIMITIVES_TRABALHISTA = [
+  ...TRACKING_PRIMITIVES,
+  "AW-16690821688/3YOPCNG72c8ZELj05pY-",
 ];
 
 const extractScripts = (s) => s.match(/<script[\s\S]*?<\/script>/gi) || [];
@@ -105,10 +114,10 @@ async function inlineCriticalCss(html, trackingPrimitives) {
   const css = await computeCriticalCss(html);
   const scriptsBefore = extractScripts(html);
 
-  // entry CSS do app: index-*.css (LP advogado), empresa-*.css (porta /empresa) ou at-*.css (porta /at).
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|at)-[^"]+\.css)"[^>]*>/i;
+  // entry CSS do app: index-*.css (HOME/AT), empresa-*.css (porta /empresa) ou trabalhista-*.css (porta /trabalhista).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
-  if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|at.css>) não encontrado");
+  if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|trabalhista.css>) não encontrado");
   const href = m[1];
   const cross = /crossorigin/i.test(m[0]) ? " crossorigin" : "";
 
@@ -156,15 +165,16 @@ async function main() {
     },
   });
 
-  // 1c) client (porta /at — LP nacional) — build ISOLADO de at.html no MESMO dist/, idêntico
-  //     ao passo da empresa. Mantém index/empresa intocados: a /at ganha seu próprio `at-*`.
-  console.log("[build] client (at)…");
+  // 1c) client (porta /trabalhista — perícia trabalhista, antiga home) — build ISOLADO de
+  //     trabalhista.html no MESMO dist/, idêntico ao passo da empresa. Mantém index/empresa
+  //     intocados: a /trabalhista ganha seu próprio `trabalhista-*`.
+  console.log("[build] client (trabalhista)…");
   await build({
     build: {
       outDir: "dist",
       emptyOutDir: false,
       rollupOptions: {
-        input: { at: path.join(ROOT, "at.html") },
+        input: { trabalhista: path.join(ROOT, "trabalhista.html") },
       },
     },
   });
@@ -189,7 +199,7 @@ async function main() {
   const { render } = await import(pathToFileURL(serverEntry).href);
 
   // 4) preload do hero (elemento de LCP) — POR PÁGINA.
-  //    index/at usam kelly-hero-mobile.webp (foto full-bleed mobile). Preloadamos SÓ o mobile:
+  //    index/trabalhista usam kelly-hero-mobile.webp (foto full-bleed mobile). Preloadamos SÓ o mobile:
   //    é o LCP no celular, onde a conexão é lenta e o CWV do Google é medido. O recorte desktop
   //    NÃO é preloadado de propósito — ele carrega pelo <picture> (eager + fetchpriority high) e,
   //    sem preload do recorte, NENHUM browser o baixa no mobile (nem os que ignoram `media` em
@@ -203,13 +213,14 @@ async function main() {
   // preload scanner. Sem media no desktop p/ não baixar nada errado no mobile (ver comentário acima).
   const heroPreloadKelly =
     `<link rel="preload" as="image" media="(max-width: 767.98px)" type="image/avif" href="${heroAssets.mobileAvif}" fetchpriority="high" />`;
-  console.log(`[build] preload hero (index/at) — mobile AVIF: ${heroAssets.mobileAvif}`);
+  console.log(`[build] preload hero (index/trabalhista) — mobile AVIF: ${heroAssets.mobileAvif}`);
 
-  // a LP do advogado ("/") é processada com a MESMA lógica de sempre (output inalterado);
-  // a porta do empresário ("/empresa") roda a pipeline idêntica sobre seu próprio HTML/gate.
-  await processPage({ pathname: "/",        distFile: DIST_INDEX,   label: "index",   render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES });
-  await processPage({ pathname: "/empresa", distFile: DIST_EMPRESA, label: "empresa", render, heroPreload: "",               trackingPrimitives: TRACKING_PRIMITIVES_EMPRESA });
-  await processPage({ pathname: "/at",      distFile: DIST_AT,      label: "at",      render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
+  // A HOME ("/") agora é a página de assistência técnica em perícia judicial (antiga /at) e usa
+  // os primitivos do funil AT; /trabalhista é a antiga home (perícia trabalhista) e herda os
+  // primitivos-base; /empresa permanece com os seus. Cada porta tem gate byte-a-byte próprio.
+  await processPage({ pathname: "/",            distFile: DIST_INDEX,       label: "index",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
+  await processPage({ pathname: "/empresa",     distFile: DIST_EMPRESA,     label: "empresa",     render, heroPreload: "",               trackingPrimitives: TRACKING_PRIMITIVES_EMPRESA });
+  await processPage({ pathname: "/trabalhista", distFile: DIST_TRABALHISTA, label: "trabalhista", render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_TRABALHISTA });
 
   // 6) limpa o bundle de servidor (não deve ir pro deploy)
   await rm(SERVER_OUT, { recursive: true, force: true });

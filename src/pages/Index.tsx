@@ -15,7 +15,7 @@ const FAQ = lazy(() => import("@/components/FAQ"));
 const CTAFinal = lazy(() => import("@/components/CTAFinal"));
 const InstitutionalContact = lazy(() => import("@/components/InstitutionalContact"));
 const Footer = lazy(() => import("@/components/Footer"));
-// Botão flutuante redondo do WhatsApp agora vem do FAB vanilla (public/balanca-fab.js), incluído em index.html.
+// Botão flutuante redondo do WhatsApp agora vem do FAB vanilla (public/balanca-fab.js), incluído em trabalhista.html.
 const ScrollToTop = lazy(() => import("@/components/ScrollToTop"));
 const MobileStickyBar = lazy(() => import("@/components/MobileStickyBar"));
 
