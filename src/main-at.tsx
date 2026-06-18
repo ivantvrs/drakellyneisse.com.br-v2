@@ -12,3 +12,9 @@ if (container.firstChild) {
 } else {
   createRoot(container).render(<AtIndex />);
 }
+
+// Medição passiva de Core Web Vitals de campo (LCP/INP/CLS/FCP/TTFB) -> GA4 via beacon __tvrs.
+// Import dinâmico = chunk async (~2 KB), fora do caminho crítico; não bloqueia render/hidratação.
+if (typeof window !== "undefined") {
+  import("./lib/web-vitals").then((m) => m.initWebVitals());
+}
