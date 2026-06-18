@@ -109,6 +109,7 @@ const AtHeader = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — menu"
+            data-cta="cta_header_wpp"
             className="btn-wa inline-flex items-center gap-2 text-white font-label text-[13px] font-semibold px-[18px] py-[11px] rounded-md"
           >
             <WhatsAppIcon size={16} />
@@ -155,6 +156,7 @@ const AtHeader = () => {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — menu mobile"
+            data-cta="cta_menu_wpp"
             className="btn-wa inline-flex items-center gap-2 text-white font-label text-sm font-semibold px-5 py-3 rounded-md w-full justify-center mt-2"
           >
             <WhatsAppIcon size={16} />

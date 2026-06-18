@@ -408,9 +408,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
 
           // ★ conversao Google Ads — gtag.js (AW-only) carregado no <head>.
           // transport_type:'beacon' garante envio sob unload (anchor navega p/ WhatsApp).
-          // Conversao "WhatsApp — AT" (criar acao dedicada no painel do Ads).
-          // ⚠️ PLACEHOLDER: trocar COLE_LABEL_WHATSAPP_AT pelo label real e atualizar
-          //    TRACKING_PRIMITIVES_AT em scripts/build.mjs (o gate exige os dois iguais).
+          // Conversao "WhatsApp — AT" (acao dedicada no painel do Ads; label real abaixo).
           try {
             if (typeof gtag === 'function') {
               gtag('event', 'conversion', {
@@ -485,7 +483,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
         var TINTIM = "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/b40002a5-951b-4014-a30a-17af3f592141";
         function applyTintim() {
           var a = document.querySelector(".bfab-cta");
-          if (a) { a.setAttribute("href", TINTIM); return true; }
+          if (a) { a.setAttribute("href", TINTIM); a.setAttribute("data-cta", "cta_fab_wpp"); return true; }
           return false;
         }
         function loadFab() {
