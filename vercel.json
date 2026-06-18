@@ -20,8 +20,8 @@
     }
   ],
   "redirects": [
-    { "source": "/at", "destination": "https://www.drakellyneisse.com.br/", "permanent": true },
-    { "source": "/at/:path*", "destination": "https://www.drakellyneisse.com.br/", "permanent": true }
+    { "source": "/at", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 },
+    { "source": "/at/:path*", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
