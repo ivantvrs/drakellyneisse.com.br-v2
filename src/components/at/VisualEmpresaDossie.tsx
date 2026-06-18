@@ -93,8 +93,8 @@ const Estetoscopio = ({ width = 150 }: { width?: number }) => (
 );
 
 const dossieStyle = `
-  @import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
-
+  /* Fonte Allura (assinatura cursiva, abaixo da dobra) é carregada de forma NÃO-bloqueante
+     no <head> do at.html — antes este @import era render-blocking e travava o FCP/LCP. */
   .kn-stage { --kn-c:#2C2C2C; --kn-ob:#1A1A1A; --kn-g:#B08D57; --kn-gd:#8B6914; --kn-gl:#F0E6CC;
     --kn-iv:#FAFAF7; --kn-st:#E8E4DC; --kn-sl:#6B6B6B;
     --kn-fd: var(--font-display, Georgia, "Times New Roman", serif);
