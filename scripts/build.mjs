@@ -20,12 +20,14 @@ import Beasties from "beasties";
 import { readFile, writeFile, rm, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { generateAtSpHtml, AT_SP_HTML, AT_SP_PATHNAME } from "./gen-at-sp.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
 const DIST_INDEX = path.join(DIST, "index.html");
 const DIST_EMPRESA = path.join(DIST, "empresa.html");
 const DIST_TRABALHISTA = path.join(DIST, "trabalhista.html");
+const DIST_AT_SP = path.join(DIST, "assistente-tecnico-medico-sp.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
 const ROOT_RE = /<div id="root">\s*<\/div>/;
 
@@ -114,8 +116,9 @@ async function inlineCriticalCss(html, trackingPrimitives) {
   const css = await computeCriticalCss(html);
   const scriptsBefore = extractScripts(html);
 
-  // entry CSS do app: index-*.css (HOME/AT), empresa-*.css (porta /empresa) ou trabalhista-*.css (porta /trabalhista).
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista)-[^"]+\.css)"[^>]*>/i;
+  // entry CSS do app: index-*.css (HOME/AT), empresa-*.css (/empresa), trabalhista-*.css
+  // (/trabalhista) ou at-sp-*.css (porta geo /assistente-tecnico-medico/sp).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
   if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|trabalhista.css>) não encontrado");
   const href = m[1];
@@ -146,6 +149,11 @@ async function inlineCriticalCss(html, trackingPrimitives) {
 }
 
 async function main() {
+  // 0) gera a porta geo SP a partir do index.html (scripts de tracking herdados byte a byte;
+  //    gate próprio dentro do gerador). SEMPRE regenerada — nunca editada à mão.
+  console.log("[build] gen (at-sp)…");
+  await generateAtSpHtml();
+
   // 1) client (LP advogado) — index.html exatamente como antes (output byte-idêntico).
   console.log("[build] client (index)…");
   await build();
@@ -175,6 +183,21 @@ async function main() {
       emptyOutDir: false,
       rollupOptions: {
         input: { trabalhista: path.join(ROOT, "trabalhista.html") },
+      },
+    },
+  });
+
+  // 1d) client (porta geo /assistente-tecnico-medico/sp) — build ISOLADO do HTML gerado no
+  //     passo 0, no MESMO dist/ (emptyOutDir:false), idêntico ao padrão empresa/trabalhista.
+  //     Input key "at-sp" -> assets at-sp-*.{js,css} próprios; chunks compartilhados têm o
+  //     mesmo hash e o overwrite é inofensivo.
+  console.log("[build] client (at-sp)…");
+  await build({
+    build: {
+      outDir: "dist",
+      emptyOutDir: false,
+      rollupOptions: {
+        input: { "at-sp": AT_SP_HTML },
       },
     },
   });
@@ -221,6 +244,8 @@ async function main() {
   await processPage({ pathname: "/",            distFile: DIST_INDEX,       label: "index",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
   await processPage({ pathname: "/empresa",     distFile: DIST_EMPRESA,     label: "empresa",     render, heroPreload: "",               trackingPrimitives: TRACKING_PRIMITIVES_EMPRESA });
   await processPage({ pathname: "/trabalhista", distFile: DIST_TRABALHISTA, label: "trabalhista", render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_TRABALHISTA });
+  // Porta geo SP: MESMO funil AT da home (mesma conversão Ads zjEb…, mesmo whatsapp_click_at).
+  await processPage({ pathname: AT_SP_PATHNAME, distFile: DIST_AT_SP,       label: "at-sp",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
 
   // 6) limpa o bundle de servidor (não deve ir pro deploy)
   await rm(SERVER_OUT, { recursive: true, force: true });

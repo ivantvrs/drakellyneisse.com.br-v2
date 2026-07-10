@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import { AT_WHATSAPP_URL } from "./cta-at";
+import { useAtWhatsappUrl } from "./cta-at";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const faqs = [
@@ -165,7 +165,7 @@ const AtFAQ = () => {
             <div className="relative mt-8 pt-5">
               <span aria-hidden="true" className="absolute left-0 right-0 top-0" style={{ height: 1, background: "linear-gradient(90deg, rgba(184,135,58,0.4), transparent)" }} />
               <a
-                href={AT_WHATSAPP_URL}
+                href={useAtWhatsappUrl()}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-cta="cta_faq_wpp"

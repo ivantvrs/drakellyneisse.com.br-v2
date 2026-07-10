@@ -13,6 +13,9 @@ export async function render(pathname = "/"): Promise<string> {
     tree = <EmpresaIndex />;
   } else if (pathname === "/trabalhista" || pathname === "/trabalhista/") {
     tree = <App pathname={pathname} />;
+  } else if (pathname === "/assistente-tecnico-medico/sp" || pathname === "/assistente-tecnico-medico/sp/") {
+    // Porta geo SP: mesma AtIndex da home, com hero/rodapé parametrizados p/ São Paulo.
+    tree = <AtIndex geo="sp" />;
   } else {
     // "/" e qualquer outra rota caem na home (AtIndex).
     tree = <AtIndex />;

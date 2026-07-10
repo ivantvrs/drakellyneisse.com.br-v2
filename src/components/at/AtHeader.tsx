@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { Menu, X } from "lucide-react";
 import { useScrollSpy } from "@/hooks/useScrollSpy";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import { AT_WHATSAPP_URL } from "./cta-at";
+import { useAtWhatsappUrl } from "./cta-at";
 
 const navLinks = [
   { label: "Início", href: "#inicio" },
@@ -20,6 +20,7 @@ const AtHeader = () => {
   const [loaded, setLoaded] = useState(false);
   const spyIds = useMemo(() => ["inicio", "para-quem", "o-que-e", "servicos", "sobre", "faq"], []);
   const activeSection = useScrollSpy(spyIds);
+  const whatsappUrl = useAtWhatsappUrl();
 
   useEffect(() => {
     const onLoad = () => setLoaded(true);
@@ -105,7 +106,7 @@ const AtHeader = () => {
             );
           })}
           <a
-            href={AT_WHATSAPP_URL}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — menu"
@@ -152,7 +153,7 @@ const AtHeader = () => {
             </a>
           ))}
           <a
-            href={AT_WHATSAPP_URL}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Falar no WhatsApp — menu mobile"

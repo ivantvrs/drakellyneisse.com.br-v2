@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { AT_WHATSAPP_URL } from "./cta-at";
+import { useAtWhatsappUrl } from "./cta-at";
 
 const WhatsAppIcon = ({ size = 28 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="white">
@@ -12,6 +12,7 @@ const WhatsAppIcon = ({ size = 28 }: { size?: number }) => (
 const AtFloatingCTAs = () => {
   const [visible, setVisible] = useState(false);
   const [showBar, setShowBar] = useState(false);
+  const whatsappUrl = useAtWhatsappUrl();
 
   useEffect(() => {
     const timer = setTimeout(() => setVisible(true), 3000);
@@ -43,7 +44,7 @@ const AtFloatingCTAs = () => {
           }}
         >
           <a
-            href={AT_WHATSAPP_URL}
+            href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-cta="cta_barra_wpp"

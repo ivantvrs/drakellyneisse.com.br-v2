@@ -1,6 +1,6 @@
 import { SearchCheck, FileQuestion, UserCheck, FileText, ShieldAlert, ClipboardCheck } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import { AT_WHATSAPP_URL } from "./cta-at";
+import { useAtWhatsappUrl } from "./cta-at";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const servicos = [
@@ -105,7 +105,7 @@ const AtServicos = () => {
 
         <div className="flex justify-center">
           <a
-            href={AT_WHATSAPP_URL}
+            href={useAtWhatsappUrl()}
             target="_blank"
             rel="noopener noreferrer"
             data-cta="cta_servicos_wpp"

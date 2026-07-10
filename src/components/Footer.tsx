@@ -1,6 +1,10 @@
 // `tagline` muda por porta: a HOME ("/") é a AT (Assistência Técnica Médica, perícia judicial
 // guarda-chuva) e a /trabalhista é a página específica (default). Mantém o footer único.
-const Footer = ({ tagline = "Assistência técnica médica em perícia trabalhista" }: { tagline?: string }) => (
+// `sedeLine` muda na porta geo /assistente-tecnico-medico/sp (sede paulista); default = home.
+const Footer = ({
+  tagline = "Assistência técnica médica em perícia trabalhista",
+  sedeLine = "Sede em Uberlândia/MG · Atendimento em todo o Brasil (presencial e remoto)",
+}: { tagline?: string; sedeLine?: string }) => (
   <footer
     className="relative overflow-hidden"
     aria-label="Rodapé"
@@ -22,7 +26,7 @@ const Footer = ({ tagline = "Assistência técnica médica em perícia trabalhis
           <p className="text-[12px] mt-2.5 leading-[1.7]" style={{ color: '#8d8474' }}>
             {tagline}<br />
             drakellyneisse.com.br · contato@drakellyneisse.com.br · (34) 9 9687-8758<br />
-            Sede em Uberlândia/MG · Atendimento em todo o Brasil (presencial e remoto)
+            {sedeLine}
           </p>
         </div>
 

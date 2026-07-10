@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { Clock, BadgeCheck, Target, Check } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import { AT_WHATSAPP_URL } from "./cta-at";
+import { useAtWhatsappUrl } from "./cta-at";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import VisualEmpresaDossie from "./VisualEmpresaDossie";
 import pfApoio from "@/assets/kelly-pf-apoio.webp";
@@ -131,7 +131,7 @@ const CheckGlyph = () => (
 const EmpresaCTAs = () => (
   <div className="emp-cta-wrap">
     <a
-      href={AT_WHATSAPP_URL}
+      href={useAtWhatsappUrl()}
       target="_blank"
       rel="noopener noreferrer"
       data-cta="cta_empresa_wpp"
@@ -416,7 +416,7 @@ const AdvogadoVisual = () => (
 const AdvogadoCTAs = () => (
   <div className="adv-cta-wrap">
     <a
-      href={AT_WHATSAPP_URL}
+      href={useAtWhatsappUrl()}
       target="_blank"
       rel="noopener noreferrer"
       data-cta="cta_advogado_wpp"
@@ -668,7 +668,7 @@ const VisualPF = () => (
 const PFCTAs = () => (
   <div className="pf-cta-wrap">
     <a
-      href={AT_WHATSAPP_URL}
+      href={useAtWhatsappUrl()}
       target="_blank"
       rel="noopener noreferrer"
       data-cta="cta_pf_wpp"

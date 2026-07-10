@@ -1,4 +1,4 @@
-import { AT_WHATSAPP_URL } from "./cta-at";
+import { useAtWhatsappUrl } from "./cta-at";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 // CTA da /at: só WhatsApp. Rastreado pelo tracking inline de at.html (whatsapp_click_at).
@@ -16,7 +16,7 @@ const AtCTAs = ({ whatsappLabel = "Analisar caso no WhatsApp →", size = "md", 
   return (
     <div className={`flex flex-col sm:flex-row gap-4 ${justify}`}>
       <a
-        href={AT_WHATSAPP_URL}
+        href={useAtWhatsappUrl()}
         target="_blank"
         rel="noopener noreferrer"
         data-cta={waCta}

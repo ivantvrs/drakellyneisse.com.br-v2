@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Gerado em build/dev a partir do index.html (scripts/gen-at-sp.mjs) — nunca editar à mão
+/assistente-tecnico-medico-sp.html
+
 # Local-only: força o npm a usar PowerShell por causa do "&" no caminho da pasta (Windows).
 # NÃO commitar — quebraria o build Linux na Vercel/Netlify (powershell.exe não existe lá).
 .npmrc

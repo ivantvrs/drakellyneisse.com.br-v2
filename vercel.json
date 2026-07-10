@@ -21,7 +21,9 @@
   ],
   "redirects": [
     { "source": "/at", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 },
-    { "source": "/at/:path*", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 }
+    { "source": "/at/:path*", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 },
+    { "source": "/assistente-tecnico-medico", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 },
+    { "source": "/assistente-tecnico-medico/", "destination": "https://www.drakellyneisse.com.br/", "statusCode": 301 }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
@@ -29,6 +31,8 @@
     { "source": "/empresa/", "destination": "/empresa.html" },
     { "source": "/trabalhista", "destination": "/trabalhista.html" },
     { "source": "/trabalhista/", "destination": "/trabalhista.html" },
+    { "source": "/assistente-tecnico-medico/sp", "destination": "/assistente-tecnico-medico-sp.html" },
+    { "source": "/assistente-tecnico-medico/sp/", "destination": "/assistente-tecnico-medico-sp.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
