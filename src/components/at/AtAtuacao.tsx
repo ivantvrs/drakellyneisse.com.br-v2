@@ -1,8 +1,14 @@
+import { useContext } from "react";
 import { MapPin } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { AtGeoContext } from "./cta-at";
 
+// Na porta geo SP (AtGeoContext="sp") a seção troca as cidades: "São Paulo, Campinas ou
+// qualquer outra cidade do país" (pedido do Ivan 10/07). Na home segue Goiânia/Brasília/
+// Uberlândia. O restante da copy é idêntico nas duas portas.
 const AtAtuacao = () => {
   const { ref, isVisible } = useInView();
+  const sp = useContext(AtGeoContext) === "sp";
 
   return (
     <section
@@ -37,11 +43,21 @@ const AtAtuacao = () => {
           Atuação
         </p>
         <h2 className="font-display text-xl md:text-2xl lg:text-[2rem] font-bold mb-5 leading-snug" style={{ color: "#F1EAD9", letterSpacing: "-0.018em" }}>
-          Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil
+          {sp
+            ? "Acompanhamento pericial em São Paulo e em todo o Brasil"
+            : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
         </h2>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: "#A9A093" }}>
           A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, em{" "}
-          <strong style={{ color: "#D6BE83" }}>Goiânia, Brasília, Uberlândia</strong> e em qualquer comarca do país.{" "}
+          {sp ? (
+            <>
+              <strong style={{ color: "#D6BE83" }}>São Paulo, Campinas</strong> ou qualquer outra cidade do país.
+            </>
+          ) : (
+            <>
+              <strong style={{ color: "#D6BE83" }}>Goiânia, Brasília, Uberlândia</strong> e em qualquer comarca do país.
+            </>
+          )}{" "}
           Análise de laudo, formulação de quesitos e parecer técnico para processos de{" "}
           <strong style={{ color: "#F1EAD9" }}>todo o Brasil</strong>.
         </p>
