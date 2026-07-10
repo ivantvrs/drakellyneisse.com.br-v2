@@ -1,5 +1,6 @@
 // Porta geo /assistente-tecnico-medico/sp — campanha Google Ads dedicada ao estado de São Paulo.
-// Single source dos textos que MUDAM em relação à home "/" (o resto da página é idêntico).
+// Single source do que MUDA em relação à home "/": SÓ a sede do rodapé e o deeplink Tintim
+// (decisão do Ivan 10/07: a copy da página — hero incluso — fica idêntica à da mãe).
 // O registro profissional segue sendo CRM/MG 109153 (registro verdadeiro da Dra. Kelly) —
 // nenhum texto desta porta pode sugerir registro em SP.
 
@@ -15,7 +16,3 @@ export const SP_FOOTER_SEDE_LINE =
 // DEVE casar com o patch do FAB em scripts/gen-at-sp.mjs.
 export const AT_SP_WHATSAPP_URL =
   "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/f42174e7-24cc-4583-a56b-9a6161434a15";
-
-// Complemento do subtítulo do hero (desktop e painel mobile) — message match com a campanha SP.
-export const SP_HERO_ATENDIMENTO =
-  "Atendimento a advogados e empresas em todo o estado de São Paulo.";

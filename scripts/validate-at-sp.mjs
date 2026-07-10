@@ -96,7 +96,9 @@ async function main() {
   const canonical = await page.getAttribute('link[rel="canonical"]', "href");
   check(canonical === "https://www.drakellyneisse.com.br/assistente-tecnico-medico/sp", "canonical da rota", canonical || "");
   const h1 = await page.textContent("h1");
-  check(h1.includes("em São Paulo"), "H1 menciona São Paulo", h1.trim().slice(0, 80));
+  check(h1.trim() === "Não enfrente a perícia sem um assistente técnico médico do seu lado.", "H1 idêntico ao da home (copy da mãe)", h1.trim().slice(0, 80));
+  // copy do <main> DEVE ser idêntica à da home (decisão do Ivan 10/07) — comparada no bloco [4]
+  const spMainText = (await page.textContent("main")).replace(/\s+/g, " ").trim();
   const footer = await page.textContent("footer");
   check(footer.includes("Rua Paim, 189 — Bela Vista, São Paulo/SP"), "rodapé com endereço da sede paulista");
   check(footer.includes("Atendimento em todo o estado de São Paulo e no Brasil"), "rodapé com atendimento SP+Brasil");
@@ -175,6 +177,8 @@ async function main() {
   check(robotsHome === "index, follow", "robots index,follow", robotsHome || "");
   const footerHome = await home.textContent("footer");
   check(footerHome.includes("Sede em Uberlândia/MG"), "rodapé sede MG intacto");
+  const homeMainText = (await home.textContent("main")).replace(/\s+/g, " ").trim();
+  check(homeMainText === spMainText, "copy do <main> da porta SP idêntica à da home");
   const tintimHome = await home.$$eval('a[href*="tintim.link"]', (as) => as.map((a) => a.href));
   check(tintimHome.length > 0 && tintimHome.every((h) => h.includes("b40002a5-951b-4014-a30a-17af3f592141")), "botões da home seguem no fluxo Tintim original", `${tintimHome.length} botões`);
   await home.waitForTimeout(600);

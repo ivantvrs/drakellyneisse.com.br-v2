@@ -5,7 +5,6 @@ import heroMobNew from "@/assets/kelly-hero-mobile.webp";
 import heroMobNewAvif from "@/assets/kelly-hero-mobile.avif";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import { useAtWhatsappUrl } from "./cta-at";
-import { SP_HERO_ATENDIMENTO } from "./geo-sp";
 
 // 1x1 transparente: o <img> do <picture> só o usa quando NENHUM <source media> casa.
 // Assim o hero mobile NÃO baixa no desktop e o recorte desktop NÃO baixa no mobile
@@ -18,9 +17,9 @@ const EmblemIcon = () => (
   </svg>
 );
 
-// `geo="sp"` (porta /assistente-tecnico-medico/sp): insere "em São Paulo" na manchete (mobile e
-// desktop) e a linha de atendimento estadual nos subtítulos. Sem geo, a home "/" fica idêntica.
-const Hero = ({ geo }: { geo?: "sp" }) => (
+// Copy ÚNICA para todas as portas (decisão do Ivan 10/07: a porta geo SP mantém a copy da
+// página mãe; o geo aparece só no rodapé e no deeplink Tintim, via AtGeoContext).
+const Hero = () => (
   <section id="inicio" className="relative overflow-hidden flex flex-col md:flex-row md:items-center md:min-h-screen" style={{ backgroundColor: '#0F0F0F' }}>
     {/* ░░ Fundo DESKTOP (≥768px) — halo + recorte da Dra. ░░ */}
     <div className="hidden md:block absolute inset-0 z-0">
@@ -110,7 +109,7 @@ const Hero = ({ geo }: { geo?: "sp" }) => (
         </p>
 
         <h1 className="font-display text-[2rem] font-bold leading-[1.1] mb-6" style={{ textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}>
-          <span style={{ color: '#F5F0E8' }}>Não enfrente a perícia{geo === "sp" ? " em São Paulo" : ""} sem um </span>
+          <span style={{ color: '#F5F0E8' }}>Não enfrente a perícia sem um </span>
           <span className="gold-shine">assistente técnico médico</span>
           <span style={{ color: '#F5F0E8' }}> do seu lado.</span>
         </h1>
@@ -147,7 +146,6 @@ const Hero = ({ geo }: { geo?: "sp" }) => (
     >
       <p className="text-[15.5px] leading-relaxed" style={{ color: '#A09A8D' }}>
         Atuação em perícias trabalhistas e cíveis: nexo causal, concausa, doença ocupacional e erro médico.
-        {geo === "sp" ? ` ${SP_HERO_ATENDIMENTO}` : ""}
       </p>
       <div className="mt-6 pt-5 relative">
         <span aria-hidden="true" className="absolute left-0 top-0" style={{ width: 48, height: 1, background: 'linear-gradient(90deg, rgba(212,168,83,0.7), transparent)' }} />
@@ -173,14 +171,13 @@ const Hero = ({ geo }: { geo?: "sp" }) => (
             mobile, mais rico em keyword) — aqui é heading ARIA p/ manter a semântica no viewport
             ≥768px sem duplicar a tag <h1> no HTML servido (o mobile fica display:none no desktop). */}
         <p role="heading" aria-level={1} className="font-display text-4xl md:text-5xl lg:text-[3.5rem] font-bold leading-[1.15] mb-7">
-          <span style={{ color: '#F5F0E8' }}>Não enfrente a perícia{geo === "sp" ? " em São Paulo" : ""} sem um </span>
+          <span style={{ color: '#F5F0E8' }}>Não enfrente a perícia sem um </span>
           <span className="gold-shine">assistente técnico médico</span>
           <span style={{ color: '#F5F0E8' }}> do seu lado.</span>
         </p>
 
         <p className="text-base md:text-lg leading-relaxed mb-10 max-w-lg" style={{ color: '#A09A8D' }}>
           Análise do caso, quesitos, acompanhamento da perícia e impugnação do laudo. Casos trabalhistas e cíveis: nexo, concausa, doença ocupacional, acidente de trabalho, erro médico e dano corporal.
-          {geo === "sp" ? ` ${SP_HERO_ATENDIMENTO}` : ""}
         </p>
 
         <a

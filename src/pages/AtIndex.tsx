@@ -23,13 +23,13 @@ import { AtGeoContext } from "@/components/at/cta-at";
 // títulos claros (feitos p/ fundo escuro) sobre fundos claros = a "dobra fantasma" relatada.
 // Árvore estática => hidratação 1:1 com o SSG, sem deslocamento. Ver [[reveal-dobras-useinview]].
 // `geo="sp"` (porta /assistente-tecnico-medico/sp — campanha Ads do estado de São Paulo):
-// mesma árvore, mudando SÓ hero (menção a São Paulo), sede do rodapé e o deeplink Tintim
-// (fluxo dedicado SP, via AtGeoContext + useAtWhatsappUrl). CRM/MG inalterado.
+// mesma árvore e MESMA copy da página mãe (decisão do Ivan 10/07); o geo muda SÓ a sede do
+// rodapé e o deeplink Tintim (fluxo dedicado SP, via AtGeoContext + useAtWhatsappUrl).
 const AtIndex = ({ geo }: { geo?: "sp" }) => (
   <AtGeoContext.Provider value={geo}>
     <AtHeader />
     <main>
-      <AtHero geo={geo} />
+      <AtHero />
       <AtParaQuem />
       <AtOQueE />
       <AtComparativo />
