@@ -16,6 +16,9 @@ export async function render(pathname = "/"): Promise<string> {
   } else if (pathname === "/assistente-tecnico-medico/sp" || pathname === "/assistente-tecnico-medico/sp/") {
     // Porta geo SP: mesma AtIndex da home, com hero/rodapé parametrizados p/ São Paulo.
     tree = <AtIndex geo="sp" />;
+  } else if (pathname === "/assistente-tecnico-medico/br" || pathname === "/assistente-tecnico-medico/br/") {
+    // Porta geo BR (campanha nacional): mesma AtIndex, rodapé com sede SP + atuação nacional.
+    tree = <AtIndex geo="br" />;
   } else {
     // "/" e qualquer outra rota caem na home (AtIndex).
     tree = <AtIndex />;

@@ -21,6 +21,7 @@ import { readFile, writeFile, rm, readdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { generateAtSpHtml, AT_SP_HTML, AT_SP_PATHNAME } from "./gen-at-sp.mjs";
+import { generateAtBrHtml, AT_BR_HTML, AT_BR_PATHNAME } from "./gen-at-br.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
@@ -28,6 +29,7 @@ const DIST_INDEX = path.join(DIST, "index.html");
 const DIST_EMPRESA = path.join(DIST, "empresa.html");
 const DIST_TRABALHISTA = path.join(DIST, "trabalhista.html");
 const DIST_AT_SP = path.join(DIST, "assistente-tecnico-medico-sp.html");
+const DIST_AT_BR = path.join(DIST, "assistente-tecnico-medico-br.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
 const ROOT_RE = /<div id="root">\s*<\/div>/;
 
@@ -117,8 +119,9 @@ async function inlineCriticalCss(html, trackingPrimitives) {
   const scriptsBefore = extractScripts(html);
 
   // entry CSS do app: index-*.css (HOME/AT), empresa-*.css (/empresa), trabalhista-*.css
-  // (/trabalhista) ou at-sp-*.css (porta geo /assistente-tecnico-medico/sp).
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp)-[^"]+\.css)"[^>]*>/i;
+  // (/trabalhista), at-sp-*.css (porta geo /assistente-tecnico-medico/sp) ou at-br-*.css
+  // (porta nacional /assistente-tecnico-medico/br).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp|at-br)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
   if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|trabalhista.css>) não encontrado");
   const href = m[1];
@@ -153,6 +156,10 @@ async function main() {
   //    gate próprio dentro do gerador). SEMPRE regenerada — nunca editada à mão.
   console.log("[build] gen (at-sp)…");
   await generateAtSpHtml();
+
+  // 0b) idem para a porta nacional /assistente-tecnico-medico/br (gate próprio no gerador).
+  console.log("[build] gen (at-br)…");
+  await generateAtBrHtml();
 
   // 1) client (LP advogado) — index.html exatamente como antes (output byte-idêntico).
   console.log("[build] client (index)…");
@@ -202,6 +209,19 @@ async function main() {
     },
   });
 
+  // 1e) client (porta nacional /assistente-tecnico-medico/br) — mesmo padrão do passo 1d,
+  //     com input key "at-br" -> assets at-br-*.{js,css} próprios.
+  console.log("[build] client (at-br)…");
+  await build({
+    build: {
+      outDir: "dist",
+      emptyOutDir: false,
+      rollupOptions: {
+        input: { "at-br": AT_BR_HTML },
+      },
+    },
+  });
+
   // 2) SSR (entry-server) — isSsrBuild fica true no vite.config.
   //    noExternal: true faz o Vite EMPACOTAR as deps (lucide-react, preact, etc.) aplicando
   //    o alias react->preact/compat. Sem isso, o Node carregaria o React real de lucide-react
@@ -246,6 +266,8 @@ async function main() {
   await processPage({ pathname: "/trabalhista", distFile: DIST_TRABALHISTA, label: "trabalhista", render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_TRABALHISTA });
   // Porta geo SP: MESMO funil AT da home (mesma conversão Ads zjEb…, mesmo whatsapp_click_at).
   await processPage({ pathname: AT_SP_PATHNAME, distFile: DIST_AT_SP,       label: "at-sp",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
+  // Porta nacional BR: idem — mesmo funil AT da home (mesma conversão Ads zjEb…, whatsapp_click_at).
+  await processPage({ pathname: AT_BR_PATHNAME, distFile: DIST_AT_BR,       label: "at-br",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
 
   // 6) limpa o bundle de servidor (não deve ir pro deploy)
   await rm(SERVER_OUT, { recursive: true, force: true });

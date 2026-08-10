@@ -4,11 +4,14 @@ import { useInView } from "@/hooks/useInView";
 import { AtGeoContext } from "./cta-at";
 
 // Na porta geo SP (AtGeoContext="sp") a seção troca as cidades: "São Paulo, Campinas ou
-// qualquer outra cidade do país" (pedido do Ivan 10/07). Na home segue Goiânia/Brasília/
-// Uberlândia. O restante da copy é idêntico nas duas portas.
+// qualquer outra cidade do país" (pedido do Ivan 10/07). Na porta BR (campanha nacional) não
+// há cidade nenhuma: "em todo o Brasil" / "qualquer cidade do país" (briefing 10/08). Na home
+// segue Goiânia/Brasília/Uberlândia. O restante da copy é idêntico nas três portas.
 const AtAtuacao = () => {
   const { ref, isVisible } = useInView();
-  const sp = useContext(AtGeoContext) === "sp";
+  const geo = useContext(AtGeoContext);
+  const sp = geo === "sp";
+  const br = geo === "br";
 
   return (
     <section
@@ -45,13 +48,19 @@ const AtAtuacao = () => {
         <h2 className="font-display text-xl md:text-2xl lg:text-[2rem] font-bold mb-5 leading-snug" style={{ color: "#F1EAD9", letterSpacing: "-0.018em" }}>
           {sp
             ? "Acompanhamento pericial em São Paulo e em todo o Brasil"
-            : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
+            : br
+              ? "Acompanhamento pericial em todo o Brasil"
+              : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
         </h2>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: "#A9A093" }}>
           A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, em{" "}
           {sp ? (
             <>
               <strong style={{ color: "#D6BE83" }}>São Paulo, Campinas</strong> ou qualquer outra cidade do país.
+            </>
+          ) : br ? (
+            <>
+              <strong style={{ color: "#D6BE83" }}>qualquer cidade do país</strong>.
             </>
           ) : (
             <>

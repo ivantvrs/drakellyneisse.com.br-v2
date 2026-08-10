@@ -33,6 +33,8 @@
     { "source": "/trabalhista/", "destination": "/trabalhista.html" },
     { "source": "/assistente-tecnico-medico/sp", "destination": "/assistente-tecnico-medico-sp.html" },
     { "source": "/assistente-tecnico-medico/sp/", "destination": "/assistente-tecnico-medico-sp.html" },
+    { "source": "/assistente-tecnico-medico/br", "destination": "/assistente-tecnico-medico-br.html" },
+    { "source": "/assistente-tecnico-medico/br/", "destination": "/assistente-tecnico-medico-br.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

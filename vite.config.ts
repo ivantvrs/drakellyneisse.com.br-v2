@@ -22,9 +22,11 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
       name: "portas-paralelas-dev-rewrite",
       apply: "serve",
       async configureServer(server) {
-        // regenera a porta geo SP a partir do index.html ao subir o dev (arquivo gitignorado)
+        // regenera as portas geo (SP e BR) a partir do index.html ao subir o dev (gitignoradas)
         const { generateAtSpHtml } = await import("./scripts/gen-at-sp.mjs");
         await generateAtSpHtml();
+        const { generateAtBrHtml } = await import("./scripts/gen-at-br.mjs");
+        await generateAtBrHtml();
         server.middlewares.use((req, res, next) => {
           if (req.url === "/empresa" || req.url === "/empresa/") req.url = "/empresa.html";
           if (req.url === "/trabalhista" || req.url === "/trabalhista/") req.url = "/trabalhista.html";
@@ -32,6 +34,8 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
           if (p === "/assistente-tecnico-medico/sp" || p === "/assistente-tecnico-medico/sp/") {
             // preserva a query (?utm_*, gclid…) — essencial p/ testar a propagação ao Tintim
             req.url = "/assistente-tecnico-medico-sp.html" + (q ? "?" + q : "");
+          } else if (p === "/assistente-tecnico-medico/br" || p === "/assistente-tecnico-medico/br/") {
+            req.url = "/assistente-tecnico-medico-br.html" + (q ? "?" + q : "");
           } else if (p === "/assistente-tecnico-medico" || p === "/assistente-tecnico-medico/") {
             res.writeHead(301, { Location: "/" + (q ? "?" + q : "") });
             res.end();

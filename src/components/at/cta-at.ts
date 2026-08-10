@@ -12,10 +12,14 @@ import { AT_SP_WHATSAPP_URL } from "./geo-sp";
 export const AT_WHATSAPP_URL =
   "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/b40002a5-951b-4014-a30a-17af3f592141";
 
-// Porta geo da página (undefined = home nacional; "sp" = /assistente-tecnico-medico/sp).
+// Porta geo da página (undefined = home nacional; "sp" = /assistente-tecnico-medico/sp;
+// "br" = /assistente-tecnico-medico/br, campanha nacional).
 // Provido por AtIndex; resolve o deeplink Tintim certo por porta em TODOS os botões via hook.
-export const AtGeoContext = createContext<"sp" | undefined>(undefined);
+export type AtGeo = "sp" | "br";
+export const AtGeoContext = createContext<AtGeo | undefined>(undefined);
 
+// Só a porta SP tem fluxo Tintim dedicado. A porta BR usa o deeplink da home de propósito
+// (mesmo número/mensagem; ver o comentário em geo-br.ts) — por isso cai no default aqui.
 export function useAtWhatsappUrl(): string {
   return useContext(AtGeoContext) === "sp" ? AT_SP_WHATSAPP_URL : AT_WHATSAPP_URL;
 }
