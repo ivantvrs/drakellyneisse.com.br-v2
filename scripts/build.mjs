@@ -30,6 +30,8 @@ const DIST_EMPRESA = path.join(DIST, "empresa.html");
 const DIST_TRABALHISTA = path.join(DIST, "trabalhista.html");
 const DIST_AT_SP = path.join(DIST, "assistente-tecnico-medico-sp.html");
 const DIST_AT_BR = path.join(DIST, "assistente-tecnico-medico-br.html");
+const NOT_FOUND_HTML = path.join(ROOT, "404.html");
+const DIST_404 = path.join(DIST, "404.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
 const ROOT_RE = /<div id="root">\s*<\/div>/;
 
@@ -119,9 +121,8 @@ async function inlineCriticalCss(html, trackingPrimitives) {
   const scriptsBefore = extractScripts(html);
 
   // entry CSS do app: index-*.css (HOME/AT), empresa-*.css (/empresa), trabalhista-*.css
-  // (/trabalhista), at-sp-*.css (porta geo /assistente-tecnico-medico/sp) ou at-br-*.css
-  // (porta nacional /assistente-tecnico-medico/br).
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp|at-br)-[^"]+\.css)"[^>]*>/i;
+  // (/trabalhista), at-sp-*.css e at-br-*.css (portas geo) ou notfound-*.css (404.html).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp|at-br|notfound)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
   if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|trabalhista.css>) não encontrado");
   const href = m[1];
@@ -222,6 +223,20 @@ async function main() {
     },
   });
 
+  // 1f) client (404.html) — build ISOLADO no MESMO dist/, mesmo padrão das portas acima.
+  //     Input key "notfound" (e não "404": o nome vira prefixo dos assets e um chunk começando
+  //     com dígito é pedir confusão nos regex/globs de asset).
+  console.log("[build] client (404)…");
+  await build({
+    build: {
+      outDir: "dist",
+      emptyOutDir: false,
+      rollupOptions: {
+        input: { notfound: NOT_FOUND_HTML },
+      },
+    },
+  });
+
   // 2) SSR (entry-server) — isSsrBuild fica true no vite.config.
   //    noExternal: true faz o Vite EMPACOTAR as deps (lucide-react, preact, etc.) aplicando
   //    o alias react->preact/compat. Sem isso, o Node carregaria o React real de lucide-react
@@ -268,6 +283,10 @@ async function main() {
   await processPage({ pathname: AT_SP_PATHNAME, distFile: DIST_AT_SP,       label: "at-sp",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
   // Porta nacional BR: idem — mesmo funil AT da home (mesma conversão Ads zjEb…, whatsapp_click_at).
   await processPage({ pathname: AT_BR_PATHNAME, distFile: DIST_AT_BR,       label: "at-br",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
+  // 404: sem preload de hero (não tem imagem) e sem primitivos de tracking (a página não carrega
+  // NENHUMA tag de medição de propósito — ver 404.html). O gate byte-a-byte dos <script> continua
+  // valendo: só o entry do Vite deve existir ali.
+  await processPage({ pathname: "/404",         distFile: DIST_404,         label: "404",         render, heroPreload: "",               trackingPrimitives: [] });
 
   // 6) limpa o bundle de servidor (não deve ir pro deploy)
   await rm(SERVER_OUT, { recursive: true, force: true });
