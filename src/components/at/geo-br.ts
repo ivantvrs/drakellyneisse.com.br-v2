@@ -15,9 +15,10 @@ export const BR_ENDERECO_SEDE = SP_ENDERECO_SEDE;
 export const BR_FOOTER_SEDE_LINE =
   `Sede: ${BR_ENDERECO_SEDE} · Atuação nacional · Atendimento em todo o Brasil (presencial e remoto)`;
 
-// WhatsApp: esta porta usa o MESMO deeplink Tintim da home (AT_WHATSAPP_URL em cta-at.ts) —
-// mesmo número, mesma mensagem de triagem, mesmo comportamento. A /sp tem fluxo Tintim próprio
-// porque a campanha dela é regional; a /br é nacional como a home, então herdar o fluxo da mãe é
-// o menor desvio de rastreio possível enquanto não existir um fluxo dedicado da campanha [BR].
-// QUANDO o fluxo dedicado for criado no Tintim: exportar AT_BR_WHATSAPP_URL aqui, resolvê-la em
-// useAtWhatsappUrl() e trocar o deeplink do FAB em scripts/gen-at-br.mjs (espelhando gen-at-sp).
+// Deeplink Tintim DEDICADO da campanha [BR] (mesma conta 9032d846… da home e da SP, fluxo
+// próprio — separa o rastreio no Tintim por porta). Criado pelo Ivan em 10/08/2026.
+// A mensagem ("Olá, Dra. Kelly! Gostaria de enviar os documentos do meu processo para análise.")
+// e o número (34) 99687-8758 vêm do Tintim no 302 — NÃO são montados aqui e não devem ser
+// duplicados no código. DEVE casar com o patch do FAB em scripts/gen-at-br.mjs.
+export const AT_BR_WHATSAPP_URL =
+  "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/59de1b8b-00ba-4bfd-a87b-d7f30b9a9472";

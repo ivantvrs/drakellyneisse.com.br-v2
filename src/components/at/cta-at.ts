@@ -8,6 +8,7 @@
 // DEVE casar com o TINTIM hardcoded no rewrite do FAB em at.html.
 import { createContext, useContext } from "react";
 import { AT_SP_WHATSAPP_URL } from "./geo-sp";
+import { AT_BR_WHATSAPP_URL } from "./geo-br";
 
 export const AT_WHATSAPP_URL =
   "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/b40002a5-951b-4014-a30a-17af3f592141";
@@ -18,8 +19,11 @@ export const AT_WHATSAPP_URL =
 export type AtGeo = "sp" | "br";
 export const AtGeoContext = createContext<AtGeo | undefined>(undefined);
 
-// Só a porta SP tem fluxo Tintim dedicado. A porta BR usa o deeplink da home de propósito
-// (mesmo número/mensagem; ver o comentário em geo-br.ts) — por isso cai no default aqui.
+// Cada porta tem seu fluxo Tintim dedicado (mesma conta, tokens distintos — separa o rastreio
+// por campanha no Tintim). A home segue com AT_WHATSAPP_URL.
 export function useAtWhatsappUrl(): string {
-  return useContext(AtGeoContext) === "sp" ? AT_SP_WHATSAPP_URL : AT_WHATSAPP_URL;
+  const geo = useContext(AtGeoContext);
+  if (geo === "sp") return AT_SP_WHATSAPP_URL;
+  if (geo === "br") return AT_BR_WHATSAPP_URL;
+  return AT_WHATSAPP_URL;
 }

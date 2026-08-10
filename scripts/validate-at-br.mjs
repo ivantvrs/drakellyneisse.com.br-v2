@@ -25,9 +25,16 @@ const DIST = path.join(ROOT, "dist");
 const PORT = 4198;
 const BASE = `http://127.0.0.1:${PORT}`;
 const AW_LABEL = "AW-16690821688/zjEbCOiG7MAcELj05pY-";
-const TINTIM_HOME_TOKEN = "b40002a5-951b-4014-a30a-17af3f592141"; // fluxo Tintim da home (herdado pela BR)
+const TINTIM_BR_TOKEN = "59de1b8b-00ba-4bfd-a87b-d7f30b9a9472";   // fluxo dedicado da campanha [BR]
+const TINTIM_HOME_TOKEN = "b40002a5-951b-4014-a30a-17af3f592141"; // fluxo Tintim da home
 const TINTIM_SP_TOKEN = "f42174e7-24cc-4583-a56b-9a6161434a15";   // fluxo dedicado da porta SP
-const UTMS = "utm_source=google&utm_medium=cpc&utm_campaign=teste_br_validacao&utm_term=assistente%20tecnico%20medico&matchtype=e&gclid=TESTGCLID_BR_123";
+
+// QA padrão roda SEM gclid (pedido do Ivan 10/08: não sujar a conta do Ads com clique de teste).
+// QA_GCLID=1 acrescenta um gclid sintético p/ o teste de repasse — só em janela combinada.
+const COM_GCLID = process.env.QA_GCLID === "1";
+const UTMS =
+  "utm_source=google&utm_medium=cpc&utm_campaign=teste_br_validacao&utm_term=assistente%20tecnico%20medico&matchtype=e" +
+  (COM_GCLID ? "&gclid=TESTGCLID_BR_123" : "");
 
 // as DUAS únicas frases que a porta BR muda no <main> em relação à home (item 3 do briefing)
 const ATUACAO_BR_H2 = "Acompanhamento pericial em todo o Brasil";
@@ -107,6 +114,17 @@ async function main() {
   const h1 = await page.textContent("h1");
   check(h1.trim() === "Não enfrente a perícia sem um assistente técnico médico do seu lado.", "H1 idêntico ao da home (copy da mãe)", h1.trim().slice(0, 80));
 
+  // JSON-LD: ProfessionalService com url PRÓPRIA da rota e areaServed = Country/Brasil.
+  // Sem `address` — a /sp também não tem (o endereço vive só no rodapé visível).
+  const ld = await page.$$eval('script[type="application/ld+json"]', (ss) => ss.map((s) => JSON.parse(s.textContent)));
+  const svc = ld.find((o) => o["@type"] === "ProfessionalService");
+  check(!!svc, "JSON-LD ProfessionalService presente");
+  check(svc?.url === "https://www.drakellyneisse.com.br/assistente-tecnico-medico/br", "JSON-LD url da própria rota", svc?.url || "(ausente)");
+  check(svc?.areaServed?.["@type"] === "Country" && svc?.areaServed?.name === "Brasil", "JSON-LD areaServed = Country/Brasil");
+  check(!svc?.address, "JSON-LD sem address (igual à /sp)");
+  const person = ld.find((o) => o["@type"] === "Person");
+  check(person?.url === "https://www.drakellyneisse.com.br/", "JSON-LD Person segue apontando para a home (intencional)", person?.url || "");
+
   const brMainText = (await page.textContent("main")).replace(/\s+/g, " ").trim();
   check(brMainText.includes(ATUACAO_BR_H2), "Atuação BR: título nacional");
   check(brMainText.includes(ATUACAO_BR_P), "Atuação BR: 'qualquer cidade do país' no texto");
@@ -127,9 +145,11 @@ async function main() {
   if (pv) {
     const dl = decodeURIComponent(new URL(pv).searchParams.get("dl") || "");
     check(dl.includes("/assistente-tecnico-medico/br"), "page_view dl com path da rota", dl.slice(0, 110));
-    check(dl.includes("utm_campaign=teste_br_validacao") && dl.includes("gclid=TESTGCLID_BR_123"), "page_view dl carrega UTMs+gclid");
-    const gclidParam = new URL(pv).searchParams.get("gclid");
-    check(gclidParam === "TESTGCLID_BR_123", "gclid como param do beacon (atribuição Ads)", gclidParam || "(ausente)");
+    check(dl.includes("utm_campaign=teste_br_validacao"), "page_view dl carrega as UTMs");
+    if (COM_GCLID) {
+      const gclidParam = new URL(pv).searchParams.get("gclid");
+      check(gclidParam === "TESTGCLID_BR_123", "gclid como param do beacon (atribuição Ads)", gclidParam || "(ausente)");
+    }
   }
 
   // trava a navegação (preventDefault antes dos handlers de tracking) p/ clicar em série
@@ -164,15 +184,23 @@ async function main() {
         (Array.isArray(e) && e[0] === "event" && e[1] === "whatsapp_click_at" && e[2] && e[2].transport_type === "beacon") ||
         (e && !Array.isArray(e) && e.event === "whatsapp_click_at")
     );
-    const temUtm = b.href.includes("utm_campaign=teste_br_validacao") && b.href.includes("gclid=TESTGCLID_BR_123");
+    const temUtm = b.href.includes("utm_campaign=teste_br_validacao") && (!COM_GCLID || b.href.includes("gclid=TESTGCLID_BR_123"));
     check(temAw, `[${b.cta}] conversão AW (${AW_LABEL.split("/")[1]}, beacon)`);
     check(temGa4, `[${b.cta}] evento GA4 whatsapp_click_at`);
-    check(temUtm, `[${b.cta}] UTMs+gclid propagados ao Tintim`, b.href.slice(0, 130));
-    check(b.href.includes(TINTIM_HOME_TOKEN), `[${b.cta}] deeplink Tintim do fluxo nacional (home)`);
+    check(temUtm, `[${b.cta}] UTMs${COM_GCLID ? "+gclid" : ""} propagados ao Tintim`, b.href.slice(0, 130));
+    check(b.href.includes(TINTIM_BR_TOKEN), `[${b.cta}] deeplink Tintim do fluxo [BR]`);
     check(!b.href.includes(TINTIM_SP_TOKEN), `[${b.cta}] sem deeplink da porta SP`);
+    check(!b.href.includes(TINTIM_HOME_TOKEN), `[${b.cta}] sem deeplink da home`);
   }
   if (awHits.length) console.log(`  bônus: ${awHits.length} request(s) de conversão AW observados na rede`);
   console.log(`  beacons GA4 observados na rede: ${gaHits.length}`);
+
+  // MECANISMO (item 3 do briefing 10/08): a /br tem que usar o MESMO esquema da /sp que está em
+  // produção — gtag AW inline no clique + beacon MANUAL do GA4 (/g/collect) para o
+  // whatsapp_click_at. Se alguém migrar esta porta para gtag('config', 'G-…') o evento deixa de
+  // sair por /g/collect e este check falha de propósito.
+  const wppBeacons = gaHits.filter((u) => u.includes("en=whatsapp_click_at")).length;
+  check(wppBeacons >= botoes.length, `whatsapp_click_at por beacon manual /g/collect (1 por botão)`, `${wppBeacons} beacon(s) p/ ${botoes.length} botões`);
   await page.close();
 
   // ── 4) Home "/" sem regressão + diff de copy ──────────────────────────────
