@@ -2,6 +2,7 @@ import { renderToStringAsync } from "preact-render-to-string";
 import App from "./App";
 import EmpresaIndex from "./pages/EmpresaIndex";
 import AtIndex from "./pages/AtIndex";
+import NotFoundPage from "./pages/NotFoundPage";
 
 // Entry usado SÓ no build (SSG). renderToStringAsync resolve os lazy()/Suspense das páginas,
 // produzindo o HTML completo que é injetado no #root do dist/{index,empresa,trabalhista}.html.
@@ -16,6 +17,9 @@ export async function render(pathname = "/"): Promise<string> {
   } else if (pathname === "/assistente-tecnico-medico/sp" || pathname === "/assistente-tecnico-medico/sp/") {
     // Porta geo SP: mesma AtIndex da home, com hero/rodapé parametrizados p/ São Paulo.
     tree = <AtIndex geo="sp" />;
+  } else if (pathname === "/404") {
+    // dist/404.html — servido pela Vercel com status 404 nos caminhos sem rewrite.
+    tree = <NotFoundPage />;
   } else {
     // "/" e qualquer outra rota caem na home (AtIndex).
     tree = <AtIndex />;
