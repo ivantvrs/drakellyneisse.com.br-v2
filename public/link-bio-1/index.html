@@ -1,0 +1,899 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dra. Kelly Neisse | Assistência Técnica Médica em Perícia Judicial</title>
+  <meta name="description" content="Escolha por onde falar com a Dra. Kelly Neisse: advogado, empresa ou parte no processo. Assistência técnica médica em perícia judicial. CRM/MG 109153." />
+
+  <!-- Página de link da bio do Instagram: NÃO deve ser indexada nem concorrer com a LP. -->
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#0B0A08" />
+
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="Dra. Kelly Neisse" />
+  <meta property="og:title" content="Dra. Kelly Neisse | Assistência Técnica Médica em Perícia Judicial" />
+  <meta property="og:description" content="Escolha por onde falar: advogado, empresa ou parte no processo." />
+  <meta property="og:image" content="https://www.drakellyneisse.com.br/og-at.jpg" />
+  <meta property="og:url" content="https://www.drakellyneisse.com.br/link-bio-1" />
+
+  <!-- Playfair Display (títulos, com itálico) + Montserrat (texto/labels) — SEM bloquear o render (media=print → all no onload).
+       Fallback é Georgia; se a fonte não chegar, a página continua legível e no tom certo. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&display=swap" /></noscript>
+
+  <!-- ────────────────────────────────────────────────────────────────────────────────────
+       TRACKING DESTA PÁGINA — leia antes de mexer.
+
+       O QUE ENTRA:
+         · AW-16690821688 em `config` = tag de PÚBLICO (remarketing). Não conta conversão.
+         · G-N6G6FSD34E (GA4) com send_page_view:false. O page_view vem do beacon manual
+           no fim do <body>, igual ao index.html.
+         · Evento de clique: `linkbio_click`.
+
+       O QUE NÃO ENTRA, DE PROPÓSITO (e não deve entrar depois):
+         · NENHUMA ação de conversão do Google Ads — nenhum send_to de label AW-*/*.
+           O tráfego daqui é orgânico do Instagram; creditá-lo como conversão de campanha
+           envenena o CPA e o aprendizado do lance das campanhas pagas.
+         · Os eventos de clique das portas pagas (os que terminam em _at / _empresa). São key
+           events do funil pago e alimentam a leitura do funil; contaminá-los com tráfego de
+           bio quebra a série histórica. Por isso o evento daqui tem nome próprio: linkbio_click.
+         · GTM. A página não carrega o contêiner — é o caminho por onde uma tag de conversão
+           entraria sem passar por este arquivo.
+       ──────────────────────────────────────────────────────────────────────────────────── -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16690821688"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-16690821688', { 'send_page_view': false });
+    gtag('config', 'G-N6G6FSD34E', { 'send_page_view': false });
+  </script>
+
+  <style>
+    /* ══════════════════════════════════════════════════════════════════════════════════
+       PALETA OFICIAL — Dra. Kelly Jaqueline Neisse. Só estes hex podem aparecer aqui.
+
+         Fundos    #0B0A08 preto-tinta (padrão) · #100E0B preto-quente (cards)
+                   #1C1813 marrom-carvão (blocos de contraste)
+         Ouro      #D4A853 ouro claro (acento) · #A8843C ouro profundo (filetes, ícones)
+         Neutros   #F5EFE2 marfim (títulos) · #E9E3D6 areia (texto corrido)
+                   #A59D8D cinza-pedra (apoio) · #8A8275 cinza-fumaça (labels)
+
+       REGRAS QUE ESTE ARQUIVO OBEDECE:
+         1. Ouro é RARO. #D4A853 preenchido: só o CTA do hero e o do fechamento. Botões
+            dos cards são ghost. Medalhões e trilha de luz usam APENAS os dois ouros
+            oficiais (sombreado entre eles p/ volume — pedido explícito do cliente).
+         2. Fundo padrão #0B0A08; nada de cinza intermediário.
+         3. Sombras externas pretas e difusas; o "glow" vem de borda/filete de ouro.
+
+       PROIBIDO: azul, roxo, verde, vermelho, gradiente de cor INVENTADA (sombrear entre
+       valores oficiais da paleta é permitido), #FFFFFF e #000000 como fill.
+
+       DIREÇÃO: cabeçalho aberto com retrato cruzando o fio de base; cards FLUTUANTES
+       (sombra dupla + filete de luz) com medalhões duotônicos vazando a moldura; no
+       hover uma linha de luz percorre a borda do card em loop (conic-gradient + máscara
+       de anel + @property); intro de marca ≤2s com o monograma (1x por sessão, pulada
+       em prefers-reduced-motion e quando JS não roda).
+       ══════════════════════════════════════════════════════════════════════════════════ */
+    :root {
+      --bg:         #0B0A08;
+      --card:       #100E0B;
+      --contraste:  #1C1813;
+      --ouro:       #D4A853;
+      --ouro-fundo: #A8843C;
+      --marfim:     #F5EFE2;
+      --areia:      #E9E3D6;
+      --pedra:      #A59D8D;
+      --fumaca:     #8A8275;
+      --hairline:   rgba(168,132,60,.18);
+      --serif:      "Playfair Display", Georgia, "Times New Roman", serif;
+      --sans:       "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --easing:     cubic-bezier(.2,.7,.25,1);
+      --intro:      0s;  /* html.tem-intro atrasa a entrada do conteúdo p/ depois do loader */
+    }
+    html.tem-intro { --intro: 1.05s; }
+
+    /* ângulo animável da trilha de luz que contorna o card no hover */
+    @property --ang {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    /* Grão de filme: SVG inline monocromático como background do BODY — textura, não cor.
+       Backgrounds de body ficam fora dos candidatos a LCP; a métrica segue sendo a foto. */
+    body {
+      margin: 0;
+      background: #0B0A08 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E") repeat;
+      color: var(--areia);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ::selection { background: var(--ouro-fundo); color: #0B0A08; }
+
+    .wrap {
+      position: relative;
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 30px 16px 44px;
+    }
+
+    /* ── INTRO DE MARCA (≤2s, 1x por sessão; só aparece se o JS ligar) ──────── */
+    .intro {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      display: grid;
+      place-items: center;
+      background: var(--bg);
+      pointer-events: none;
+      transition: opacity .5s ease;
+    }
+    .intro[hidden] { display: none; }
+    .intro--out { opacity: 0; }
+    .intro__miolo { display: grid; justify-items: center; }
+    .intro__kn { width: 64px; height: auto; animation: intro-kn .8s var(--easing) .1s both; }
+    .intro__linha {
+      width: 0;
+      height: 1px;
+      margin-top: 20px;
+      background: linear-gradient(90deg, rgba(168,132,60,0), var(--ouro), rgba(168,132,60,0));
+      animation: intro-linha .85s var(--easing) .4s both;
+    }
+    @keyframes intro-kn { from { opacity: 0; transform: translateY(10px) scale(.94); } to { opacity: 1; transform: none; } }
+    @keyframes intro-linha { to { width: 130px; } }
+
+    /* ── CABEÇALHO ABERTO (não é card) ───────────────────────────────────────
+       Texto à esquerda, retrato à direita em camada própria cruzando o fio de base
+       (a base do recorte esfuma por máscara — nunca um corte reto aparente). */
+    .header {
+      position: relative;
+      padding: 4px 2px 30px;
+      margin-bottom: 30px;
+    }
+    .header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(168,132,60,0), rgba(168,132,60,.3) 14%, rgba(168,132,60,.3) 72%, rgba(168,132,60,0));
+    }
+
+    .header__foto {
+      position: absolute;
+      bottom: -16px;
+      right: -14px;
+      z-index: 2;
+      height: 100%;
+      max-height: 274px;
+      width: auto;
+      -webkit-mask-image: linear-gradient(180deg, #0B0A08 86%, rgba(11,10,8,0) 99%);
+      mask-image: linear-gradient(180deg, #0B0A08 86%, rgba(11,10,8,0) 99%);
+      filter: drop-shadow(-12px 10px 24px rgba(0,0,0,.6));
+      pointer-events: none;
+    }
+
+    .header__texto { position: relative; max-width: 55%; }
+    .header .kn { width: 38px; margin-bottom: 14px; opacity: .92; }
+    .header__nome {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 25px;
+      line-height: 1.08;
+      margin: 0 0 6px;
+      color: var(--marfim);
+    }
+    .header__crm {
+      margin: 0 0 16px;
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--fumaca);
+    }
+    .header__h1 {
+      font-family: var(--serif);
+      font-weight: 700;
+      font-size: 17.5px;
+      line-height: 1.28;
+      margin: 0 0 9px;
+      color: var(--marfim);
+      text-shadow: 0 2px 4px rgba(0,0,0,.6);
+    }
+    .header__h1 em { font-style: italic; font-weight: 600; }
+    .header__sub {
+      margin: 0 0 16px;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--pedra);
+    }
+    .header__micro {
+      margin: 10px 0 0;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--fumaca);
+    }
+
+    /* ── CTA de ouro: compacto, à esquerda (só hero e fechamento) ───────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 40px;
+      padding: 0 15px;
+      border-radius: 10px;
+      background: var(--ouro);
+      color: #0B0A08;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      box-shadow: inset 0 1px 0 rgba(245,239,226,.5), 0 6px 16px rgba(0,0,0,.5);
+      transition: filter .16s var(--easing), transform .16s var(--easing), box-shadow .16s var(--easing);
+    }
+    .btn:hover { filter: brightness(1.07); box-shadow: inset 0 1px 0 rgba(245,239,226,.5), 0 9px 22px rgba(0,0,0,.55); }
+    .btn:active { transform: translateY(1px); }
+    .btn svg { width: 15px; height: 15px; flex: none; }
+    .btn:focus-visible { outline: 2px solid var(--marfim); outline-offset: 3px; }
+
+    /* ── Cards FLUTUANTES ────────────────────────────────────────────────────
+       Sombra dupla (difusa + próxima) pra descolar do fundo, filete de luz no topo,
+       overflow visível pros medalhões vazarem a moldura. */
+    .cards { display: grid; gap: 20px; }
+
+    .card {
+      position: relative;
+      border-radius: 16px;
+      border: 1px solid var(--hairline);
+      background: linear-gradient(180deg, var(--contraste) 0%, var(--card) 58%);
+      box-shadow:
+        0 22px 44px rgba(0,0,0,.55),
+        0 4px 12px rgba(0,0,0,.45),
+        inset 0 1px 0 rgba(245,239,226,.07);
+    }
+
+    /* trilha de luz que CONTORNA a borda no hover — anel de conic-gradient girando,
+       recortado por máscara (só o 1px do perímetro acende). Ouros oficiais + marfim. */
+    .card--trail::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      padding: 1px;
+      background: conic-gradient(from var(--ang),
+        rgba(168,132,60,0) 0deg,
+        rgba(168,132,60,0) 288deg,
+        rgba(168,132,60,.75) 322deg,
+        rgba(245,239,226,.9) 340deg,
+        rgba(212,168,83,.85) 350deg,
+        rgba(168,132,60,0) 360deg);
+      -webkit-mask: linear-gradient(#0B0A08 0 0) content-box, linear-gradient(#0B0A08 0 0);
+      -webkit-mask-composite: xor;
+              mask: linear-gradient(#0B0A08 0 0) content-box, linear-gradient(#0B0A08 0 0);
+              mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .3s var(--easing);
+      pointer-events: none;
+    }
+    .card--trail:hover::before { opacity: 1; animation: circuito 2.6s linear infinite; }
+    @keyframes circuito { to { --ang: 360deg; } }
+
+    .item {
+      display: block;
+      padding: 17px 18px 16px;
+      transition: border-color .2s var(--easing), transform .2s var(--easing), box-shadow .2s var(--easing);
+    }
+    .item:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168,132,60,.42);
+      box-shadow:
+        0 30px 54px rgba(0,0,0,.62),
+        0 6px 14px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(168,132,60,.3);
+    }
+    .item:active { transform: translateY(-1px) scale(.995); }
+    .item:focus-visible { outline: 2px solid var(--ouro-fundo); outline-offset: 3px; }
+
+    /* medalhão duotônico vazando a moldura — camada acima, flutuação idle no <svg>
+       interno (o wrapper fica livre pro deslocamento do hover sem conflito) */
+    .flutua {
+      position: absolute;
+      z-index: 2;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.7));
+      pointer-events: none;
+      transition: transform .24s var(--easing);
+    }
+    .flutua svg { display: block; animation: paira 4.5s ease-in-out infinite; }
+    .item:hover .flutua { transform: translateY(-3px) rotate(-2deg); }
+    @keyframes paira { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+    .flutua--balanca { top: -19px; right: 14px; width: 52px; }
+    .flutua--balanca svg { animation-delay: 0s; }
+    .flutua--selo    { top: 50%; right: -17px; width: 50px; margin-top: -25px; }
+    .flutua--selo svg { animation-delay: .9s; }
+    .item:hover .flutua--selo { transform: translateX(3px) rotate(3deg); }
+    .flutua--lupa    { top: -19px; right: 16px; width: 50px; }
+    .flutua--lupa svg { animation-delay: 1.7s; }
+    .flutua--fluxo   { top: -17px; right: 14px; width: 52px; }
+    .flutua--fluxo svg { animation-delay: 2.5s; }
+
+    /* card 2 em marrom-carvão: segunda textura da paleta, quebra o ritmo da coluna */
+    .item--carvao { background: var(--contraste); }
+
+    .label {
+      margin: 0 0 6px;
+      font-size: 8.5px;
+      font-weight: 600;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--fumaca);
+    }
+    .item h2 {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 15.5px;
+      line-height: 1.26;
+      margin: 0 0 5px;
+      padding-right: 40px;
+      color: var(--marfim);
+    }
+    .item p {
+      margin: 0 0 12px;
+      font-size: 11.5px;
+      line-height: 1.5;
+      padding-right: 26px;
+      color: var(--pedra);
+    }
+
+    /* botão ghost dos cards: botão de verdade, compacto, sem ouro preenchido */
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 34px;
+      padding: 0 15px;
+      border-radius: 9px;
+      border: 1px solid rgba(168,132,60,.42);
+      background: rgba(11,10,8,.55);
+      color: var(--marfim);
+      font-size: 9.5px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: border-color .16s var(--easing), background .16s var(--easing);
+    }
+    .btn-ghost .seta { color: var(--ouro-fundo); transition: transform .16s var(--easing); }
+    .item:hover .btn-ghost { border-color: rgba(168,132,60,.7); background: var(--contraste); }
+    .item:hover .btn-ghost .seta { transform: translateX(3px); }
+
+    /* ── Fechamento: mais forte, ainda leve ─────────────────────────────────── */
+    .final {
+      display: block;
+      margin-top: 26px;
+      padding: 22px 20px 18px;
+      background: var(--contraste);
+      border-color: rgba(168,132,60,.3);
+      transition: border-color .2s var(--easing), transform .2s var(--easing), box-shadow .2s var(--easing);
+    }
+    .final:hover {
+      transform: translateY(-4px);
+      border-color: rgba(168,132,60,.5);
+      box-shadow:
+        0 30px 54px rgba(0,0,0,.62),
+        0 6px 14px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(168,132,60,.3);
+    }
+    .final:focus-visible { outline: 2px solid var(--ouro-fundo); outline-offset: 3px; }
+    /* o emblema de bronze da marca vaza o topo — flutuação idle direto no <img> */
+    .final .emblema {
+      position: absolute;
+      top: -22px;
+      right: 18px;
+      width: 48px;
+      height: auto;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,.7));
+      animation: paira 4.5s ease-in-out 1.3s infinite;
+    }
+    .final:hover .emblema { filter: drop-shadow(0 6px 12px rgba(0,0,0,.7)) brightness(1.12); }
+    .final h2 {
+      font-family: var(--serif);
+      font-weight: 600;
+      font-size: 17.5px;
+      line-height: 1.2;
+      margin: 0 0 5px;
+      padding-right: 56px;
+      color: var(--marfim);
+    }
+    .final p {
+      margin: 0 0 14px;
+      max-width: 26em;
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: var(--pedra);
+    }
+    .final .micro {
+      margin: 10px 0 0;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--fumaca);
+    }
+
+    /* ── Rodapé: curto, nacional, discreto ──────────────────────────────────── */
+    footer {
+      margin-top: 34px;
+      text-align: center;
+      font-size: 10.5px;
+      line-height: 1.7;
+      color: var(--fumaca);
+    }
+    footer::before {
+      content: "◆";
+      display: block;
+      margin-bottom: 12px;
+      font-size: 7px;
+      color: var(--ouro-fundo);
+      opacity: .6;
+    }
+    footer strong { color: var(--pedra); font-weight: 600; }
+    footer .aviso { margin-top: 6px; }
+
+    /* height:auto: o <img> declara width/height intrínsecos (reserva de espaço, CLS zero)
+       e sem isto a altura declarada vence a largura do CSS. */
+    .kn { height: auto; }
+
+    /* ── Entrada escalonada (atrasada pelo --intro quando o loader roda) ─────
+       A foto anima SÓ por transform (nunca opacity): é o elemento de LCP e um fade a
+       partir de 0 empurraria a métrica pro fim da animação. */
+    @keyframes rise  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    @keyframes desce { from { transform: translateY(-10px); } to { transform: none; } }
+    .header__texto { animation: rise .6s var(--easing) var(--intro) both; }
+    .header__foto  { animation: desce .75s var(--easing) var(--intro) both; }
+    .cards .item:nth-child(1) { animation: rise .55s var(--easing) calc(var(--intro) + .14s) both; }
+    .cards .item:nth-child(2) { animation: rise .55s var(--easing) calc(var(--intro) + .2s) both; }
+    .cards .item:nth-child(3) { animation: rise .55s var(--easing) calc(var(--intro) + .26s) both; }
+    .cards .item:nth-child(4) { animation: rise .55s var(--easing) calc(var(--intro) + .32s) both; }
+    .final  { animation: rise .55s var(--easing) calc(var(--intro) + .38s) both; }
+    footer  { animation: rise .55s var(--easing) calc(var(--intro) + .46s) both; }
+
+    /* Telas estreitas: a coluna de texto cede um pouco e a foto encolhe */
+    @media (max-width: 374px) {
+      .header__texto { max-width: 59%; }
+      .header__foto { max-height: 248px; right: -10px; }
+      .header__h1 { font-size: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .header__texto, .header__foto, .cards .item, .final, footer,
+      .flutua svg, .final .emblema, .intro__kn, .intro__linha { animation: none; }
+      .card--trail:hover::before { animation: none; opacity: .5; }
+      .item, .btn, .btn-ghost, .btn-ghost .seta, .flutua, .final { transition: none; }
+      .item:hover, .item:active, .btn:active, .final:hover { transform: none; }
+      .item:hover .flutua, .item:hover .flutua--selo, .item:hover .btn-ghost .seta { transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ══════════════════════════════════════════════════════════════════════════════════════
+       LINKS DE DESTINO — ponto único de manutenção.
+       Container Tintim: 9032d846-c29e-46d1-a300-01417d56fcb0 (o mesmo dos 7 links do site).
+
+         hero            e60e4650-d8e3-402e-b7fb-bef6594db534   utm_content=hero
+         advogado        d4a837d4-c310-4502-b933-e726af0269d6   utm_content=advogado
+         empresa         13a9207b-f52a-42bc-b999-2a1d29946baf   utm_content=empresa
+         pessoa-fisica   9266bf13-c5bf-4d35-973d-0665e0cbe36f   utm_content=pessoa-fisica
+         site            (sem Tintim — vai para a home)         utm_content=site
+         whatsapp-geral  e60e4650-d8e3-402e-b7fb-bef6594db534   utm_content=whatsapp-geral
+
+       ATENÇÃO: hero e fechamento usam o MESMO link do Tintim (só existem 4 links criados).
+       No relatório do Tintim os dois aparecem somados; quem separa é o utm_content, que
+       chega ao GA4 e ao WhatsApp. Se for preciso separá-los também no Tintim, criar um 5º
+       link rastreável ("LinkBio | Hero") e trocar só o id do href do hero.
+
+       Cada link tem MENSAGEM INICIAL própria no painel do Tintim, e é ela que identifica o
+       público do outro lado da conversa. Trocar um id aqui sem trocar no painel embaralha a
+       segmentação. Spec dos 4: linkbio/tintim-links-spec.md.
+
+       Os hrefs são LITERAIS no HTML (e não injetados por JS) de propósito: o card inteiro é
+       um <a> e precisa funcionar mesmo se o JS falhar. O IIFE __tvrs só ACRESCENTA os
+       parâmetros de origem ao href no clique, sem sobrescrever os que já estão aqui.
+       ══════════════════════════════════════════════════════════════════════════════════════ -->
+
+<!-- ── INTRO DE MARCA — só aparece se o JS ligar (sem JS a página abre direto),
+       1x por sessão, pulada em prefers-reduced-motion. pointer-events:none — nunca
+       bloqueia um toque. Total ~1.8s, dentro do teto de 2s. -->
+  <div class="intro" id="intro" hidden aria-hidden="true">
+    <div class="intro__miolo">
+      <img class="intro__kn" src="/linkbio-kn.webp" width="271" height="216" alt="" />
+      <div class="intro__linha"></div>
+    </div>
+  </div>
+  <script>
+  (function () {
+    try {
+      var i = document.getElementById('intro');
+      if (!i) return;
+      if (sessionStorage.getItem('_lb_intro')) return; // 1x por sessão
+      if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      sessionStorage.setItem('_lb_intro', '1');
+      document.documentElement.classList.add('tem-intro'); // atrasa a entrada do conteúdo
+      i.hidden = false;
+      setTimeout(function () {
+        i.classList.add('intro--out');
+        setTimeout(function () { i.hidden = true; }, 520);
+      }, 1300);
+    } catch (_) { /* nunca quebrar UX */ }
+  })();
+  </script>
+
+  <main class="wrap">
+
+    <!-- ── CABEÇALHO ABERTO — não é card ─────────────────────────────────────────────
+         Texto à esquerda, retrato à direita numa camada acima (z-index 2) cruzando o
+         fio de base. Nada recorta a personagem. -->
+    <header class="header">
+      <img class="header__foto" src="/linkbio-kelly.webp" width="360" height="543"
+           alt="Dra. Kelly Neisse" fetchpriority="high" />
+      <div class="header__texto">
+        <img class="kn" src="/linkbio-kn.webp" width="271" height="216" alt="" aria-hidden="true" />
+        <p class="header__nome">Dra. Kelly Neisse</p>
+        <p class="header__crm">Médica | CRM/MG 109153</p>
+        <h1 class="header__h1">Assistência Técnica Médica em <em>Perícias Judiciais</em></h1>
+        <p class="header__sub">Atuação para advogados, empresas e partes em processos trabalhistas e cíveis.</p>
+        <a class="btn"
+           data-cta="hero"
+           href="https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/e60e4650-d8e3-402e-b7fb-bef6594db534?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=hero">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.17h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.4c0-4.54 3.7-8.23 8.25-8.23a8.23 8.23 0 0 1 0 16.46Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.49-.4-.42-.55-.43l-.47-.01c-.16 0-.42.06-.64.31-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.59 4.11 3.63.58.25 1.02.4 1.37.51.58.18 1.1.16 1.52.1.46-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+          Fale no WhatsApp
+        </a>
+        <p class="header__micro">Atendimento exclusivo • Retorno em até 2 dias úteis</p>
+      </div>
+    </header>
+
+    <!-- ── Cards flutuantes: medalhão duotônico vazando a moldura de cada um ──────── -->
+    <div class="cards">
+
+      <!-- medalhão da balança cruzando o topo -->
+      <a class="card card--trail item"
+         data-cta="advogado"
+         href="https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/d4a837d4-c310-4502-b933-e726af0269d6?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=advogado"
+         aria-label="Para advogados: assistência técnica para perícias judiciais. Falar no WhatsApp.">
+        <span class="flutua flutua--balanca" aria-hidden="true"><svg viewBox="0 0 56 56">
+          <defs>
+            <radialGradient id="dA" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#1C1813"/><stop offset="1" stop-color="#100E0B"/></radialGradient>
+            <linearGradient id="gA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D4A853"/><stop offset="1" stop-color="#A8843C"/></linearGradient>
+          </defs>
+          <circle cx="28" cy="28" r="26" fill="url(#dA)" stroke="url(#gA)" stroke-width="1.5"/>
+          <circle cx="28" cy="28" r="21.5" fill="none" stroke="#A8843C" stroke-opacity=".35"/>
+          <g fill="none" stroke="url(#gA)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M28 15v21M17 20h22M22 37.5h12"/>
+            <path d="M17 20l-5 9h10zM39 20l-5 9h10z"/>
+            <path d="M12 29a5 5 0 0 0 10 0M34 29a5 5 0 0 0 10 0"/>
+          </g>
+        </svg></span>
+        <p class="label">Para advogados</p>
+        <h2>Assistência técnica para perícias judiciais</h2>
+        <p>Quesitos, acompanhamento pericial e análise crítica de laudos.</p>
+        <span class="btn-ghost">Quero assistência <span class="seta">→</span></span>
+      </a>
+
+      <!-- medalhão do selo meio para fora da lateral; fundo carvão quebra o ritmo -->
+      <a class="card card--trail item item--carvao"
+         data-cta="empresa"
+         href="https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/13a9207b-f52a-42bc-b999-2a1d29946baf?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=empresa"
+         aria-label="Para empresas: suporte técnico médico para ações trabalhistas e cíveis. Falar no WhatsApp.">
+        <span class="flutua flutua--selo" aria-hidden="true"><svg viewBox="0 0 56 56">
+          <defs>
+            <radialGradient id="dB" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#1C1813"/><stop offset="1" stop-color="#100E0B"/></radialGradient>
+            <linearGradient id="gB" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D4A853"/><stop offset="1" stop-color="#A8843C"/></linearGradient>
+          </defs>
+          <circle cx="28" cy="28" r="26" fill="url(#dB)" stroke="url(#gB)" stroke-width="1.5"/>
+          <circle cx="28" cy="28" r="21.5" fill="none" stroke="#A8843C" stroke-opacity=".35"/>
+          <g fill="none" stroke="url(#gB)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M28 14l10 4v7.5c0 6.5-4.5 11-10 13.5-5.5-2.5-10-7-10-13.5V18z"/>
+            <path d="M23 27.5l3.8 3.8 6.5-7.5"/>
+          </g>
+        </svg></span>
+        <p class="label">Para empresas</p>
+        <h2>Suporte técnico médico para ações trabalhistas e cíveis</h2>
+        <p>Atuação técnica para jurídico interno e escritórios.</p>
+        <span class="btn-ghost">Falar sobre o caso <span class="seta">→</span></span>
+      </a>
+
+      <!-- medalhão da lupa de análise cruzando o topo -->
+      <a class="card card--trail item"
+         data-cta="pessoa-fisica"
+         href="https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/9266bf13-c5bf-4d35-973d-0665e0cbe36f?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=pessoa-fisica"
+         aria-label="Você é parte no processo? Seu laudo não reflete o seu caso? Falar no WhatsApp.">
+        <span class="flutua flutua--lupa" aria-hidden="true"><svg viewBox="0 0 56 56">
+          <defs>
+            <radialGradient id="dC" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#1C1813"/><stop offset="1" stop-color="#100E0B"/></radialGradient>
+            <linearGradient id="gC" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D4A853"/><stop offset="1" stop-color="#A8843C"/></linearGradient>
+          </defs>
+          <circle cx="28" cy="28" r="26" fill="url(#dC)" stroke="url(#gC)" stroke-width="1.5"/>
+          <circle cx="28" cy="28" r="21.5" fill="none" stroke="#A8843C" stroke-opacity=".35"/>
+          <g fill="none" stroke="url(#gC)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="26" cy="25.5" r="7"/>
+            <path d="M31 30.5l7.5 7.5"/>
+            <path d="M22.8 25.5l2.5 2.5 4.3-4.8"/>
+          </g>
+        </svg></span>
+        <p class="label">Você é parte no processo?</p>
+        <h2>Seu laudo não reflete o seu caso?</h2>
+        <p>Análise técnica independente da perícia realizada.</p>
+        <span class="btn-ghost">Analisar meu caso <span class="seta">→</span></span>
+      </a>
+
+      <!-- medalhão do fluxo de etapas; único destino sem Tintim (utm_content=site) -->
+      <a class="card card--trail item"
+         data-cta="site"
+         href="https://www.drakellyneisse.com.br/?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=site"
+         aria-label="Como funciona: entenda a assistência técnica médica no site.">
+        <span class="flutua flutua--fluxo" aria-hidden="true"><svg viewBox="0 0 56 56">
+          <defs>
+            <radialGradient id="dD" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#1C1813"/><stop offset="1" stop-color="#100E0B"/></radialGradient>
+            <linearGradient id="gD" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#D4A853"/><stop offset="1" stop-color="#A8843C"/></linearGradient>
+          </defs>
+          <circle cx="28" cy="28" r="26" fill="url(#dD)" stroke="url(#gD)" stroke-width="1.5"/>
+          <circle cx="28" cy="28" r="21.5" fill="none" stroke="#A8843C" stroke-opacity=".35"/>
+          <g fill="none" stroke="url(#gD)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="15" cy="28" r="3.6"/>
+            <circle cx="28" cy="28" r="3.6"/>
+            <path d="M18.6 28h5.8M31.6 28h5"/>
+            <path d="M36.6 24.5l6 3.5-6 3.5"/>
+          </g>
+        </svg></span>
+        <p class="label">Como funciona</p>
+        <h2>Entenda a assistência técnica médica</h2>
+        <p>Envie o caso e receba uma análise inicial com os próximos passos.</p>
+        <span class="btn-ghost">Ver como funciona <span class="seta">→</span></span>
+      </a>
+
+    </div>
+
+    <!-- ── Fechamento: o emblema de bronze da marca vaza o topo ───────────────────── -->
+    <a class="card card--trail final"
+       data-cta="whatsapp-geral"
+       href="https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/e60e4650-d8e3-402e-b7fb-bef6594db534?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=whatsapp-geral"
+       aria-label="Atendimento via WhatsApp. Enviar uma breve descrição do caso.">
+      <img class="emblema" src="/fab-emblem.webp" width="259" height="300" alt="" aria-hidden="true" loading="lazy" />
+      <h2>Atendimento via WhatsApp</h2>
+      <p>Envie uma breve descrição do seu caso.</p>
+      <span class="btn">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.17h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.4c0-4.54 3.7-8.23 8.25-8.23a8.23 8.23 0 0 1 0 16.46Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.49-.4-.42-.55-.43l-.47-.01c-.16 0-.42.06-.64.31-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.59 4.11 3.63.58.25 1.02.4 1.37.51.58.18 1.1.16 1.52.1.46-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
+        Fale Comigo Agora
+      </span>
+      <p class="micro">Atendimento em todo o Brasil</p>
+    </a>
+
+    <footer>
+      <strong>Dra. Kelly Neisse | CRM/MG 109153</strong><br />
+      Atendimento em todo o Brasil.
+      <p class="aviso">Conteúdo informativo. Cada caso exige análise individual dos autos.</p>
+    </footer>
+  </main>
+
+  <!-- Tracking helper — resolve/memoiza cid, session_id e gclid p/ todos os beacons GA4 (sem libs de terceiros) -->
+  <script>
+  (function () {
+    try {
+      var T = (window.__tvrs = window.__tvrs || {});
+      var MID = 'G-N6G6FSD34E';
+      var SESS = '_ga_N6G6FSD34E';
+      var ck = document.cookie;
+      var TWO_YEARS  = '; path=/; max-age=63072000; SameSite=Lax';
+      var NINETY_DAY = '; path=/; max-age=7776000; SameSite=Lax';  // janela de conversao do gclid
+      var THIRTY_MIN = '; path=/; max-age=1800; SameSite=Lax';     // timeout real de sessao do GA4
+
+      // client_id — cookie _ga (GA1.<x>.<cid>); 2 anos (correto, NAO mexer)
+      var cidM = ck.match(/_ga=GA1\.\d+\.([0-9.]+)/);
+      if (cidM) {
+        T.cid = cidM[1];
+        T.newUser = false;
+      } else {
+        T.cid = Math.floor(Math.random() * 2147483647) + '.' + Math.floor(Date.now() / 1000);
+        T.newUser = true;
+        try { document.cookie = '_ga=GA1.1.' + T.cid + TWO_YEARS; } catch (_) {}
+      }
+
+      // session_id + session_count — cookie _ga_N6G6FSD34E com TIMEOUT REAL DE 30 MIN,
+      // renovado a cada hit (em T.send) p/ deslizar a janela enquanto a sessao esta ativa.
+      function writeSession() {
+        try {
+          document.cookie = SESS + '=GS1.1.' + T.sid + '.' + T.sct + '.1.' +
+            Math.floor(Date.now() / 1000) + '.0.0.0' + THIRTY_MIN;
+        } catch (_) {}
+      }
+      var sM = ck.match(/_ga_N6G6FSD34E=GS1\.1\.(\d+)\.(\d+)/);
+      if (sM) {
+        // sessao ainda viva (cookie de 30 min nao expirou) -> reaproveita
+        T.sid = sM[1];
+        T.sct = sM[2];
+        T.newSession = false;
+      } else {
+        // sem cookie = sessao expirou (>30 min) ou 1a visita -> NOVA sessao
+        T.sid = String(Math.floor(Date.now() / 1000));
+        var prev = (ck.match(/_tvrs_sct=(\d+)/) || [])[1];
+        T.sct = String((parseInt(prev, 10) || 0) + 1); // numero da sessao do usuario
+        T.newSession = true;
+        try { document.cookie = '_tvrs_sct=' + T.sct + TWO_YEARS; } catch (_) {}
+      }
+      writeSession();
+
+      // gclid + utm — em COOKIE FIRST-PARTY de 90 dias (antes era sessionStorage,
+      // que morria ao fechar a aba e fazia quem voltava perder a atribuicao do Ads)
+      function persist(name, val) {
+        try {
+          if (val) { document.cookie = name + '=' + encodeURIComponent(val) + NINETY_DAY; return val; }
+          var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+          return m ? decodeURIComponent(m[1]) : '';
+        } catch (_) { return val || ''; }
+      }
+      var q;
+      try { q = new URLSearchParams(location.search); } catch (_) { q = null; }
+      function fromUrl(k) { return q ? (q.get(k) || '') : ''; }
+      T.gclid        = persist('_tvrs_gclid', fromUrl('gclid'));
+      T.utm_source   = persist('_tvrs_utm_source', fromUrl('utm_source'));
+      T.utm_medium   = persist('_tvrs_utm_medium', fromUrl('utm_medium'));
+      T.utm_campaign = persist('_tvrs_utm_campaign', fromUrl('utm_campaign'));
+
+      // first-touch: query string inteira da 1a pagina (UTM+gclid p/ links do TinTim) — INALTERADO
+      T.qs = (function () {
+        try {
+          var saved = sessionStorage.getItem('_tvrs_qs');
+          if (saved) return saved;
+          var s = (location.search || '').replace(/^\?/, '');
+          if (s) { sessionStorage.setItem('_tvrs_qs', s); }
+          return s;
+        } catch (_) { return (location.search || '').replace(/^\?/, ''); }
+      })();
+
+      // params base de sessao reutilizados por todos os beacons
+      T.base = function () {
+        var p = { v: '2', tid: MID, cid: T.cid, sid: T.sid, sct: T.sct, seg: '1' };
+        if (T.gclid) p.gclid = T.gclid; // chave da atribuicao google/cpc
+        return p;
+      };
+
+      // envia hit ao Measurement Protocol (/g/collect) + RENOVA o cookie de sessao (mais 30 min)
+      T.send = function (params) {
+        try {
+          writeSession();
+          var u = 'https://www.google-analytics.com/g/collect?' + new URLSearchParams(params).toString();
+          if (navigator.sendBeacon) { navigator.sendBeacon(u); } else { new Image().src = u; }
+        } catch (_) {}
+      };
+    } catch (e) { /* nunca quebrar UX */ }
+  })();
+  </script>
+  <!-- Page view via beacon — dispara imediatamente, não depende do GTM -->
+  <script>
+  (function () {
+    try {
+      var T = window.__tvrs;
+      if (!T || !T.base) return;
+      var p = T.base();
+      p.en = 'page_view';
+      p._et = '1';                  // sinal mínimo de engajamento
+      p._s = '1';                   // hit number na request
+      if (T.newSession) p._ss = '1'; // session start só quando a sessão é nova (evita inflar em reload)
+      if (T.newUser) p._fv = '1';    // first visit só p/ usuário novo
+      p['ep.transport'] = 'beacon_direct';
+      p.dl = location.href;          // carrega utm/gclid da URL p/ o GA4 derivar a fonte
+      p.dr = document.referrer || '';
+      p.dt = document.title;
+      p.sr = screen.width + 'x' + screen.height;
+      p.ul = (navigator.language || 'pt-BR').toLowerCase();
+      T.send(p);
+      // Sentinel para GTM identificar e poder dedupar a tag GA4 page_view depois
+      window.__pv_sent_via_beacon = true;
+    } catch (e) {
+      // nunca quebrar UX
+    }
+  })();
+  </script>
+
+  <!-- Meta Pixel — ID ainda não fornecido pelo cliente.
+       TODO: preencher PIXEL_ID. Sem ID o snippet não carrega nada e a página segue normal. -->
+  <script>
+  (function () {
+    var PIXEL_ID = ''; // TODO: preencher PIXEL_ID (ex.: '1234567890123456')
+    window.__linkbioPixelId = PIXEL_ID;
+    if (!PIXEL_ID) return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
+    (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', PIXEL_ID);
+    fbq('track', 'PageView');
+  })();
+  </script>
+
+  <!-- Clique nos cards — 3 responsabilidades, nesta ordem:
+       1. repassar os parâmetros de origem ao href ANTES da navegação (tvrsTagged);
+       2. GA4 via gtag.js: evento `linkbio_click` (nome PRÓPRIO — ver bloco do <head>);
+       3. Meta Pixel: evento custom, só se PIXEL_ID estiver preenchido.
+       Nenhuma conversão do Google Ads é disparada aqui. -->
+  <script>
+  (function () {
+    window.dataLayer = window.dataLayer || [];
+
+    document.addEventListener('click', function (e) {
+      var a = e.target && e.target.closest ? e.target.closest('a[data-cta]') : null;
+      if (!a) return;
+
+      // 1) mescla os parâmetros de origem no href do destino, SEM sobrescrever os que já
+      // estão declarados no HTML (utm_source=instagram, utm_content=<card>, …). Vale para
+      // os 5 cards, inclusive o que vai pro site — não só para os links do Tintim.
+      try {
+        if (!a.dataset.tvrsTagged) {
+          var _url = new URL(a.href);
+          var _src = new URLSearchParams((window.__tvrs && window.__tvrs.qs) || '');
+          _src.forEach(function (val, key) {
+            if (val && !_url.searchParams.has(key)) _url.searchParams.set(key, val);
+          });
+          var _g = window.__tvrs && window.__tvrs.gclid;
+          if (_g && !_url.searchParams.has('gclid')) _url.searchParams.set('gclid', _g);
+          a.href = _url.toString();
+          a.dataset.tvrsTagged = '1';
+        }
+      } catch (_) {}
+
+      var ctaOrigin = (a.dataset && a.dataset.cta) || '';
+
+      // 2) GA4 — via gtag.js oficial (config G-N6G6FSD34E no <head>).
+      // transport_type:'beacon' sobrevive ao unload (o anchor navega em seguida).
+      try {
+        if (typeof gtag === 'function') {
+          gtag('event', 'linkbio_click', {
+            send_to: 'G-N6G6FSD34E',
+            event_category: 'engajamento',
+            funnel: 'linkbio',
+            cta_origin: ctaOrigin,
+            link_url: a.href,
+            transport_type: 'beacon'
+          });
+        }
+      } catch (_) { /* não quebrar UX */ }
+
+      // 3) Meta Pixel (só com PIXEL_ID preenchido)
+      try {
+        if (typeof fbq === 'function') {
+          fbq('trackCustom', 'LinkBioClick', { cta_origin: ctaOrigin, link_url: a.href });
+        }
+      } catch (_) { /* não quebrar UX */ }
+
+      window.dataLayer.push({
+        event: 'linkbio_click',
+        event_category: 'engajamento',
+        funnel: 'linkbio',
+        cta_origin: ctaOrigin,
+        link_url: a.href
+      });
+    }, true);
+  })();
+  </script>
+</body>
+</html>

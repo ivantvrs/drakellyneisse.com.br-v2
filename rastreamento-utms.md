@@ -120,3 +120,68 @@ Olá, Dra. Kelly! Gostaria de enviar um caso para análise técnica.
 
 > Formato do link: `https://tintim.link/whatsapp/<container>/<id-do-link>`.
 > O beacon GA4 `whatsapp_click` ([index.html](index.html)) continua disparando: o listener detecta o clique por `href` conter `whatsapp`, presente no caminho `/whatsapp/` dos links Tintim.
+
+---
+
+## 3. Link da bio do Instagram — `/link-bio-1` (apelido `/bio`)
+
+Página estática em [public/link-bio-1/index.html](public/link-bio-1/index.html). Tráfego **orgânico**
+do Instagram, e é isso que define todo o desenho de medição dela:
+
+| | |
+|---|---|
+| Evento de clique | `linkbio_click` (nome PRÓPRIO — nunca `whatsapp_click_*`) |
+| Conversão do Google Ads | **nenhuma**. Sem `send_to` de label AW, sem GTM |
+| Tag de público (AW-16690821688) | mantida — constrói remarketing, não conta conversão |
+| GA4 | `G-N6G6FSD34E`; `page_view` pelo beacon manual, igual às demais portas |
+| Meta Pixel | previsto, `PIXEL_ID` ainda vazio (`// TODO` no arquivo) |
+| Indexação | `noindex, follow`; fora do sitemap |
+
+**Por que o nome do evento é outro:** `whatsapp_click_at` e `whatsapp_click_empresa` são key events
+do funil pago. Contá-los com clique vindo da bio do Instagram sujaria o CPA das campanhas e quebraria
+a série histórica. A separação é por nome de evento, não por filtro no relatório.
+
+### UTMs por card
+
+Todos os 5 cards já trazem as UTMs **declaradas no href**. O IIFE `__tvrs` apenas *acrescenta* o que
+vier na URL de entrada (`gclid`, `fbclid`, …) **sem sobrescrever** o que já está lá — ou seja, o
+`utm_content` do card sempre sobrevive.
+
+```
+utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=<card>
+```
+
+**Container do Tintim:** `9032d846-c29e-46d1-a300-01417d56fcb0` (o mesmo dos 7 links do site).
+
+São **6 pontos de clique** na página (o hero tem CTA próprio):
+
+| # | Ponto | `utm_content` / `data-cta` | Nome no Tintim | ID do link |
+|---|---|---|---|---|
+| 1 | Hero (CTA principal) | `hero` | `LinkBio \| WhatsApp Geral` | `e60e4650-d8e3-402e-b7fb-bef6594db534` |
+| 2 | Card advogados | `advogado` | `LinkBio \| Advogado` | `d4a837d4-c310-4502-b933-e726af0269d6` |
+| 3 | Card empresas | `empresa` | `LinkBio \| Empresa` | `13a9207b-f52a-42bc-b999-2a1d29946baf` |
+| 4 | Card partes | `pessoa-fisica` | `LinkBio \| Pessoa Fisica` | `9266bf13-c5bf-4d35-973d-0665e0cbe36f` |
+| 5 | Card como funciona | `site` | — | sem Tintim: vai para `https://www.drakellyneisse.com.br/` |
+| 6 | Fechamento | `whatsapp-geral` | `LinkBio \| WhatsApp Geral` | `e60e4650-d8e3-402e-b7fb-bef6594db534` |
+
+> **Hero e fechamento dividem o mesmo link do Tintim** (só existem 4 links criados). No relatório
+> do Tintim os dois aparecem somados; quem os separa é o `utm_content`, que chega ao GA4 e ao
+> WhatsApp. Para separá-los também no Tintim, criar um 5º link (`LinkBio | Hero`) e trocar só o id
+> do href do hero — e o token correspondente em `validate-linkbio.mjs`.
+
+Cada link tem **mensagem inicial própria** no painel do Tintim — é ela que identifica o público do
+outro lado da conversa. Trocar um ID no HTML sem trocar no painel embaralha a segmentação; por isso
+os IDs estão fixados no gate (`validate-linkbio.mjs`), que também exige que o par
+`destino + utm_content` seja único (dois CTAs podem dividir o link, nunca o `utm_content`).
+
+**Dois rastros independentes por lead:** a mensagem inicial (morre se o lead apagar o texto) e o
+`utm_content` (sobrevive). Um cobre o buraco do outro.
+
+### Concluído
+- [x] Criar os 4 links no Tintim e substituir os placeholders no HTML (2026-08-12).
+
+### Pendente
+- [ ] `PIXEL_ID` do Meta Pixel.
+
+Gate: `node scripts/validate-linkbio.mjs` (pós-build) — cobre rotas, higiene de tracking, repasse
+de parâmetros nos 5 cards e ausência de imagem de host externo.

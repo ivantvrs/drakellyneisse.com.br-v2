@@ -15,9 +15,9 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
   plugins: [
     react(),
     mode === "development" && componentTagger(),
-    // DEV-only (apply:"serve"): mapeia as URLs limpas /empresa, /trabalhista e
-    // /assistente-tecnico-medico/sp -> *.html no dev server, espelhando os rewrites do
-    // vercel.json (inclusive o 301 do caminho pai). Não tem efeito no build de produção.
+    // DEV-only (apply:"serve"): mapeia as URLs limpas /empresa, /trabalhista,
+    // /assistente-tecnico-medico/sp|br e /bio -> arquivo real no dev server, espelhando os
+    // rewrites do vercel.json (inclusive o 301 do caminho pai). Sem efeito no build de produção.
     {
       name: "portas-paralelas-dev-rewrite",
       apply: "serve",
@@ -36,6 +36,11 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
             req.url = "/assistente-tecnico-medico-sp.html" + (q ? "?" + q : "");
           } else if (p === "/assistente-tecnico-medico/br" || p === "/assistente-tecnico-medico/br/") {
             req.url = "/assistente-tecnico-medico-br.html" + (q ? "?" + q : "");
+          } else if (p === "/bio" || p === "/bio/" || p === "/link-bio-1") {
+            // /link-bio-1 é uma PASTA em public/ (index.html dentro) e a Vercel resolve o
+            // directory index sozinha; no dev, sem a barra final, o sirv não resolve — daí o
+            // /link-bio-1 aqui junto do apelido /bio. Query preservada (teste do repasse de UTM).
+            req.url = "/link-bio-1/index.html" + (q ? "?" + q : "");
           } else if (p === "/assistente-tecnico-medico" || p === "/assistente-tecnico-medico/") {
             res.writeHead(301, { Location: "/" + (q ? "?" + q : "") });
             res.end();

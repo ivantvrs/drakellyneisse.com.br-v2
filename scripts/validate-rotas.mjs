@@ -135,6 +135,10 @@ const MATRIZ = [
   ["/politica-de-privacidade/", 200, "index.html"],
   ["/termos-de-uso", 200, "index.html"],
   ["/termos-de-uso/", 200, "index.html"],
+  // link da bio do Instagram: também é PASTA em public/ (sem rewrite própria — resolve pelo
+  // directory index). O apelido /bio TEM rewrite e entra sozinho por matrizDasRewrites().
+  ["/link-bio-1", 200, "index.html"],
+  ["/link-bio-1/", 200, "index.html"],
   ["/sitemap.xml", 200, "sitemap.xml"],
   ["/robots.txt", 200, "robots.txt"],
   ["/favicon.ico", 200, "favicon.ico"],
