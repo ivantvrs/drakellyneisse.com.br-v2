@@ -158,13 +158,18 @@
     @keyframes intro-kn { from { opacity: 0; transform: translateY(10px) scale(.94); } to { opacity: 1; transform: none; } }
     @keyframes intro-linha { to { width: 130px; } }
 
-    /* ── CABEÇALHO ABERTO (não é card) ───────────────────────────────────────
-       Texto à esquerda, retrato à direita em camada própria cruzando o fio de base
-       (a base do recorte esfuma por máscara — nunca um corte reto aparente). */
+    /* ── HERO CINEMATOGRÁFICO ────────────────────────────────────────────────
+       Só 5 elementos: nome, credencial, headline, linha de público, CTA. A fotografia
+       é o centro da composição: grande, ancorada na base, com LUZ DE RECORTE dourada
+       vinda de trás (halo assimétrico, mais forte no cabelo/ombros) e a base se
+       dissolvendo no fundo por máscara + vinheta de contato — ela emerge da
+       interface, não flutua. Chuva de micropixels dourados quase imperceptível.
+       (Halo e pixels usam só os ouros/marfim oficiais — pedido explícito.) */
     .header {
       position: relative;
-      padding: 4px 2px 30px;
-      margin-bottom: 30px;
+      padding: 8px 2px 24px;
+      margin-bottom: 26px;
+      min-height: 238px;
     }
     .header::after {
       content: "";
@@ -175,23 +180,95 @@
       height: 1px;
       background: linear-gradient(90deg, rgba(168,132,60,0), rgba(168,132,60,.3) 14%, rgba(168,132,60,.3) 72%, rgba(168,132,60,0));
     }
-
-    .header__foto {
+    /* luz de recorte: dois brilhos quentes assimétricos + vinheta escura de contato
+       na base (conecta a personagem ao chão da composição) */
+    .header::before {
+      content: "";
       position: absolute;
-      bottom: -16px;
-      right: -14px;
-      z-index: 2;
-      height: 100%;
-      max-height: 274px;
-      width: auto;
-      -webkit-mask-image: linear-gradient(180deg, #0B0A08 86%, rgba(11,10,8,0) 99%);
-      mask-image: linear-gradient(180deg, #0B0A08 86%, rgba(11,10,8,0) 99%);
-      filter: drop-shadow(-12px 10px 24px rgba(0,0,0,.6));
+      inset: -34px -16px 0;
+      z-index: 0;
+      background:
+        radial-gradient(38% 30% at 74% 20%, rgba(212,168,83,.21), transparent 70%),
+        radial-gradient(56% 48% at 83% 48%, rgba(168,132,60,.12), transparent 72%),
+        radial-gradient(48% 20% at 76% 97%, rgba(0,0,0,.6), transparent 78%);
       pointer-events: none;
     }
 
-    .header__texto { position: relative; max-width: 55%; }
-    .header .kn { width: 38px; margin-bottom: 14px; opacity: .92; }
+    /* chuva de micropixels — camada FIXA cobrindo a página inteira (atrás de todo
+       o conteúdo: os cards são opacos, então os pontos vivem no fundo e nos vãos).
+       Dois planos de pontos quadrados (box-shadow) em queda lenta, dessincronizados.
+       Quase imperceptível de propósito. */
+    .pixels {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .pixels::before,
+    .pixels::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 2px;
+      background: transparent;
+    }
+    .pixels::before {
+      box-shadow:
+        212px 34px rgba(212,168,83,.32), 292px 16px rgba(212,168,83,.26),
+        324px 64px rgba(168,132,60,.26), 252px 88px rgba(212,168,83,.2),
+        124px 52px rgba(168,132,60,.16), 44px 96px rgba(212,168,83,.16),
+        342px 138px rgba(212,168,83,.18), 186px 176px rgba(168,132,60,.2),
+        76px 214px rgba(212,168,83,.16), 262px 252px rgba(168,132,60,.18),
+        330px 310px rgba(212,168,83,.16), 22px 342px rgba(168,132,60,.14),
+        150px 396px rgba(212,168,83,.16), 296px 452px rgba(168,132,60,.16),
+        62px 498px rgba(212,168,83,.14), 232px 556px rgba(168,132,60,.14),
+        348px 612px rgba(212,168,83,.14), 118px 668px rgba(168,132,60,.12),
+        270px 724px rgba(212,168,83,.14), 36px 778px rgba(245,239,226,.1);
+      animation: cair 14s linear infinite;
+    }
+    .pixels::after {
+      width: 1px;
+      height: 1px;
+      box-shadow:
+        184px 54px rgba(212,168,83,.26), 302px 94px rgba(168,132,60,.22),
+        344px 34px rgba(212,168,83,.16), 96px 128px rgba(168,132,60,.14),
+        226px 146px rgba(212,168,83,.18), 30px 186px rgba(212,168,83,.12),
+        318px 224px rgba(168,132,60,.16), 158px 268px rgba(212,168,83,.14),
+        250px 330px rgba(168,132,60,.14), 356px 384px rgba(212,168,83,.14),
+        88px 428px rgba(168,132,60,.12), 204px 486px rgba(245,239,226,.1),
+        306px 542px rgba(212,168,83,.12), 52px 598px rgba(168,132,60,.1),
+        238px 656px rgba(212,168,83,.12), 138px 716px rgba(168,132,60,.1),
+        328px 772px rgba(245,239,226,.08);
+      animation: cair 20s linear infinite;
+      animation-delay: -7s; /* dessincroniza os dois planos */
+    }
+    @keyframes cair {
+      0%   { transform: translateY(-40px); opacity: 0; }
+      10%  { opacity: 1; }
+      82%  { opacity: 1; }
+      100% { transform: translateY(180px); opacity: 0; }
+    }
+
+    .header__foto {
+      position: absolute;
+      bottom: 0;
+      right: -12px;
+      z-index: 2;
+      height: 118%;
+      max-height: 288px;
+      width: auto;
+      /* O fade das arestas (borda direita + base) está GRAVADO NO PRÓPRIO WEBP
+         (rampa de alfa — scripts no scratchpad regeneram a partir de
+         src/assets/kelly-hero-recorte.webp). Nada de mask nem drop-shadow aqui:
+         a sombra da silhueta tinha arestas retas e virava "quadrado preto" sob o
+         halo. O aterramento vem da vinheta de contato no ::before. */
+      pointer-events: none;
+    }
+
+    .header__texto { position: relative; z-index: 3; max-width: 55%; }
     .header__nome {
       font-family: var(--serif);
       font-weight: 600;
@@ -223,14 +300,6 @@
       font-size: 11px;
       line-height: 1.5;
       color: var(--pedra);
-    }
-    .header__micro {
-      margin: 10px 0 0;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--fumaca);
     }
 
     /* ── CTA de ouro: compacto, à esquerda (só hero e fechamento) ───────────── */
@@ -467,9 +536,18 @@
        A foto anima SÓ por transform (nunca opacity): é o elemento de LCP e um fade a
        partir de 0 empurraria a métrica pro fim da animação. */
     @keyframes rise  { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-    @keyframes desce { from { transform: translateY(-10px); } to { transform: none; } }
-    .header__texto { animation: rise .6s var(--easing) var(--intro) both; }
-    .header__foto  { animation: desce .75s var(--easing) var(--intro) both; }
+    /* sequência: luz surge -> foto entra (fade+sobe) -> nome -> headline -> CTA.
+       O fade da foto parte de opacity .01 (não 0) DE PROPÓSITO: com 0 o browser só
+       registra a pintura do elemento de LCP no fim da animação e a métrica ia a
+       ~2,0s; com .01 (invisível a olho nu) a pintura conta no primeiro frame e o
+       LCP volta a ~1,0s. Não "otimizar" isso para 0. */
+    @keyframes surge { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes foto-entra { from { opacity: .01; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+    .header::before { animation: surge .9s var(--easing) calc(var(--intro) + .08s) both; }
+    .header__foto  { animation: foto-entra .75s var(--easing) calc(var(--intro) + .18s) both; }
+    .header__nome, .header__crm { animation: rise .55s var(--easing) calc(var(--intro) + .48s) both; }
+    .header__h1   { animation: rise .55s var(--easing) calc(var(--intro) + .58s) both; }
+    .header__sub, .header .btn { animation: rise .55s var(--easing) calc(var(--intro) + .68s) both; }
     .cards .item:nth-child(1) { animation: rise .55s var(--easing) calc(var(--intro) + .14s) both; }
     .cards .item:nth-child(2) { animation: rise .55s var(--easing) calc(var(--intro) + .2s) both; }
     .cards .item:nth-child(3) { animation: rise .55s var(--easing) calc(var(--intro) + .26s) both; }
@@ -479,12 +557,14 @@
 
     /* Telas estreitas: a coluna de texto cede um pouco e a foto encolhe */
     @media (max-width: 374px) {
-      .header__texto { max-width: 59%; }
-      .header__foto { max-height: 248px; right: -10px; }
+      .header__texto { max-width: 58%; }
+      .header__foto { max-height: 254px; right: -8px; }
       .header__h1 { font-size: 16px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .header__texto, .header__foto, .cards .item, .final, footer,
+      .header::before, .header__foto, .header__nome, .header__crm, .header__h1,
+      .header__sub, .header .btn, .pixels::before, .pixels::after,
+      .cards .item, .final, footer,
       .flutua svg, .final .emblema, .intro__kn, .intro__linha { animation: none; }
       .card--trail:hover::before { animation: none; opacity: .5; }
       .item, .btn, .btn-ghost, .btn-ghost .seta, .flutua, .final { transition: none; }
@@ -547,27 +627,26 @@
   })();
   </script>
 
+  <div class="pixels" aria-hidden="true"></div>
+
   <main class="wrap">
 
-    <!-- ── CABEÇALHO ABERTO — não é card ─────────────────────────────────────────────
-         Texto à esquerda, retrato à direita numa camada acima (z-index 2) cruzando o
-         fio de base. Nada recorta a personagem. -->
+    <!-- ── HERO — a foto é o centro da composição: luz de recorte atrás, micropixels,
+         5 elementos só (nome, credencial, headline, público, CTA). -->
     <header class="header">
       <img class="header__foto" src="/linkbio-kelly.webp" width="360" height="543"
            alt="Dra. Kelly Neisse" fetchpriority="high" />
       <div class="header__texto">
-        <img class="kn" src="/linkbio-kn.webp" width="271" height="216" alt="" aria-hidden="true" />
         <p class="header__nome">Dra. Kelly Neisse</p>
         <p class="header__crm">Médica | CRM/MG 109153</p>
         <h1 class="header__h1">Assistência Técnica Médica em <em>Perícias Judiciais</em></h1>
-        <p class="header__sub">Atuação para advogados, empresas e partes em processos trabalhistas e cíveis.</p>
+        <p class="header__sub">Para advogados, empresas e partes.</p>
         <a class="btn"
            data-cta="hero"
            href="https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/e60e4650-d8e3-402e-b7fb-bef6594db534?utm_source=instagram&utm_medium=bio&utm_campaign=linkbio-kelly&utm_content=hero">
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2Zm0 18.17h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.4c0-4.54 3.7-8.23 8.25-8.23a8.23 8.23 0 0 1 0 16.46Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.19-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.14.17-.25.25-.41.09-.17.04-.31-.02-.44-.06-.12-.56-1.35-.77-1.84-.2-.49-.4-.42-.55-.43l-.47-.01c-.16 0-.42.06-.64.31-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.59 4.11 3.63.58.25 1.02.4 1.37.51.58.18 1.1.16 1.52.1.46-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29Z"/></svg>
           Fale no WhatsApp
         </a>
-        <p class="header__micro">Atendimento exclusivo • Retorno em até 2 dias úteis</p>
       </div>
     </header>
 
