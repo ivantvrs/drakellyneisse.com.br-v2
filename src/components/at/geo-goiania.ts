@@ -22,7 +22,8 @@ export const GO_FOOTER_SEDE_LINE =
 
 // Deeplink Tintim DEDICADO da campanha [GO] (mesma conta 9032d846… da home, fluxo próprio —
 // separa o rastreio no Tintim por porta). Criado pelo Ivan em 22/10/2026. A mensagem ("Olá,
-// Dra. Kelly! Sou de Goiânia…") e o número (34) 99687-8758 vêm do Tintim no 302 — não são
-// montados aqui. DEVE casar com TINTIM_GOIANIA em scripts/gen-at-goiania.mjs (o gerador confere).
+// Dra. Kelly! Tenho um processo em Goiânia e gostaria de enviar os documentos para análise.") e o
+// número (34) 99687-8758 vêm do Tintim no 302 — não são montados aqui e não devem ser duplicados
+// no código. DEVE casar com TINTIM_GOIANIA em scripts/gen-at-goiania.mjs (o gerador confere).
 export const AT_GOIANIA_WHATSAPP_URL =
   "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/1fdae0e4-bc5c-4ca6-b902-637cee0d58f0";
