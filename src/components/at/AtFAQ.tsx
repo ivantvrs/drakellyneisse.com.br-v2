@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import { useAtWhatsappUrl } from "./cta-at";
+import { AtGeoContext, useAtWhatsappUrl } from "./cta-at";
+import { GO_FAQ_01_COMPLEMENTO, GO_FAQ_06_PERGUNTA, GO_FAQ_06_RESPOSTA } from "./geo-goiania";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 const faqs = [
@@ -31,9 +32,19 @@ const faqs = [
   },
 ];
 
+// Porta Goiânia (briefing v2): a 01 ganha uma frase no fim (A18) e a 06 troca "Quanto custa?" pela
+// pergunta do perito particular (A19). O JSON-LD FAQPage do <head> recebe as mesmas trocas em
+// scripts/gen-at-goiania.mjs — pergunta visível e schema não podem divergir.
+const faqsGoiania = faqs.map((f, i) =>
+  i === 0 ? { ...f, a: `${f.a} ${GO_FAQ_01_COMPLEMENTO}` }
+    : i === 5 ? { q: GO_FAQ_06_PERGUNTA, a: GO_FAQ_06_RESPOSTA }
+      : f
+);
+
 const AtFAQ = () => {
   const [open, setOpen] = useState<number | null>(null);
   const { ref, isVisible } = useInView();
+  const lista = useContext(AtGeoContext) === "goiania" ? faqsGoiania : faqs;
 
   return (
     <section
@@ -91,7 +102,7 @@ const AtFAQ = () => {
           {/* FAQ acessível. Os dados estruturados FAQPage ficam em JSON-LD no <head> do at.html
               (fonte única) — por isso não duplicamos com microdata aqui. */}
           <div className="lg:col-span-8">
-            {faqs.map(({ q, a }, i) => {
+            {lista.map(({ q, a }, i) => {
               const isOpen = open === i;
               const panelId = `at-faq-panel-${i}`;
               const btnId = `at-faq-btn-${i}`;

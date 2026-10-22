@@ -6,7 +6,7 @@ import heroMobNew from "@/assets/kelly-hero-mobile.webp";
 import heroMobNewAvif from "@/assets/kelly-hero-mobile.avif";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import { AtGeoContext, useAtWhatsappUrl } from "./cta-at";
-import { GO_HERO_PRESENCIAL, GO_HERO_SELO } from "./geo-goiania";
+import { GO_HERO_MOMENTO, GO_HERO_PRESENCIAL, GO_HERO_SELO, GO_HERO_SIGILO } from "./geo-goiania";
 
 // 1x1 transparente: o <img> do <picture> só o usa quando NENHUM <source media> casa.
 // Assim o hero mobile NÃO baixa no desktop e o recorte desktop NÃO baixa no mobile
@@ -23,6 +23,20 @@ const EmblemIcon = () => (
 // home, /sp e /br seguem com o selo da mãe (mesmo texto, mesmo HTML).
 const SeloTexto = () => (
   <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SELO : "Assistência técnica médica · Perícia Médica"}</>
+);
+
+// Linha logo ACIMA do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
+// nada). Mesma tipografia das microprovas; sem ícone por ser a pergunta que chama o botão.
+const MomentoGoiania = () =>
+  useContext(AtGeoContext) === "goiania" ? (
+    <p className="font-label text-sm mb-4" style={{ color: '#A09A8D' }}>
+      {GO_HERO_MOMENTO}
+    </p>
+  ) : null;
+
+// 2ª microprova: a porta Goiânia troca "Seus dados estão protegidos" por "Sigilo do seu processo".
+const SigiloTexto = () => (
+  <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SIGILO : "Seus dados estão protegidos"}</>
 );
 
 // Linha logo abaixo do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
@@ -133,6 +147,8 @@ const Hero = () => (
           <span style={{ color: '#F5F0E8' }}> do seu lado.</span>
         </h1>
 
+        <MomentoGoiania />
+
         <a
           href={useAtWhatsappUrl()}
           target="_blank"
@@ -155,7 +171,7 @@ const Hero = () => (
         </p>
         <p className="font-label text-[11px] mt-1 flex items-center gap-2" style={{ color: '#6F6A60' }}>
           <ShieldCheck size={13} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />
-          Seus dados estão protegidos
+          <SigiloTexto />
         </p>
       </div>
     </div>
@@ -201,6 +217,8 @@ const Hero = () => (
           Análise do caso, quesitos, acompanhamento da perícia e impugnação do laudo. Casos trabalhistas e cíveis: nexo, concausa, doença ocupacional, acidente de trabalho, erro médico e dano corporal.
         </p>
 
+        <MomentoGoiania />
+
         <a
           href={useAtWhatsappUrl()}
           target="_blank"
@@ -221,7 +239,7 @@ const Hero = () => (
         </p>
         <p className="font-label text-[11px] mt-1 flex items-center gap-2" style={{ color: '#6F6A60' }}>
           <ShieldCheck size={13} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />
-          Seus dados estão protegidos
+          <SigiloTexto />
         </p>
       </div>
     </div>

@@ -1,8 +1,13 @@
+import { useContext } from "react";
 import { useInView } from "@/hooks/useInView";
 import AtCTAs from "./AtCTAs";
+import { AtGeoContext } from "./cta-at";
+import { GO_CTAFINAL_LINHA } from "./geo-goiania";
 
 const AtCTAFinal = () => {
   const { ref, isVisible } = useInView();
+  // porta Goiânia: "Resposta rápida" dá lugar a "Goiânia e região" na linha final (A21, briefing v2)
+  const go = useContext(AtGeoContext) === "goiania";
 
   return (
     <section
@@ -59,7 +64,7 @@ const AtCTAFinal = () => {
         </div>
 
         <p className="font-label text-sm" style={{ color: "#8d8474" }}>
-          Resposta rápida · Cível e trabalhista · CRM/MG 109.153
+          {go ? GO_CTAFINAL_LINHA : "Resposta rápida · Cível e trabalhista · CRM/MG 109.153"}
         </p>
       </div>
     </section>

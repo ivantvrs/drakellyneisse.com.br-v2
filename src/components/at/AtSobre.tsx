@@ -1,6 +1,9 @@
 import aboutImage from "@/assets/kelly-sobre.webp";
 import aboutImageAvif from "@/assets/kelly-sobre.avif";
+import { useContext } from "react";
 import { useInView } from "@/hooks/useInView";
+import { AtGeoContext } from "./cta-at";
+import { GO_TRIBUNAIS } from "./geo-goiania";
 
 const credentials = [
   "CRM/MG 109.153",
@@ -9,8 +12,12 @@ const credentials = [
   "TRT-3 · TJGO · TJSP · TJMT · TJMG",
 ];
 
+// porta Goiânia: mesma régua, com o TJGO na frente (A17, briefing v2)
+const credentialsGoiania = [...credentials.slice(0, -1), GO_TRIBUNAIS];
+
 const AtSobre = () => {
   const { ref, isVisible } = useInView();
+  const lista = useContext(AtGeoContext) === "goiania" ? credentialsGoiania : credentials;
 
   return (
     <section
@@ -105,7 +112,7 @@ const AtSobre = () => {
             {/* ── Régua de credenciais (editorial) ── */}
             <div className="relative pt-5" style={{ borderTop: "1px solid rgba(184,135,58,0.22)" }}>
               <ul className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                {credentials.map((text, i) => (
+                {lista.map((text, i) => (
                   <li key={text} className="flex items-center gap-x-3">
                     {i > 0 && (
                       <span aria-hidden="true" className="hidden sm:block" style={{ width: 1, height: 12, background: "rgba(184,135,58,0.32)" }} />

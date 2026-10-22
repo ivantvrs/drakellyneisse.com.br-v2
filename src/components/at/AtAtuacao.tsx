@@ -2,13 +2,14 @@ import { useContext } from "react";
 import { MapPin } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { AtGeoContext } from "./cta-at";
-import { GO_ATUACAO_CIDADES, GO_ATUACAO_TITULO } from "./geo-goiania";
+import { GO_ATUACAO_CIDADES, GO_ATUACAO_FIM, GO_ATUACAO_INICIO, GO_ATUACAO_TITULO } from "./geo-goiania";
 
 // Na porta geo SP (AtGeoContext="sp") a seção troca as cidades: "São Paulo, Campinas ou
 // qualquer outra cidade do país" (pedido do Ivan 10/07). Na porta BR (campanha nacional) não
 // há cidade nenhuma: "em todo o Brasil" / "qualquer cidade do país" (briefing 10/08). Na porta
-// Goiânia: "Goiânia, Aparecida de Goiânia, Anápolis e em qualquer outra cidade do país"
-// (briefing 22/10). Na home segue Goiânia/Brasília/Uberlândia. O restante da copy é idêntico.
+// Goiânia a frase inteira é outra, sem dizer quem vai à perícia: "Acompanhamento presencial da
+// perícia onde ela acontecer: em Goiânia, Aparecida de Goiânia, Anápolis, nas cidades da região
+// e …" (copy v2, 22/10). Na home segue Goiânia/Brasília/Uberlândia. O restante da copy é idêntico.
 const AtAtuacao = () => {
   const { ref, isVisible } = useInView();
   const geo = useContext(AtGeoContext);
@@ -58,22 +59,27 @@ const AtAtuacao = () => {
                 : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
         </h2>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: "#A9A093" }}>
-          A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, em{" "}
-          {sp ? (
+          {go ? (
             <>
-              <strong style={{ color: "#D6BE83" }}>São Paulo, Campinas</strong> ou qualquer outra cidade do país.
-            </>
-          ) : br ? (
-            <>
-              <strong style={{ color: "#D6BE83" }}>qualquer cidade do país</strong>.
-            </>
-          ) : go ? (
-            <>
-              <strong style={{ color: "#D6BE83" }}>{GO_ATUACAO_CIDADES}</strong> e em qualquer outra cidade do país.
+              {GO_ATUACAO_INICIO}{" "}
+              <strong style={{ color: "#D6BE83" }}>{GO_ATUACAO_CIDADES}</strong>{GO_ATUACAO_FIM}
             </>
           ) : (
             <>
-              <strong style={{ color: "#D6BE83" }}>Goiânia, Brasília, Uberlândia</strong> e em qualquer comarca do país.
+              A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, em{" "}
+              {sp ? (
+                <>
+                  <strong style={{ color: "#D6BE83" }}>São Paulo, Campinas</strong> ou qualquer outra cidade do país.
+                </>
+              ) : br ? (
+                <>
+                  <strong style={{ color: "#D6BE83" }}>qualquer cidade do país</strong>.
+                </>
+              ) : (
+                <>
+                  <strong style={{ color: "#D6BE83" }}>Goiânia, Brasília, Uberlândia</strong> e em qualquer comarca do país.
+                </>
+              )}
             </>
           )}{" "}
           Análise de laudo, formulação de quesitos e parecer técnico para processos de{" "}

@@ -7,17 +7,19 @@
 //   1. rota nova responde 200 e o caminho pai /assistente-tecnico-medico segue com 301 -> /
 //   2. head (title com Goiânia, description, robots noindex, canonical, og:url) e JSON-LD sem
 //      LocalBusiness/endereço
-//   3. desktop: H1 idêntico ao da home, selo "Goiânia e região", linha de acompanhamento presencial
-//      logo abaixo do botão do hero, Atuação e rodapé de Goiânia, CRM/MG 109153
-//   4. conteúdo proibido: TRT-18, "sede em Goiânia", Rua Paim, sede/escritório em Goiânia,
-//      travessão nos textos novos (TJGO é PERMITIDO: a Dra. Kelly é cadastrada no TJGO e a copy
-//      da home cita isso; o briefing de 22/10 dizia o contrário e o Ivan corrigiu no mesmo dia)
+//   3. desktop: H1 idêntico ao da home, selo "Goiânia e região", pergunta logo ACIMA e linha
+//      presencial logo abaixo do botão do hero, microprova de sigilo, Atuação e rodapé de Goiânia,
+//      CRM/MG 109153, JSON-LD FAQPage igual à FAQ visível
+//   4. conteúdo proibido: TRT-18, "sede em Goiânia", Rua Paim, sede/escritório/sala em Goiânia,
+//      textos que a copy v2 tirou (médico da equipe, Quanto custa, TRT-3 sozinho), preço/valor,
+//      outro médico, travessão nos textos novos (TJGO é PERMITIDO: a Dra. Kelly é cadastrada no
+//      TJGO e a copy da home cita isso; o briefing de 22/10 dizia o contrário e o Ivan corrigiu)
 //   5. page_view via beacon /g/collect com dl no path novo carregando UTMs + gclid
 //   6. clique em TODOS os botões de WhatsApp: conversão AW (zjEb…) + whatsapp_click_at + UTMs/gclid
 //      propagados ao deeplink do fluxo Tintim de Goiânia
-//   7. mobile (Pixel 7): selo e linha presencial visíveis, linha logo abaixo do botão
-//   8. diff de copy contra a home: <main> idêntico EXCETO selo/linha do hero e a seção Atuação
-//   9. home "/", /sp e /br sem regressão
+//   7. mobile (Pixel 7): selo em 1 linha, pergunta acima e linha presencial abaixo do botão
+//   8. diff de copy contra a home: <main> idêntico EXCETO os itens A1–A21 da copy v2 (um a um)
+//   9. home "/", /sp e /br sem regressão e sem nenhum texto da porta Goiânia
 // Os HITS de medição (GA4/Ads/Meta) são interceptados e respondidos localmente: o teste vê a
 // requisição sair, mas nada chega às contas (o utm_campaign do teste é o da campanha real).
 // Exit 1 em qualquer falha (serve de gate).
@@ -44,14 +46,47 @@ const UTMS = "utm_source=google&utm_medium=cpc&utm_campaign=pesquisa-at-goiania&
 
 // textos do briefing — conferidos LITERALMENTE (não importados do código, de propósito)
 const HOME_HERO_SELO = "Assistência técnica médica · Perícia Médica";
-const GO_HERO_SELO = "Assistência técnica médica · Goiânia e região";
-const GO_HERO_PRESENCIAL = "Acompanhamento presencial na perícia em Goiânia, com médico da equipe.";
+const GO_HERO_SELO = "Assistente técnico · Goiânia e região";                                   // A1
+const GO_HERO_PRESENCIAL = "Acompanhamento presencial em perícias em Goiânia e região.";            // A2
+const GO_HERO_MOMENTO = "Perícia marcada, prazo de quesitos ou laudo desfavorável?";                // A3
+const GO_HERO_SIGILO = "Sigilo do seu processo";                                                    // A4
 const GO_ATUACAO_H2 = "Acompanhamento presencial em Goiânia e em todo o Brasil";
-const GO_ATUACAO_P = "em Goiânia, Aparecida de Goiânia, Anápolis e em qualquer outra cidade do país.";
+const GO_ATUACAO_P = "Acompanhamento presencial da perícia onde ela acontecer: em Goiânia, Aparecida de Goiânia, Anápolis, nas cidades da região e em qualquer outra cidade do país."; // A20
 const HOME_ATUACAO_H2 = "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil";
 const HOME_ATUACAO_P = "em Goiânia, Brasília, Uberlândia e em qualquer comarca do país.";
 const GO_FOOTER = "Atendimento presencial em Goiânia e região · Atuação em todo o Brasil (presencial e remoto)";
 const H1_HOME = "Não enfrente a perícia sem um assistente técnico médico do seu lado.";
+const GO_FAQ_06_Q = "Procurei um médico perito particular. É isso?";                               // A19
+
+// copy v2 (briefing de 22/10, Grupo A): [item, texto na porta, texto na home ("" = só existe na
+// porta), ocorrências esperadas no <main> da porta]. ORDEM importa: o texto mais longo vem antes
+// do que é prefixo dele (A5 antes de A18; A7 antes de A16). Aplicados em sequência sobre o <main>
+// da porta, os pares têm que reproduzir EXATAMENTE o <main> da home.
+const COPY_V2 = [
+  ["A1", GO_HERO_SELO, HOME_HERO_SELO, 2],
+  ["A3", GO_HERO_MOMENTO, "", 2],
+  ["A2", GO_HERO_PRESENCIAL, "", 2],
+  ["A4", GO_HERO_SIGILO, "Seus dados estão protegidos", 2],
+  ["A5", " E depois do exame só dá para questionar o que foi perguntado e registrado. Por isso o assistente técnico entra antes da perícia, e não só quando o laudo sai.", "", 1],
+  ["A6", "Você vai passar por uma perícia e quer um médico do seu lado? O laudo pode pesar na decisão.", "Você vai passar por uma perícia e o laudo pode pesar na decisão.", 1],
+  ["A7", "Acompanhamento presencial de perícias em Goiânia e região", "Acompanhamento presencial da perícia", 1],
+  ["A8", "Perita cadastrada no TJGO, TJMG, TJSP, TJMT e TRT-3, com foco exclusivo em perícia médica judicial. CRM/MG 109.153.", "Perita cadastrada no TRT-3, com foco exclusivo em perícia médica judicial. CRM/MG 109.153.", 1],
+  ["A9", "Reclamatória trabalhista", "Reclamatória · TRT-3", 1],
+  ["A10", "Quesitos dentro do prazo, mesmo quando ele é de poucos dias", "Resposta no prazo apertado, em geral cerca de 15 dias após a nomeação", 1],
+  ["A11", "Assistência técnica pericial com foco exclusivo em perícia médica judicial: trabalhista e cível", "Foco exclusivo em perícia médica judicial: trabalhista e cível", 1],
+  ["A12", "Perita cadastrada no TJGO, TJMG, TJSP, TJMT e TRT-3 · CRM/MG 109.153 · foco exclusivo em perícia médica judicial.", "Perita cadastrada em TRT-3, TJGO, TJSP, TJMT e TJMG · CRM/MG 109.153 · foco exclusivo em perícia médica judicial.", 1],
+  ["A13", "Atendo em conjunto com o seu escritório · Trabalhista e cível · Goiânia e região", "Atendo em conjunto com o seu escritório · Trabalhista e cível · Brasil todo", 1],
+  ["A14", " Por isso não existe médico perito particular. O que você pode ter é um médico assistente técnico, do seu lado na perícia.", "", 1],
+  ["A15/A17", "TJGO · TJMG · TJSP · TJMT · TRT-3", "TRT-3 · TJGO · TJSP · TJMT · TJMG", 2],
+  ["A16", "Goiânia e regiãoAcompanhamento presencial de perícias", "BrasilAtuação técnica em todo o país", 1],
+  ["A18", " E depois do exame só dá para questionar o que foi perguntado e registrado.", "", 1],
+  ["A19", `${GO_FAQ_06_Q}O perito é nomeado pelo juiz e não pode ser contratado por nenhum dos lados. O que você contrata é o médico assistente técnico, que acompanha a perícia do seu lado, formula os quesitos e analisa o laudo.`, "Quanto custa?Orçamento por caso, sem mensalidade. Você sabe o valor antes de fechar.", 1],
+  ["A20", GO_ATUACAO_P, `A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, ${HOME_ATUACAO_P}`, 1],
+  ["Atuação (título)", GO_ATUACAO_H2, HOME_ATUACAO_H2, 1],
+  ["A21", "Goiânia e região · Cível e trabalhista · CRM/MG 109.153", "Resposta rápida · Cível e trabalhista · CRM/MG 109.153", 1],
+];
+// textos que a copy v2 TIROU da porta (não podem sobrar no HTML)
+const REMOVIDOS_V2 = ["com médico da equipe", "Quanto custa", "Perita cadastrada no TRT-3", "Reclamatória · TRT-3", "Seus dados estão protegidos"];
 
 // hits de medição interceptados (os scripts gtag/GTM carregam normalmente)
 const HIT_RE = /google-analytics\.com\/g\/collect|analytics\.google\.com\/g\/collect|googleadservices\.com\/pagead|doubleclick\.net\/|google\.com\/(pagead|ccm)\/|facebook\.com\/tr/;
@@ -106,13 +141,35 @@ const contaVisiveis = (page, sel, t) =>
     Array.from(document.querySelectorAll(s)).filter((el) => el.textContent.trim() === txt && el.checkVisibility()).length,
   [sel, t]);
 
-// a linha presencial é o elemento logo depois do botão de WhatsApp VISÍVEL do hero?
-const linhaLogoAbaixoDoBotao = (page) =>
-  page.evaluate((txt) => {
+// o elemento logo antes ("prev") ou logo depois ("next") do botão de WhatsApp VISÍVEL do hero
+// tem exatamente o texto `txt` e está visível?
+const vizinhoDoBotao = (page, lado, txt) =>
+  page.evaluate(([l, t]) => {
     const a = Array.from(document.querySelectorAll('#inicio a[data-cta="cta_hero_wpp"]')).find((el) => el.checkVisibility());
-    const next = a && a.nextElementSibling;
-    return !!next && next.textContent.trim() === txt && next.checkVisibility();
-  }, GO_HERO_PRESENCIAL);
+    const viz = a && (l === "prev" ? a.previousElementSibling : a.nextElementSibling);
+    return !!viz && viz.textContent.trim() === t && viz.checkVisibility();
+  }, [lado, txt]);
+const linhaLogoAbaixoDoBotao = (page) => vizinhoDoBotao(page, "next", GO_HERO_PRESENCIAL);
+
+// em quantas linhas o texto do selo VISÍVEL quebra (rects da Range = 1 por linha)
+const linhasDoSelo = (page) =>
+  page.evaluate((t) => {
+    const span = Array.from(document.querySelectorAll("#inicio span")).find((el) => el.textContent.trim() === t && el.checkVisibility());
+    if (!span) return 0;
+    const r = document.createRange();
+    r.selectNodeContents(span);
+    return new Set(Array.from(r.getClientRects()).map((x) => Math.round(x.top))).size;
+  }, GO_HERO_SELO);
+
+// checagens do hero da porta (desktop e mobile)
+async function checaHero(page, onde) {
+  check((await contaVisiveis(page, "#inicio span", GO_HERO_SELO)) === 1, `A1 selo "${GO_HERO_SELO}" visível (${onde})`);
+  check((await contaVisiveis(page, "#inicio p", GO_HERO_MOMENTO)) === 1, `A3 pergunta visível (${onde})`);
+  check(await vizinhoDoBotao(page, "prev", GO_HERO_MOMENTO), `A3 pergunta logo ACIMA do botão de WhatsApp do hero (${onde})`);
+  check((await contaVisiveis(page, "#inicio p", GO_HERO_PRESENCIAL)) === 1, `A2 linha presencial visível (${onde})`);
+  check(await linhaLogoAbaixoDoBotao(page), `A2 linha presencial logo abaixo do botão de WhatsApp do hero (${onde})`);
+  check((await contaVisiveis(page, "#inicio p", GO_HERO_SIGILO)) === 1, `A4 microprova "${GO_HERO_SIGILO}" visível (${onde})`);
+}
 
 async function main() {
   // token do fluxo Tintim de Goiânia: lido do single source (geo-goiania.ts)
@@ -169,12 +226,18 @@ async function main() {
   check(!ldStr.includes("LocalBusiness"), "JSON-LD sem LocalBusiness");
   check(!/"address"/.test(ldStr) && !/Goi[aâ]nia/i.test(ldStr), "JSON-LD sem endereço e sem Goiânia");
 
+  // FAQPage do schema = FAQ visível da porta, pergunta a pergunta (copy v2: A18 e A19 nos dois)
+  const faqLd = ld.find((o) => o["@type"] === "FAQPage");
+  const faqSchema = (faqLd?.mainEntity || []).map((q) => [q.name, q.acceptedAnswer?.text]);
+  const faqVisivel = await page.$$eval('#faq [id^="at-faq-btn-"]', (bs) =>
+    bs.map((b) => [b.querySelector("span.flex-1").textContent.trim(), document.getElementById(b.getAttribute("aria-controls")).textContent.trim()]));
+  check(faqSchema.length === 6 && JSON.stringify(faqSchema) === JSON.stringify(faqVisivel), "JSON-LD FAQPage idêntico à FAQ visível", `${faqSchema.length} no schema, ${faqVisivel.length} visíveis`);
+  check(faqSchema.some(([q]) => q === GO_FAQ_06_Q), "JSON-LD FAQPage com a pergunta do perito particular (A19)");
+
   console.log("\n[3] Porta Goiânia — conteúdo (desktop 1366px)");
   const h1 = (await page.textContent("h1")).trim();
   check(h1 === H1_HOME, "H1 idêntico ao da home", h1.slice(0, 80));
-  check((await contaVisiveis(page, "#inicio span", GO_HERO_SELO)) === 1, "selo do hero 'Goiânia e região' visível no desktop");
-  check((await contaVisiveis(page, "#inicio p", GO_HERO_PRESENCIAL)) === 1, "linha presencial visível no desktop");
-  check(await linhaLogoAbaixoDoBotao(page), "linha presencial logo abaixo do botão de WhatsApp do hero (desktop)");
+  await checaHero(page, "desktop");
 
   const goMainText = (await page.textContent("main")).replace(/\s+/g, " ").trim();
   check(goMainText.includes(GO_ATUACAO_H2), "Atuação: título de Goiânia");
@@ -199,11 +262,18 @@ async function main() {
   // falso positivo ("…e escritórios" + "Assistência técnica médica · Goiânia…")
   const blocos = await page.$$eval("#root p, #root h1, #root h2, #root h3, #root h4, #root li, #root a, #root button, #root summary",
     (els) => els.map((el) => el.textContent.replace(/\s+/g, " ").trim()));
-  const sugereSede = blocos.filter((t) => /(sede|escrit[oó]rio|consult[oó]rio|endere[cç]o)[^.]{0,30}goi[aâ]nia/i.test(t));
-  check(sugereSede.length === 0, "nenhum texto sugere sede/escritório/consultório/endereço em Goiânia", sugereSede.join(" | ").slice(0, 160));
+  // "." e "·" encerram a frase/item: "o seu escritório · Trabalhista e cível · Goiânia e região"
+  // (A13) fala do escritório do ADVOGADO, não de um escritório da Dra. Kelly em Goiânia
+  const sugereSede = blocos.filter((t) => /(sede|escrit[oó]rio|consult[oó]rio|endere[cç]o|\bsala\b)[^.·]{0,30}goi[aâ]nia/i.test(t));
+  check(sugereSede.length === 0, "nenhum texto sugere sede/escritório/consultório/sala/endereço em Goiânia", sugereSede.join(" | ").slice(0, 160));
   check(!blocos.some((t) => /CRM\/GO/.test(t)), "nenhuma menção a CRM/GO");
-  for (const t of [title, desc, GO_HERO_SELO, GO_HERO_PRESENCIAL, GO_ATUACAO_H2, GO_ATUACAO_P, GO_FOOTER]) {
-    check(!/[—–]/.test(t), `sem travessão: "${t.slice(0, 50)}${t.length > 50 ? "…" : ""}"`);
+  for (const t of REMOVIDOS_V2) check(!rawHtml.includes(t), `HTML sem "${t}" (saiu na copy v2)`);
+  const precos = blocos.filter((t) => /pre[çc]o|or[çc]amento|mensalidade|\bvalor\b|proposta/i.test(t));
+  check(precos.length === 0, "nenhum texto sobre preço, valor ou proposta", precos.join(" | ").slice(0, 160));
+  const medicos = [...new Set(blocos.flatMap((t) => t.match(/\bDra?\.\s+[A-ZÀ-Ú][a-zà-ú]+/g) || []))];
+  check(medicos.every((m) => m === "Dra. Kelly"), "nenhum nome de outro médico (só Dra. Kelly)", medicos.join(", "));
+  for (const t of [title, desc, GO_FOOTER, ...COPY_V2.map(([, go]) => go)]) {
+    check(!/[—–]/.test(t), `sem travessão: "${t.trim().slice(0, 50)}${t.length > 50 ? "…" : ""}"`);
   }
 
   // ── 5) page_view beacon com path + UTMs + gclid ───────────────────────────
@@ -269,9 +339,9 @@ async function main() {
   const ctxMob = await newContext(browser, { ...devices["Pixel 7"] });
   const mob = await ctxMob.newPage();
   await mob.goto(`${BASE}${ROTA}?${UTMS}`, { waitUntil: "domcontentloaded" });
-  check((await contaVisiveis(mob, "#inicio span", GO_HERO_SELO)) === 1, "selo do hero 'Goiânia e região' visível no mobile");
-  check((await contaVisiveis(mob, "#inicio p", GO_HERO_PRESENCIAL)) === 1, "linha presencial visível no mobile");
-  check(await linhaLogoAbaixoDoBotao(mob), "linha presencial logo abaixo do botão de WhatsApp do hero (mobile)");
+  await checaHero(mob, "mobile");
+  const linhasSelo = await linhasDoSelo(mob);
+  check(linhasSelo === 1, "A1 selo cabe em 1 linha no Pixel 7", `${linhasSelo} linha(s)`);
   const h1Mob = (await mob.textContent("h1")).trim();
   check(h1Mob === H1_HOME, "H1 idêntico ao da home (mobile)");
   await ctxMob.close();
@@ -294,16 +364,24 @@ async function main() {
   const homeMainText = (await home.textContent("main")).replace(/\s+/g, " ").trim();
   check(homeMainText.includes(HOME_ATUACAO_H2) && homeMainText.includes(HOME_ATUACAO_P), "Atuação da home intacta (Goiânia, Brasília, Uberlândia)");
   check(!homeMainText.includes(GO_HERO_PRESENCIAL) && !homeMainText.includes(GO_HERO_SELO), "home sem selo/linha de Goiânia");
+  const v2NaHome = COPY_V2.filter(([, go]) => homeMainText.includes(go.trim())).map(([item]) => item);
+  check(v2NaHome.length === 0, "home sem nenhum texto da copy v2 de Goiânia", v2NaHome.join(", "));
 
-  // o <main> da porta tem que ser idêntico ao da home APÓS normalizar só o selo, a linha do hero
-  // e as 2 frases da Atuação
-  const goNormalized = goMainText
-    .split(GO_HERO_PRESENCIAL).join("")
-    .split(GO_HERO_SELO).join(HOME_HERO_SELO)
-    .replace(GO_ATUACAO_H2, HOME_ATUACAO_H2)
-    .replace(GO_ATUACAO_P, HOME_ATUACAO_P)
-    .replace(/\s+/g, " ").trim();
-  check(goNormalized === homeMainText, "copy do <main> idêntica à home (exceto selo/linha do hero e Atuação)");
+  // o <main> da porta tem que ser idêntico ao da home APÓS desfazer, item a item, as trocas da
+  // copy v2 (cada item tem que aparecer o número de vezes esperado)
+  let goNormalized = goMainText;
+  for (const [item, go, homeTxt, n] of COPY_V2) {
+    const achou = goNormalized.split(go).length - 1;
+    check(achou === n, `${item} aplicado na porta (${n}x)`, `achei ${achou}x: "${go.trim().slice(0, 60)}${go.length > 60 ? "…" : ""}"`);
+    goNormalized = goNormalized.split(go).join(homeTxt);
+  }
+  goNormalized = goNormalized.replace(/\s+/g, " ").trim();
+  check(goNormalized === homeMainText, "copy do <main> idêntica à home (exceto os itens A1 a A21)");
+  if (goNormalized !== homeMainText) {
+    let i = 0;
+    while (i < goNormalized.length && goNormalized[i] === homeMainText[i]) i++;
+    console.log(`  1ª divergência em ${i}:\n    porta: …${goNormalized.slice(Math.max(0, i - 60), i + 80)}\n    home:  …${homeMainText.slice(Math.max(0, i - 60), i + 80)}`);
+  }
 
   const tintimHome = await home.$$eval('a[href*="tintim.link"]', (as) => as.map((a) => a.href));
   check(tintimHome.length > 0 && tintimHome.every((h) => h.includes(TINTIM_HOME_TOKEN)), "botões da home seguem no fluxo Tintim original", `${tintimHome.length} botões`);
@@ -325,6 +403,8 @@ async function main() {
     const mainTxt = (await pg.textContent("main")).replace(/\s+/g, " ").trim();
     check(mainTxt.includes(trecho), `${rota}: Atuação intacta`);
     check(!mainTxt.includes(GO_HERO_PRESENCIAL) && !mainTxt.includes(GO_HERO_SELO), `${rota}: sem selo/linha de Goiânia`);
+    const v2 = COPY_V2.filter(([, go]) => mainTxt.includes(go.trim())).map(([item]) => item);
+    check(v2.length === 0, `${rota}: sem nenhum texto da copy v2 de Goiânia`, v2.join(", "));
     const links = await pg.$$eval('a[href*="tintim.link"]', (as) => as.map((a) => a.href));
     check(links.length > 0 && links.every((h) => h.includes(token)), `${rota}: botões no fluxo Tintim próprio`, `${links.length} botões`);
     await pg.close();
