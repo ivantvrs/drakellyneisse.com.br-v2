@@ -18,6 +18,9 @@ dist-ssr
 # Idem para a porta nacional (scripts/gen-at-br.mjs) — nunca editar à mão
 /assistente-tecnico-medico-br.html
 
+# Idem para a porta geo Goiânia (scripts/gen-at-goiania.mjs) — nunca editar à mão
+/assistente-tecnico-medico-goiania.html
+
 # Local-only: força o npm a usar PowerShell por causa do "&" no caminho da pasta (Windows).
 # NÃO commitar — quebraria o build Linux na Vercel/Netlify (powershell.exe não existe lá).
 .npmrc
