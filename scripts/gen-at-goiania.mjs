@@ -5,7 +5,8 @@
 // o index.html carrega ~300 linhas de tracking inline (gtag AW+GA4, beacons __tvrs, handler de
 // WhatsApp, reescrita do link Tintim, FAB) que são o coração da conversão do Ads. Aqui os
 // <script> são herdados BYTE A BYTE do index.html em toda geração; só mudam <title>/metas/
-// canonical/robots, o entry (main-at.tsx -> main-at-goiania.tsx) e o deeplink Tintim do FAB.
+// canonical/robots, o entry (main-at.tsx -> main-at-goiania.tsx), o deeplink Tintim do FAB e as
+// perguntas 01 e 06 do JSON-LD FAQPage (espelham a FAQ visível da porta, copy v2 de 22/10).
 // Um gate no final aborta se qualquer outro <script> divergir, se algum primitivo de tracking
 // sumir ou se o fluxo Tintim da home (ou da SP/BR) aparecer em qualquer ponto do HTML.
 //
@@ -50,6 +51,25 @@ const TINTIM_HOME_TOKEN = "b40002a5-951b-4014-a30a-17af3f592141";
 const TINTIM_SP_TOKEN = "f42174e7-24cc-4583-a56b-9a6161434a15";
 const TINTIM_BR_TOKEN = "59de1b8b-00ba-4bfd-a87b-d7f30b9a9472";
 
+// JSON-LD FAQPage: as MESMAS trocas da FAQ visível da porta (A18 e A19 da copy v2) — pergunta
+// visível e schema não podem divergir. Âncoras de UMA linha (gerador igual em LF e CRLF). Os
+// textos novos DEVEM casar com GO_FAQ_01_COMPLEMENTO / GO_FAQ_06_* em geo-goiania.ts (conferido).
+const FAQ_01_HOME =
+  "Não é obrigatório, mas é um direito seu. Sem ele, o laudo do perito entra no processo sem nenhum contraponto médico, e é nesse laudo que o juiz se baseia.";
+const FAQ_01_COMPLEMENTO = "E depois do exame só dá para questionar o que foi perguntado e registrado.";
+const FAQ_06_PERGUNTA = "Procurei um médico perito particular. É isso?";
+const FAQ_06_RESPOSTA =
+  "O perito é nomeado pelo juiz e não pode ser contratado por nenhum dos lados. O que você contrata é o médico assistente técnico, que acompanha a perícia do seu lado, formula os quesitos e analisa o laudo.";
+const SCHEMA_FAQ_SWAPS = [
+  [`"text": "${FAQ_01_HOME}"`, `"text": "${FAQ_01_HOME} ${FAQ_01_COMPLEMENTO}"`, "FAQ 01 (resposta)"],
+  ['"name": "Quanto custa?"', `"name": "${FAQ_06_PERGUNTA}"`, "FAQ 06 (pergunta)"],
+  [
+    '"text": "Orçamento por caso, sem mensalidade. Você sabe o valor antes de fechar."',
+    `"text": "${FAQ_06_RESPOSTA}"`,
+    "FAQ 06 (resposta)",
+  ],
+];
+
 // primitivos que TÊM que sobreviver na porta Goiânia (mesmo funil AT da home — mesma conversão Ads)
 const TRACKING_PRIMITIVES_GOIANIA = [
   "__tvrs", "G-N6G6FSD34E", "google-analytics.com/g/collect", "whatsapp_click_at",
@@ -76,6 +96,12 @@ export async function generateAtGoianiaHtml() {
   const geoSrc = await readFile(path.join(ROOT, "src", "components", "at", "geo-goiania.ts"), "utf8");
   if (!geoSrc.includes(`"${TINTIM_GOIANIA}"`)) {
     throw new Error("[gen-at-goiania] TINTIM_GOIANIA não casa com AT_GOIANIA_WHATSAPP_URL de src/components/at/geo-goiania.ts");
+  }
+  // a FAQ do schema (aqui) e a FAQ visível (geo-goiania.ts) têm que ter os MESMOS textos novos
+  for (const t of [FAQ_01_COMPLEMENTO, FAQ_06_PERGUNTA, FAQ_06_RESPOSTA]) {
+    if (!geoSrc.includes(`"${t}"`)) {
+      throw new Error(`[gen-at-goiania] texto da FAQ do schema não casa com geo-goiania.ts: "${t.slice(0, 50)}…"`);
+    }
   }
 
   const src = await readFile(path.join(ROOT, "index.html"), "utf8");
@@ -113,9 +139,16 @@ export async function generateAtGoianiaHtml() {
   out = replaceCounted(out, ENTRY_HOME, ENTRY_GOIANIA, 1, "entry main-at.tsx");
   // 7) FAB: troca o deeplink Tintim cravado no script inline pelo fluxo dedicado de Goiânia
   out = replaceCounted(out, TINTIM_HOME, TINTIM_GOIANIA, 1, "deeplink Tintim do FAB");
+  // 8) JSON-LD FAQPage: perguntas 01 e 06 iguais às da FAQ visível da porta
+  for (const [from, to, label] of SCHEMA_FAQ_SWAPS) out = replaceCounted(out, from, to, 1, `JSON-LD ${label}`);
 
-  // GATE: todo <script> byte-idêntico ao index.html, exceto DUAS trocas permitidas:
-  // o entry (main-at -> main-at-goiania) e o deeplink Tintim do FAB (home -> Goiânia).
+  // GATE: todo <script> byte-idêntico ao index.html, exceto as trocas permitidas — o entry
+  // (main-at -> main-at-goiania), o deeplink Tintim do FAB (home -> Goiânia) e a FAQ do JSON-LD.
+  const allowed = (s) => {
+    let r = s.split(ENTRY_HOME).join(ENTRY_GOIANIA).split(TINTIM_HOME).join(TINTIM_GOIANIA);
+    for (const [from, to] of SCHEMA_FAQ_SWAPS) r = r.split(from).join(to);
+    return r;
+  };
   const before = extractScripts(src);
   const after = extractScripts(out);
   if (before.length !== after.length) {
@@ -123,10 +156,10 @@ export async function generateAtGoianiaHtml() {
   }
   for (let i = 0; i < before.length; i++) {
     if (before[i] === after[i]) continue;
-    if (before[i] === ENTRY_HOME && after[i] === ENTRY_GOIANIA) continue;
-    if (before[i].split(TINTIM_HOME).join(TINTIM_GOIANIA) === after[i]) continue;
+    if (allowed(before[i]) === after[i]) continue;
     throw new Error(`[gen-at-goiania] <script> #${i} divergiu do index.html além das trocas permitidas — abortando`);
   }
+  if (out.includes("Quanto custa?")) throw new Error('[gen-at-goiania] "Quanto custa?" sobrou no HTML da porta');
   for (const sig of TRACKING_PRIMITIVES_GOIANIA) {
     if (!out.includes(sig)) throw new Error(`[gen-at-goiania] primitivo de tracking ausente: ${sig}`);
   }
