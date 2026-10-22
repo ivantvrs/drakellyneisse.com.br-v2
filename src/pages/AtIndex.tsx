@@ -15,7 +15,15 @@ import AtFloatingCTAs from "@/components/at/AtFloatingCTAs";
 import PageRainFX from "@/components/PageRainFX";
 import { SP_FOOTER_SEDE_LINE } from "@/components/at/geo-sp";
 import { BR_FOOTER_SEDE_LINE } from "@/components/at/geo-br";
+import { GO_FOOTER_SEDE_LINE } from "@/components/at/geo-goiania";
 import { AtGeoContext, type AtGeo } from "@/components/at/cta-at";
+
+// Linha de sede/atendimento do rodapé por porta (home = default do Footer).
+const FOOTER_SEDE_LINE: Record<AtGeo, string> = {
+  sp: SP_FOOTER_SEDE_LINE,
+  br: BR_FOOTER_SEDE_LINE,
+  goiania: GO_FOOTER_SEDE_LINE,
+};
 
 // IMPORTS DIRETOS (sem lazy()/<Suspense>) DE PROPÓSITO. Esta é a HOME (/), pré-renderizada por
 // SSG: o conteúdo já vem pintado no HTML, então o code-splitting por dobra NÃO acelera a 1ª
@@ -29,6 +37,9 @@ import { AtGeoContext, type AtGeo } from "@/components/at/cta-at";
 // `geo="br"` (porta /assistente-tecnico-medico/br — campanha Ads nacional, clone da SP):
 // mesma árvore, muda SÓ a linha do rodapé (sede SP + atuação nacional) e a seção Atuação;
 // o WhatsApp é o mesmo fluxo Tintim da home.
+// `geo="goiania"` (porta /assistente-tecnico-medico/goiania — campanha Ads [GO] Goiânia 60 km,
+// clone da SP): mesma árvore, muda o selo e uma linha do hero, a seção Atuação, o rodapé e o
+// deeplink Tintim (fluxo dedicado). Textos em components/at/geo-goiania.ts.
 const AtIndex = ({ geo }: { geo?: AtGeo }) => (
   <AtGeoContext.Provider value={geo}>
     <AtHeader />
@@ -47,7 +58,7 @@ const AtIndex = ({ geo }: { geo?: AtGeo }) => (
     </main>
     <Footer
       tagline="Assistência técnica médica em perícia judicial — trabalhista e cível"
-      sedeLine={geo === "sp" ? SP_FOOTER_SEDE_LINE : geo === "br" ? BR_FOOTER_SEDE_LINE : undefined}
+      sedeLine={geo ? FOOTER_SEDE_LINE[geo] : undefined}
     />
     <AtFloatingCTAs />
     {/* Chuva de meteoros dourados na página toda (sempre ligado, desktop) */}

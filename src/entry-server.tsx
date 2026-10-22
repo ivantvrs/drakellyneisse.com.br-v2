@@ -20,6 +20,9 @@ export async function render(pathname = "/"): Promise<string> {
   } else if (pathname === "/assistente-tecnico-medico/br" || pathname === "/assistente-tecnico-medico/br/") {
     // Porta geo BR (campanha nacional): mesma AtIndex, rodapé com sede SP + atuação nacional.
     tree = <AtIndex geo="br" />;
+  } else if (pathname === "/assistente-tecnico-medico/goiania" || pathname === "/assistente-tecnico-medico/goiania/") {
+    // Porta geo Goiânia (campanha [GO]): mesma AtIndex, selo/linha do hero, Atuação e rodapé de Goiânia.
+    tree = <AtIndex geo="goiania" />;
   } else if (pathname === "/404") {
     // dist/404.html — servido pela Vercel com status 404 nos caminhos sem rewrite.
     tree = <NotFoundPage />;

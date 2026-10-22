@@ -2,16 +2,19 @@ import { useContext } from "react";
 import { MapPin } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { AtGeoContext } from "./cta-at";
+import { GO_ATUACAO_CIDADES, GO_ATUACAO_TITULO } from "./geo-goiania";
 
 // Na porta geo SP (AtGeoContext="sp") a seção troca as cidades: "São Paulo, Campinas ou
 // qualquer outra cidade do país" (pedido do Ivan 10/07). Na porta BR (campanha nacional) não
-// há cidade nenhuma: "em todo o Brasil" / "qualquer cidade do país" (briefing 10/08). Na home
-// segue Goiânia/Brasília/Uberlândia. O restante da copy é idêntico nas três portas.
+// há cidade nenhuma: "em todo o Brasil" / "qualquer cidade do país" (briefing 10/08). Na porta
+// Goiânia: "Goiânia, Aparecida de Goiânia, Anápolis e em qualquer outra cidade do país"
+// (briefing 22/10). Na home segue Goiânia/Brasília/Uberlândia. O restante da copy é idêntico.
 const AtAtuacao = () => {
   const { ref, isVisible } = useInView();
   const geo = useContext(AtGeoContext);
   const sp = geo === "sp";
   const br = geo === "br";
+  const go = geo === "goiania";
 
   return (
     <section
@@ -50,7 +53,9 @@ const AtAtuacao = () => {
             ? "Acompanhamento pericial em São Paulo e em todo o Brasil"
             : br
               ? "Acompanhamento pericial em todo o Brasil"
-              : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
+              : go
+                ? GO_ATUACAO_TITULO
+                : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
         </h2>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: "#A9A093" }}>
           A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, em{" "}
@@ -61,6 +66,10 @@ const AtAtuacao = () => {
           ) : br ? (
             <>
               <strong style={{ color: "#D6BE83" }}>qualquer cidade do país</strong>.
+            </>
+          ) : go ? (
+            <>
+              <strong style={{ color: "#D6BE83" }}>{GO_ATUACAO_CIDADES}</strong> e em qualquer outra cidade do país.
             </>
           ) : (
             <>
