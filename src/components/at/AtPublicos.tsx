@@ -1,7 +1,11 @@
-import type { CSSProperties } from "react";
+import { useContext, type CSSProperties } from "react";
 import { Clock, BadgeCheck, Target, Check } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import { useAtWhatsappUrl } from "./cta-at";
+import { AtGeoContext, useAtWhatsappUrl } from "./cta-at";
+import {
+  GO_ADVOGADO_DIFERENCIAL, GO_ADVOGADO_PRAZO, GO_ADVOGADO_PROVA, GO_ADVOGADO_REFORCO,
+  GO_EMPRESA_PRESENCIAL, GO_EMPRESA_PROVA, GO_PF_PERITO_PARTICULAR,
+} from "./geo-goiania";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import VisualEmpresaDossie from "./VisualEmpresaDossie";
 import pfApoio from "@/assets/kelly-pf-apoio.webp";
@@ -35,7 +39,7 @@ type Publico = {
   reforco?: string;
 };
 
-const empresa: Publico = {
+const empresaBase: Publico = {
   id: "para-empresas",
   index: "01",
   label: "Para a empresa",
@@ -63,7 +67,7 @@ const empresa: Publico = {
   waCta: "cta_empresa_wpp",
 };
 
-const advogado: Publico = {
+const advogadoBase: Publico = {
   id: "para-advogados",
   index: "02",
   label: "Para o advogado",
@@ -91,7 +95,7 @@ const advogado: Publico = {
   reforco: "Atendo em conjunto com o seu escritório · Trabalhista e cível · Brasil todo",
 };
 
-const pf: Publico = {
+const pfBase: Publico = {
   id: "para-pessoa-fisica",
   index: "03",
   label: "Para a pessoa física",
@@ -117,6 +121,37 @@ const pf: Publico = {
   whatsappLabel: "Quero um médico do meu lado →",
   waCta: "cta_pf_wpp",
 };
+
+// Porta Goiânia (copy v2, briefing de 22/10): mesmas dobras com os textos de geo-goiania.ts.
+// Só os campos listados mudam; o resto vem do objeto da home.
+const trocaItem = (lista: string[], de: string, para: string) => lista.map((t) => (t === de ? para : t));
+
+const empresaGoiania: Publico = {
+  ...empresaBase,
+  deliverables: trocaItem(empresaBase.deliverables, "Acompanhamento presencial da perícia", GO_EMPRESA_PRESENCIAL),
+  prova: GO_EMPRESA_PROVA,
+};
+
+const advogadoGoiania: Publico = {
+  ...advogadoBase,
+  deliverables: trocaItem(
+    advogadoBase.deliverables,
+    "Resposta no prazo apertado, em geral cerca de 15 dias após a nomeação",
+    GO_ADVOGADO_PRAZO
+  ),
+  diferencial: advogadoBase.diferencial && { ...advogadoBase.diferencial, lead: GO_ADVOGADO_DIFERENCIAL },
+  prova: GO_ADVOGADO_PROVA,
+  reforco: GO_ADVOGADO_REFORCO,
+};
+
+const pfGoiania: Publico = {
+  ...pfBase,
+  prose: [`${pfBase.prose[0]} ${GO_PF_PERITO_PARTICULAR}`, ...pfBase.prose.slice(1)],
+};
+
+// cada dobra escolhe o objeto da porta (home, /sp e /br seguem com o *Base)
+const usePublico = (base: Publico, goiania: Publico) =>
+  useContext(AtGeoContext) === "goiania" ? goiania : base;
 
 const CheckGlyph = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8873A" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -233,6 +268,7 @@ const empresaBg: CSSProperties = {
 
 const SecaoEmpresa = () => {
   const { ref, isVisible } = useInView();
+  const empresa = usePublico(empresaBase, empresaGoiania);
   return (
     <section id="para-empresas" className="emp-section relative overflow-hidden" style={{ ...empresaBg, scrollMarginTop: 90 }}>
       <style>{empStyleBlock}</style>
@@ -555,6 +591,7 @@ const advBg: CSSProperties = {
 
 const SecaoAdvogado = () => {
   const { ref, isVisible } = useInView();
+  const advogado = usePublico(advogadoBase, advogadoGoiania);
   return (
     <section id="para-advogados" className="adv-section relative overflow-hidden" style={{ ...advBg, scrollMarginTop: 90 }}>
       <style>{advStyleBlock}</style>
@@ -783,6 +820,7 @@ const pfBg: CSSProperties = {
 
 const SecaoPF = () => {
   const { ref, isVisible } = useInView();
+  const pf = usePublico(pfBase, pfGoiania);
   return (
     <section id="para-pessoa-fisica" className="pf-section relative overflow-hidden" style={{ ...pfBg, scrollMarginTop: 90 }}>
       <style>{pfStyleBlock}</style>

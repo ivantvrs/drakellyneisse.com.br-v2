@@ -1,6 +1,9 @@
-import { Landmark, BadgeCheck, GraduationCap, Target, Globe } from "lucide-react";
+import { useContext } from "react";
+import { Landmark, BadgeCheck, GraduationCap, Target, Globe, MapPin } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { AtGeoContext } from "./cta-at";
+import { GO_AUTORIDADE_REGIAO_STAT, GO_AUTORIDADE_REGIAO_SUB, GO_TRIBUNAIS } from "./geo-goiania";
 
 // BLOCO Y — faixa de autoridade (REAL, tudo verificável). Fecha o gap de "autoridade empacotada" do
 // concorrente sem depender de coletar nada (≠ depoimentos, que são Bloco Z, a coletar). Faixa DARK
@@ -17,6 +20,16 @@ const itens: Item[] = [
   { Icon: Globe, stat: "Brasil", sub: "Atuação técnica em todo o país" },
 ];
 
+// Porta Goiânia (briefing v2): TJGO na frente da lista de tribunais (A15) e o card "Brasil" vira o
+// card da região (A16). É a exceção ao anti-geo acima, só nesta porta.
+const itensGoiania: Item[] = itens.map((it) =>
+  it.stat === "5 tribunais"
+    ? { ...it, sub: GO_TRIBUNAIS }
+    : it.stat === "Brasil"
+      ? { Icon: MapPin, stat: GO_AUTORIDADE_REGIAO_STAT, sub: GO_AUTORIDADE_REGIAO_SUB }
+      : it
+);
+
 const styleBlock = `
   .aut-item { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 10px; }
   .aut-ico { display: inline-flex; align-items: center; justify-content: center; width: 46px; height: 46px;
@@ -30,6 +43,7 @@ const styleBlock = `
 
 const AtAutoridade = () => {
   const { ref, isVisible } = useInView();
+  const lista = useContext(AtGeoContext) === "goiania" ? itensGoiania : itens;
 
   return (
     <section
@@ -62,7 +76,7 @@ const AtAutoridade = () => {
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-y-10 gap-x-2">
-          {itens.map(({ Icon, stat, sub }) => (
+          {lista.map(({ Icon, stat, sub }) => (
             <div key={stat} className="aut-item">
               <span className="aut-ico" aria-hidden="true">
                 <Icon size={22} strokeWidth={1.5} />

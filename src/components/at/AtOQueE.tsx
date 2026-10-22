@@ -1,4 +1,7 @@
+import { useContext } from "react";
 import { useInView } from "@/hooks/useInView";
+import { AtGeoContext } from "./cta-at";
+import { GO_OQUEE_ANTES_DA_PERICIA } from "./geo-goiania";
 
 const pontos = [
   "Acompanha o exame pericial como representante técnico de quem o contratou",
@@ -32,6 +35,8 @@ const LaudoTexture = ({ className, style }: { className?: string; style?: React.
 
 const AtOQueE = () => {
   const { ref, isVisible } = useInView();
+  // porta Goiânia: o parágrafo ganha a frase sobre entrar ANTES da perícia (A5, briefing v2)
+  const go = useContext(AtGeoContext) === "goiania";
 
   return (
     <section
@@ -117,6 +122,7 @@ const AtOQueE = () => {
                 lados, ele responde ao juízo. O problema é que o juiz decide, na prática, com base nesse laudo.
                 Se ele tiver um erro técnico, um nexo mal explicado ou deixar de considerar algo importante,{" "}
                 <strong style={{ color: "#F1EAD9", fontWeight: 600 }}>ninguém vai corrigir se não houver um assistente técnico no processo</strong>.
+                {go && ` ${GO_OQUEE_ANTES_DA_PERICIA}`}
               </p>
             </div>
 

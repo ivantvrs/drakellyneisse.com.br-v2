@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { ArrowRight, Building2, Briefcase, UserRound } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
+import { AtGeoContext } from "./cta-at";
+import { GO_PARAQUEM_PF_INICIO } from "./geo-goiania";
 
 type Publico = {
   titulo: string;
@@ -51,6 +54,13 @@ const publicos: Publico[] = [
   },
 ];
 
+// Porta Goiânia: o card Pessoa física troca SÓ o começo do teaser (A6, briefing v2); o resto
+// do texto segue o da home.
+const PF_INICIO_HOME = "Você vai passar por uma perícia e o laudo pode pesar na decisão.";
+const publicosGoiania: Publico[] = publicos.map((p) =>
+  p.cta === "seletor_pf" ? { ...p, teaser: p.teaser.replace(PF_INICIO_HOME, GO_PARAQUEM_PF_INICIO) } : p
+);
+
 const Coluna = ({ pub: { titulo, termos, teaser, href, cta, botao, Icon } }: { pub: Publico }) => (
   <div className="apq-col flex flex-col items-center text-center px-2 md:px-5">
     <span className="apq-ico" aria-hidden="true">
@@ -75,6 +85,7 @@ const Coluna = ({ pub: { titulo, termos, teaser, href, cta, botao, Icon } }: { p
 
 const AtParaQuem = () => {
   const { ref, isVisible } = useInView();
+  const lista = useContext(AtGeoContext) === "goiania" ? publicosGoiania : publicos;
 
   return (
     <section
@@ -189,7 +200,7 @@ const AtParaQuem = () => {
 
         {/* três públicos — colunas editoriais separadas por fio de ouro (não cards) */}
         <div className="grid md:grid-cols-3 gap-y-9 pt-6 max-w-5xl mx-auto">
-          {publicos.map((pub) => (
+          {lista.map((pub) => (
             <Coluna key={pub.cta} pub={pub} />
           ))}
         </div>

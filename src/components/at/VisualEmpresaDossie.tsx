@@ -12,6 +12,15 @@
 //
 // CSS namespeado em .kn-* (não .emp-*) para não colidir com o empStyleBlock da SecaoEmpresa.
 
+import { useContext } from "react";
+import { AtGeoContext } from "./cta-at";
+import { GO_DOSSIE_RECLAMADA } from "./geo-goiania";
+
+// Linha "Reclamada" do laudo de exemplo: a porta Goiânia não cita tribunal (A9, briefing v2).
+const ReclamadaTexto = () => (
+  <>{useContext(AtGeoContext) === "goiania" ? GO_DOSSIE_RECLAMADA : "Reclamatória · TRT-3"}</>
+);
+
 // Ícones de linha com tema jurídico/pericial — um por chip.
 const IcoBalanca = () => (
   <svg className="kn-ic" viewBox="0 0 24 24" fill="none" stroke="#B08D57" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -239,7 +248,7 @@ const VisualEmpresaDossie = () => (
             </div>
             <div className="kn-row">
               <span className="kn-row-label">Reclamada</span>
-              <span className="kn-row-value">Reclamatória · TRT-3</span>
+              <span className="kn-row-value"><ReclamadaTexto /></span>
             </div>
           </div>
 
