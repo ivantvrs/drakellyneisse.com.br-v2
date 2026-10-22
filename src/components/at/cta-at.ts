@@ -9,14 +9,16 @@
 import { createContext, useContext } from "react";
 import { AT_SP_WHATSAPP_URL } from "./geo-sp";
 import { AT_BR_WHATSAPP_URL } from "./geo-br";
+import { AT_GOIANIA_WHATSAPP_URL } from "./geo-goiania";
 
 export const AT_WHATSAPP_URL =
   "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/b40002a5-951b-4014-a30a-17af3f592141";
 
 // Porta geo da página (undefined = home nacional; "sp" = /assistente-tecnico-medico/sp;
-// "br" = /assistente-tecnico-medico/br, campanha nacional).
+// "br" = /assistente-tecnico-medico/br, campanha nacional; "goiania" =
+// /assistente-tecnico-medico/goiania, campanha [GO] Goiânia 60 km).
 // Provido por AtIndex; resolve o deeplink Tintim certo por porta em TODOS os botões via hook.
-export type AtGeo = "sp" | "br";
+export type AtGeo = "sp" | "br" | "goiania";
 export const AtGeoContext = createContext<AtGeo | undefined>(undefined);
 
 // Cada porta tem seu fluxo Tintim dedicado (mesma conta, tokens distintos — separa o rastreio
@@ -25,5 +27,6 @@ export function useAtWhatsappUrl(): string {
   const geo = useContext(AtGeoContext);
   if (geo === "sp") return AT_SP_WHATSAPP_URL;
   if (geo === "br") return AT_BR_WHATSAPP_URL;
+  if (geo === "goiania") return AT_GOIANIA_WHATSAPP_URL;
   return AT_WHATSAPP_URL;
 }

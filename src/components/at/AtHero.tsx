@@ -1,10 +1,12 @@
-import { ShieldCheck, Zap } from "lucide-react";
+import { useContext } from "react";
+import { MapPin, ShieldCheck, Zap } from "lucide-react";
 import heroRecorte from "@/assets/kelly-hero-recorte.webp";
 import heroRecorteAvif from "@/assets/kelly-hero-recorte.avif";
 import heroMobNew from "@/assets/kelly-hero-mobile.webp";
 import heroMobNewAvif from "@/assets/kelly-hero-mobile.avif";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
-import { useAtWhatsappUrl } from "./cta-at";
+import { AtGeoContext, useAtWhatsappUrl } from "./cta-at";
+import { GO_HERO_PRESENCIAL, GO_HERO_SELO } from "./geo-goiania";
 
 // 1x1 transparente: o <img> do <picture> só o usa quando NENHUM <source media> casa.
 // Assim o hero mobile NÃO baixa no desktop e o recorte desktop NÃO baixa no mobile
@@ -17,8 +19,25 @@ const EmblemIcon = () => (
   </svg>
 );
 
+// Texto do selo do hero: a porta Goiânia troca "Perícia Médica" por "Goiânia e região";
+// home, /sp e /br seguem com o selo da mãe (mesmo texto, mesmo HTML).
+const SeloTexto = () => (
+  <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SELO : "Assistência técnica médica · Perícia Médica"}</>
+);
+
+// Linha logo abaixo do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
+// nada). Mesmo estilo da microprova "Resposta rápida"; items-start porque quebra em 2 linhas no mobile.
+const PresencialGoiania = () =>
+  useContext(AtGeoContext) === "goiania" ? (
+    <p className="font-label text-sm mt-4 flex items-start gap-2" style={{ color: '#A09A8D' }}>
+      <MapPin size={15} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0, marginTop: 2.5 }} aria-hidden="true" />
+      {GO_HERO_PRESENCIAL}
+    </p>
+  ) : null;
+
 // Copy ÚNICA para todas as portas (decisão do Ivan 10/07: a porta geo SP mantém a copy da
-// página mãe; o geo aparece só no rodapé e no deeplink Tintim, via AtGeoContext).
+// página mãe; o geo aparece só no rodapé e no deeplink Tintim, via AtGeoContext). Exceção: a
+// porta Goiânia troca o selo e ganha a linha de acompanhamento presencial (briefing 22/10).
 const Hero = () => (
   <section id="inicio" className="relative overflow-hidden flex flex-col md:flex-row md:items-center md:min-h-screen" style={{ backgroundColor: '#0F0F0F' }}>
     {/* ░░ Fundo DESKTOP (≥768px) — halo + recorte da Dra. ░░ */}
@@ -105,7 +124,7 @@ const Hero = () => (
           }}
         >
           <EmblemIcon />
-          <span>Assistência técnica médica · Perícia Médica</span>
+          <span><SeloTexto /></span>
         </p>
 
         <h1 className="font-display text-[2rem] font-bold leading-[1.1] mb-6" style={{ textShadow: '0 2px 16px rgba(0,0,0,0.6)' }}>
@@ -126,6 +145,8 @@ const Hero = () => (
           <WhatsAppIcon size={18} />
           Analisar meu caso no WhatsApp →
         </a>
+
+        <PresencialGoiania />
 
         {/* microprova abaixo do CTA — mesma regra de tamanho do desktop, com ícones discretos */}
         <p className="font-label text-sm mt-6 flex items-center gap-2" style={{ color: '#A09A8D' }}>
@@ -164,7 +185,7 @@ const Hero = () => (
       <div className="max-w-xl animate-fade-up">
         <p className="font-label text-xs tracking-[0.25em] uppercase mb-5 gold-shine-subtle inline-flex items-center gap-2">
           <EmblemIcon />
-          <span>Assistência técnica médica · Perícia Médica</span>
+          <span><SeloTexto /></span>
         </p>
 
         {/* Variante desktop da mesma manchete. NÃO é <h1> (o H1 único da página é o do bloco
@@ -191,6 +212,8 @@ const Hero = () => (
           <WhatsAppIcon size={18} />
           Analisar caso no WhatsApp →
         </a>
+
+        <PresencialGoiania />
 
         <p className="font-label text-sm mt-6 flex items-center gap-2" style={{ color: '#A09A8D' }}>
           <Zap size={15} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />
