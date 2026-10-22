@@ -27,9 +27,8 @@ export default defineConfig(({ mode, isSsrBuild }) => ({
         await generateAtSpHtml();
         const { generateAtBrHtml } = await import("./scripts/gen-at-br.mjs");
         await generateAtBrHtml();
-        // dev libera o placeholder do token Tintim de Goiânia (o build de produção aborta com ele)
         const { generateAtGoianiaHtml } = await import("./scripts/gen-at-goiania.mjs");
-        await generateAtGoianiaHtml({ allowPlaceholder: true });
+        await generateAtGoianiaHtml();
         server.middlewares.use((req, res, next) => {
           if (req.url === "/empresa" || req.url === "/empresa/") req.url = "/empresa.html";
           if (req.url === "/trabalhista" || req.url === "/trabalhista/") req.url = "/trabalhista.html";

@@ -21,8 +21,8 @@ export const GO_FOOTER_SEDE_LINE =
   "Atendimento presencial em Goiânia e região · Atuação em todo o Brasil (presencial e remoto)";
 
 // Deeplink Tintim DEDICADO da campanha [GO] (mesma conta 9032d846… da home, fluxo próprio —
-// separa o rastreio no Tintim por porta). Enquanto o Ivan não criar o fluxo no painel, fica o
-// placeholder e o gerador (scripts/gen-at-goiania.mjs) ABORTA o build: sem token não há deploy.
-// DEVE casar com TINTIM_GOIANIA em scripts/gen-at-goiania.mjs (o gerador confere).
+// separa o rastreio no Tintim por porta). Criado pelo Ivan em 22/10/2026. A mensagem ("Olá,
+// Dra. Kelly! Sou de Goiânia…") e o número (34) 99687-8758 vêm do Tintim no 302 — não são
+// montados aqui. DEVE casar com TINTIM_GOIANIA em scripts/gen-at-goiania.mjs (o gerador confere).
 export const AT_GOIANIA_WHATSAPP_URL =
-  "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/COLE-AQUI-TOKEN-TINTIM-GOIANIA";
+  "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/1fdae0e4-bc5c-4ca6-b902-637cee0d58f0";

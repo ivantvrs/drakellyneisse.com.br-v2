@@ -6,12 +6,8 @@
 // WhatsApp, reescrita do link Tintim, FAB) que são o coração da conversão do Ads. Aqui os
 // <script> são herdados BYTE A BYTE do index.html em toda geração; só mudam <title>/metas/
 // canonical/robots, o entry (main-at.tsx -> main-at-goiania.tsx) e o deeplink Tintim do FAB.
-// Um gate no final aborta se qualquer outro <script> divergir ou se algum primitivo de tracking sumir.
-//
-// TOKEN TINTIM: enquanto o fluxo de Goiânia não for criado no painel do Tintim, o deeplink fica
-// com o placeholder COLE-AQUI-TOKEN-TINTIM-GOIANIA e o gerador ABORTA (sem token não há deploy).
-// ALLOW_TINTIM_PLACEHOLDER=1 libera o placeholder SÓ para build/validação local (o dev server
-// também libera); nunca setar essa variável na Vercel.
+// Um gate no final aborta se qualquer outro <script> divergir, se algum primitivo de tracking
+// sumir ou se o fluxo Tintim da home (ou da SP/BR) aparecer em qualquer ponto do HTML.
 //
 // Roda sozinho (`node scripts/gen-at-goiania.mjs`) ou importado pelo build (scripts/build.mjs) e
 // pelo dev server (vite.config.ts). O arquivo gerado fica no .gitignore — nunca é editado à mão.
@@ -46,10 +42,11 @@ const ENTRY_GOIANIA = '<script type="module" src="/src/main-at-goiania.tsx"></sc
 // AT_GOIANIA_WHATSAPP_URL em src/components/at/geo-goiania.ts (conferido abaixo).
 const TINTIM_HOME =
   "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/b40002a5-951b-4014-a30a-17af3f592141";
-const TINTIM_PLACEHOLDER = "COLE-AQUI-TOKEN-TINTIM-GOIANIA";
+// fluxo dedicado [GO], criado pelo Ivan em 22/10/2026
 const TINTIM_GOIANIA =
-  "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/COLE-AQUI-TOKEN-TINTIM-GOIANIA";
-// tokens das outras portas — NUNCA podem aparecer nesta (veio do clone da /sp)
+  "https://tintim.link/whatsapp/9032d846-c29e-46d1-a300-01417d56fcb0/1fdae0e4-bc5c-4ca6-b902-637cee0d58f0";
+// tokens da home e das outras portas — NUNCA podem aparecer nesta (nem como URL, nem soltos)
+const TINTIM_HOME_TOKEN = "b40002a5-951b-4014-a30a-17af3f592141";
 const TINTIM_SP_TOKEN = "f42174e7-24cc-4583-a56b-9a6161434a15";
 const TINTIM_BR_TOKEN = "59de1b8b-00ba-4bfd-a87b-d7f30b9a9472";
 
@@ -74,17 +71,7 @@ function replaceCounted(html, from, to, expected, label) {
   return html.split(from).join(to);
 }
 
-export async function generateAtGoianiaHtml({ allowPlaceholder = process.env.ALLOW_TINTIM_PLACEHOLDER === "1" } = {}) {
-  if (TINTIM_GOIANIA.includes(TINTIM_PLACEHOLDER)) {
-    if (!allowPlaceholder) {
-      throw new Error(
-        `[gen-at-goiania] deeplink Tintim de Goiânia ainda com o placeholder ${TINTIM_PLACEHOLDER} — ` +
-        "cole o token real em scripts/gen-at-goiania.mjs e em src/components/at/geo-goiania.ts (sem token não há deploy)"
-      );
-    }
-    console.warn(`[gen-at-goiania] AVISO: placeholder ${TINTIM_PLACEHOLDER} liberado — só para dev/validação local`);
-  }
-
+export async function generateAtGoianiaHtml() {
   // o deeplink do FAB (aqui) e o dos botões React (geo-goiania.ts) têm que ser o MESMO fluxo
   const geoSrc = await readFile(path.join(ROOT, "src", "components", "at", "geo-goiania.ts"), "utf8");
   if (!geoSrc.includes(`"${TINTIM_GOIANIA}"`)) {
@@ -143,7 +130,7 @@ export async function generateAtGoianiaHtml({ allowPlaceholder = process.env.ALL
   for (const sig of TRACKING_PRIMITIVES_GOIANIA) {
     if (!out.includes(sig)) throw new Error(`[gen-at-goiania] primitivo de tracking ausente: ${sig}`);
   }
-  if (out.includes(TINTIM_HOME)) {
+  if (out.includes(TINTIM_HOME) || out.includes(TINTIM_HOME_TOKEN)) {
     throw new Error("[gen-at-goiania] deeplink Tintim da HOME sobrou no HTML da porta Goiânia");
   }
   if (out.includes(TINTIM_SP_TOKEN) || out.includes(TINTIM_BR_TOKEN)) {

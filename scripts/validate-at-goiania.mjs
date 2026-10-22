@@ -38,7 +38,6 @@ const AW_LABEL = "AW-16690821688/zjEbCOiG7MAcELj05pY-";
 const TINTIM_HOME_TOKEN = "b40002a5-951b-4014-a30a-17af3f592141"; // fluxo Tintim da home
 const TINTIM_SP_TOKEN = "f42174e7-24cc-4583-a56b-9a6161434a15";   // fluxo dedicado da porta SP
 const TINTIM_BR_TOKEN = "59de1b8b-00ba-4bfd-a87b-d7f30b9a9472";   // fluxo dedicado da campanha [BR]
-const TINTIM_PLACEHOLDER = "COLE-AQUI-TOKEN-TINTIM-GOIANIA";
 
 // UTMs/gclid do teste definidos no briefing de 22/10 (hits interceptados: não sujam GA4/Ads)
 const UTMS = "utm_source=google&utm_medium=cpc&utm_campaign=pesquisa-at-goiania&utm_term=assistente%20tecnico%20medico&matchtype=e&gclid=TESTGCLID_GO_123";
@@ -134,12 +133,7 @@ async function main() {
   const r = await fetch(`${BASE}/assistente-tecnico-medico?utm_source=x`, { redirect: "manual" });
   check(r.status === 301, "/assistente-tecnico-medico segue com 301", `recebido ${r.status}`);
   check((r.headers.get("location") || "").startsWith("/"), "Location -> /", r.headers.get("location") || "");
-  if (TINTIM_GO_TOKEN === TINTIM_PLACEHOLDER) {
-    if (process.env.ALLOW_TINTIM_PLACEHOLDER === "1") console.log(`  WARN  token Tintim de Goiânia ainda é o placeholder (liberado por ALLOW_TINTIM_PLACEHOLDER=1)`);
-    else check(false, "token Tintim de Goiânia real (sem placeholder)", TINTIM_GO_TOKEN);
-  } else {
-    check(/^[0-9a-f-]{36}$/.test(TINTIM_GO_TOKEN), "token Tintim de Goiânia com formato de UUID", TINTIM_GO_TOKEN);
-  }
+  check(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(TINTIM_GO_TOKEN), "token Tintim de Goiânia com formato de UUID", TINTIM_GO_TOKEN);
   check(![TINTIM_HOME_TOKEN, TINTIM_SP_TOKEN, TINTIM_BR_TOKEN].includes(TINTIM_GO_TOKEN), "token de Goiânia diferente dos fluxos home/SP/BR");
 
   // ── 2+3) Porta Goiânia — head, conteúdo (desktop) ─────────────────────────
@@ -196,6 +190,10 @@ async function main() {
   console.log("\n[4] Conteúdo proibido");
   const rawHtml = await (await fetch(`${BASE}${ROTA}`)).text();
   for (const t of ["TRT-18", "Rua Paim"]) check(!rawHtml.includes(t), `HTML sem "${t}"`);
+  // link da home (e das portas SP/BR) proibido em QUALQUER ponto do HTML, inclusive no FAB inline
+  check(!rawHtml.includes(TINTIM_HOME_TOKEN), "HTML sem o fluxo Tintim da home");
+  check(!rawHtml.includes(TINTIM_SP_TOKEN) && !rawHtml.includes(TINTIM_BR_TOKEN), "HTML sem os fluxos Tintim da SP/BR");
+  check(rawHtml.includes(TINTIM_GO_TOKEN), "HTML com o fluxo Tintim de Goiânia");
   check(!/sede em goi[aâ]nia/i.test(rawHtml), 'HTML sem "sede em Goiânia"');
   // bloco a bloco: o textContent do <body> inteiro cola blocos vizinhos sem separador e gera
   // falso positivo ("…e escritórios" + "Assistência técnica médica · Goiânia…")

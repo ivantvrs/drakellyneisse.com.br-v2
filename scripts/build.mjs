@@ -164,8 +164,7 @@ async function main() {
   console.log("[build] gen (at-br)…");
   await generateAtBrHtml();
 
-  // 0c) idem para a porta geo /assistente-tecnico-medico/goiania (gate próprio no gerador; aborta
-  //     enquanto o deeplink Tintim de Goiânia estiver com o placeholder).
+  // 0c) idem para a porta geo /assistente-tecnico-medico/goiania (gate próprio no gerador).
   console.log("[build] gen (at-goiania)…");
   await generateAtGoianiaHtml();
 
