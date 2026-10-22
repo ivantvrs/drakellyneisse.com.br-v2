@@ -9,8 +9,9 @@
 //      LocalBusiness/endereço
 //   3. desktop: H1 idêntico ao da home, selo "Goiânia e região", linha de acompanhamento presencial
 //      logo abaixo do botão do hero, Atuação e rodapé de Goiânia, CRM/MG 109153
-//   4. conteúdo proibido: TRT-18, TJGO, "sede em Goiânia", Rua Paim, sede/escritório em Goiânia,
-//      travessão nos textos novos
+//   4. conteúdo proibido: TRT-18, "sede em Goiânia", Rua Paim, sede/escritório em Goiânia,
+//      travessão nos textos novos (TJGO é PERMITIDO: a Dra. Kelly é cadastrada no TJGO e a copy
+//      da home cita isso; o briefing de 22/10 dizia o contrário e o Ivan corrigiu no mesmo dia)
 //   5. page_view via beacon /g/collect com dl no path novo carregando UTMs + gclid
 //   6. clique em TODOS os botões de WhatsApp: conversão AW (zjEb…) + whatsapp_click_at + UTMs/gclid
 //      propagados ao deeplink do fluxo Tintim de Goiânia
@@ -194,7 +195,7 @@ async function main() {
   // ── 4) Conteúdo proibido ──────────────────────────────────────────────────
   console.log("\n[4] Conteúdo proibido");
   const rawHtml = await (await fetch(`${BASE}${ROTA}`)).text();
-  for (const t of ["TRT-18", "TJGO", "Rua Paim"]) check(!rawHtml.includes(t), `HTML sem "${t}"`);
+  for (const t of ["TRT-18", "Rua Paim"]) check(!rawHtml.includes(t), `HTML sem "${t}"`);
   check(!/sede em goi[aâ]nia/i.test(rawHtml), 'HTML sem "sede em Goiânia"');
   // bloco a bloco: o textContent do <body> inteiro cola blocos vizinhos sem separador e gera
   // falso positivo ("…e escritórios" + "Assistência técnica médica · Goiânia…")
