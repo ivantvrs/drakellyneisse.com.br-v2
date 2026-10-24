@@ -252,6 +252,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             if (navigator.sendBeacon) { navigator.sendBeacon(u); } else { new Image().src = u; }
           } catch (_) {}
         };
+
+        // tempo de engajamento (_et) de cada hit = SÓ o tempo com a aba em primeiro plano desde o
+        // hit anterior. O GA4 SOMA o _et de todos os hits da sessão: mandar o tempo total desde o
+        // load (performance.now) em cada rolagem/clique contava o mesmo tempo várias vezes e a aba
+        // esquecida aberta virava horas de "engajamento" (userEngagementDuration inflado ~3x+).
+        var etAcc = 0;
+        var etSince = document.visibilityState === 'visible' ? performance.now() : 0;
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'visible') { etSince = performance.now(); }
+          else if (etSince) { etAcc += performance.now() - etSince; etSince = 0; }
+        });
+        T.et = function () {
+          if (etSince) { var now = performance.now(); etAcc += now - etSince; etSince = now; }
+          var d = Math.max(1, Math.round(etAcc));
+          etAcc = 0;
+          return String(d);
+        };
       } catch (e) { /* nunca quebrar UX */ }
     })();
     </script>
@@ -335,7 +352,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
                 if (T && T.base) {
                   var p = T.base();
                   p.en = 'scroll_depth';
-                  p._et = String(Math.max(1, Math.round(performance.now())));
+                  p._et = T.et ? T.et() : '1'; // só o tempo em primeiro plano desde o hit anterior (ms)
                   p['epn.percent_scrolled'] = t;
                   p.dl = location.href;
                   p.dt = document.title;
@@ -391,7 +408,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             if (T && T.base) {
               var p = T.base();
               p.en = 'whatsapp_click_at';
-              p._et = String(Math.max(1, Math.round(performance.now()))); // tempo real desde o load (ms)
+              p._c = '1';                     // evento-chave: sem _c=1 o GA4 registra o evento mas não credita (keyEvents=0)
+              p._et = T.et ? T.et() : '1'; // só o tempo em primeiro plano desde o hit anterior (ms)
               p['ep.event_category'] = 'conversao';
               p['ep.funnel'] = 'at';
               if (ctaOrigin) p['ep.cta_origin'] = ctaOrigin;
@@ -446,7 +464,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe>
             if (T && T.base) {
               var p = T.base();
               p.en = 'select_case_at';
-              p._et = String(Math.max(1, Math.round(performance.now())));
+              p._et = T.et ? T.et() : '1'; // só o tempo em primeiro plano desde o hit anterior (ms)
               p['ep.event_category'] = 'engajamento';
               p['ep.funnel'] = 'at';
               p['ep.cta_origin'] = ctaOrigin;
