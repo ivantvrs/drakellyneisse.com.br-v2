@@ -57,14 +57,10 @@ export const GO_TRIBUNAIS = "TJGO · TJMG · TJSP · TJMT · TRT-3";
 export const GO_AUTORIDADE_REGIAO_STAT = "Goiânia e região";
 export const GO_AUTORIDADE_REGIAO_SUB = "Acompanhamento presencial de perícias";
 
-// ── FAQ ── (o JSON-LD FAQPage do <head> recebe as MESMAS trocas em scripts/gen-at-goiania.mjs,
-// que confere que estes textos casam com os dele)
-// A18: acrescentado ao fim da resposta da 01.
-export const GO_FAQ_01_COMPLEMENTO = "E depois do exame só dá para questionar o que foi perguntado e registrado.";
-// A19: pergunta e resposta da 06 (no lugar de "Quanto custa?").
-export const GO_FAQ_06_PERGUNTA = "Procurei um médico perito particular. É isso?";
-export const GO_FAQ_06_RESPOSTA =
-  "O perito é nomeado pelo juiz e não pode ser contratado por nenhum dos lados. O que você contrata é o médico assistente técnico, que acompanha a perícia do seu lado, formula os quesitos e analisa o laudo.";
+// ── FAQ ── nada próprio desde 06/11/2026: A18 (frase no fim da 01) e A19 (pergunta do perito
+// particular) viraram texto comum das 4 páginas AT em AtFAQ.tsx. A única diferença da porta é
+// não ter a 08 nem a 09 da lista nacional; o JSON-LD FAQPage do <head> tira as mesmas duas em
+// scripts/gen-at-goiania.mjs.
 
 // ── Atuação ──
 export const GO_ATUACAO_TITULO = "Acompanhamento presencial em Goiânia e em todo o Brasil";
