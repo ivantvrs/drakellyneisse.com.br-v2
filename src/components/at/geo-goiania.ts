@@ -89,8 +89,10 @@ export const GO_CTAFINAL_LINHA = "Goiânia e região · Cível e trabalhista · 
 // B4 (Sobre, depois de "…não uma atividade paralela."):
 // export const GO_SOBRE_PERITA_E_ASSISTENTE =
 //   "Como perita nomeada pelo juízo, conhece a perícia do lado de quem examina. Como assistente técnica, coloca essa experiência ao lado de quem a contrata.";
-// B5 (hero, 1ª microprova "Resposta rápida", e destaque "24h / Análise inicial" do advogado):
-//   número a definir pelo Ivan (2h úteis ou 24h), o MESMO nos dois lugares.
+// B5: APLICADA em 06/11/2026 em todas as portas (home, /sp, /br e Goiânia), não só aqui: a 1ª
+//   microprova do hero virou "Orçamento em até 2h úteis" (texto comum em AtHero.tsx). O destaque
+//   "24h / Análise inicial" do advogado fica como está: as duas promessas foram confirmadas pela
+//   Dra. Kelly e são coisas diferentes (orçamento e análise).
 // B6 (laudo de exemplo, VisualEmpresaDossie): conferir se o nº "5056271-20.2025" é fictício.
 
 // Linha de atendimento do rodapé (substitui "Sede em Uberlândia/MG · …" da home).
