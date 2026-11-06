@@ -19,10 +19,12 @@ const EmblemIcon = () => (
   </svg>
 );
 
-// Texto do selo do hero: a porta Goiânia troca "Perícia Médica" por "Goiânia e região";
-// home, /sp e /br seguem com o selo da mãe (mesmo texto, mesmo HTML).
+// Texto do selo do hero: a porta Goiânia tem selo próprio ("… · Goiânia e região");
+// home, /sp e /br seguem com o selo da mãe (mesmo texto, mesmo HTML). O selo da mãe usa os
+// termos da busca do Ads (assistente técnico pericial, perícia judicial; 06/11/2026) e não
+// pode passar de 2 linhas no Pixel 7 nem de 1 no desktop (scripts/validate-faq-vocabulario.mjs).
 const SeloTexto = () => (
-  <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SELO : "Assistência técnica médica · Perícia Médica"}</>
+  <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SELO : "Assistente técnico pericial · Perícia judicial"}</>
 );
 
 // Linha logo ACIMA do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
@@ -40,7 +42,7 @@ const SigiloTexto = () => (
 );
 
 // Linha logo abaixo do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
-// nada). Mesmo estilo da microprova "Resposta rápida"; items-start porque quebra em 2 linhas no mobile.
+// nada). Mesmo estilo da 1ª microprova (Zap); items-start porque quebra em 2 linhas no mobile.
 const PresencialGoiania = () =>
   useContext(AtGeoContext) === "goiania" ? (
     <p className="font-label text-sm mt-4 flex items-start gap-2" style={{ color: '#A09A8D' }}>
@@ -164,10 +166,11 @@ const Hero = () => (
 
         <PresencialGoiania />
 
-        {/* microprova abaixo do CTA — mesma regra de tamanho do desktop, com ícones discretos */}
+        {/* microprova abaixo do CTA — mesma regra de tamanho do desktop, com ícones discretos.
+            A 1ª repete a promessa dos anúncios (prazo confirmado pela Dra. Kelly, 06/11/2026). */}
         <p className="font-label text-sm mt-6 flex items-center gap-2" style={{ color: '#A09A8D' }}>
           <Zap size={15} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />
-          Resposta rápida
+          Orçamento em até 2h úteis
         </p>
         <p className="font-label text-[11px] mt-1 flex items-center gap-2" style={{ color: '#6F6A60' }}>
           <ShieldCheck size={13} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />
@@ -235,7 +238,7 @@ const Hero = () => (
 
         <p className="font-label text-sm mt-6 flex items-center gap-2" style={{ color: '#A09A8D' }}>
           <Zap size={15} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />
-          Resposta rápida
+          Orçamento em até 2h úteis
         </p>
         <p className="font-label text-[11px] mt-1 flex items-center gap-2" style={{ color: '#6F6A60' }}>
           <ShieldCheck size={13} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0 }} aria-hidden="true" />

@@ -9,7 +9,7 @@
 //      LocalBusiness/endereço
 //   3. desktop: H1 idêntico ao da home, selo "Goiânia e região", pergunta logo ACIMA e linha
 //      presencial logo abaixo do botão do hero, microprova de sigilo, Atuação e rodapé de Goiânia,
-//      CRM/MG 109153, JSON-LD FAQPage igual à FAQ visível
+//      CRM/MG 109153, JSON-LD FAQPage igual à FAQ visível (7 perguntas: as comuns, sem a 08 e a 09)
 //   4. conteúdo proibido: TRT-18, "sede em Goiânia", Rua Paim, sede/escritório/sala em Goiânia,
 //      textos que a copy v2 tirou (médico da equipe, Quanto custa, TRT-3 sozinho), preço/valor,
 //      outro médico, travessão nos textos novos (TJGO é PERMITIDO: a Dra. Kelly é cadastrada no
@@ -18,7 +18,8 @@
 //   6. clique em TODOS os botões de WhatsApp: conversão AW (zjEb…) + whatsapp_click_at + UTMs/gclid
 //      propagados ao deeplink do fluxo Tintim de Goiânia
 //   7. mobile (Pixel 7): selo em 1 linha, pergunta acima e linha presencial abaixo do botão
-//   8. diff de copy contra a home: <main> idêntico EXCETO os itens A1–A21 da copy v2 (um a um)
+//   8. diff de copy contra a home: <main> idêntico EXCETO os itens A1–A21 da copy v2 (um a um) e
+//      a 08 e a 09 da FAQ, que só existem fora da porta (A18 e A19 viraram texto comum em 06/11)
 //   9. home "/", /sp e /br sem regressão e sem nenhum texto da porta Goiânia
 // Os HITS de medição (GA4/Ads/Meta) são interceptados e respondidos localmente: o teste vê a
 // requisição sair, mas nada chega às contas (o utm_campaign do teste é o da campanha real).
@@ -45,7 +46,7 @@ const TINTIM_BR_TOKEN = "59de1b8b-00ba-4bfd-a87b-d7f30b9a9472";   // fluxo dedic
 const UTMS = "utm_source=google&utm_medium=cpc&utm_campaign=pesquisa-at-goiania&utm_term=assistente%20tecnico%20medico&matchtype=e&gclid=TESTGCLID_GO_123";
 
 // textos do briefing — conferidos LITERALMENTE (não importados do código, de propósito)
-const HOME_HERO_SELO = "Assistência técnica médica · Perícia Médica";
+const HOME_HERO_SELO = "Assistente técnico pericial · Perícia judicial";                          // 06/11/2026
 const GO_HERO_SELO = "Assistente técnico · Goiânia e região";                                   // A1
 const GO_HERO_PRESENCIAL = "Acompanhamento presencial em perícias em Goiânia e região.";            // A2
 const GO_HERO_MOMENTO = "Perícia marcada, prazo de quesitos ou laudo desfavorável?";                // A3
@@ -56,7 +57,15 @@ const HOME_ATUACAO_H2 = "Acompanhamento presencial em Goiânia, Brasília, Uberl
 const HOME_ATUACAO_P = "em Goiânia, Brasília, Uberlândia e em qualquer comarca do país.";
 const GO_FOOTER = "Atendimento presencial em Goiânia e região · Atuação em todo o Brasil (presencial e remoto)";
 const H1_HOME = "Não enfrente a perícia sem um assistente técnico médico do seu lado.";
-const GO_FAQ_06_Q = "Procurei um médico perito particular. É isso?";                               // A19
+const GO_FAQ_PERITO_PARTICULAR_Q = "Procurei um médico perito particular. É isso?";                 // era a A19; hoje FAQ 03 comum
+// 1ª microprova do hero, comum às 4 páginas (06/11/2026): única menção a orçamento autorizada na porta
+const HERO_MICROPROVA_ORCAMENTO = "Orçamento em até 2h úteis";
+// FAQ 08 e 09: só home, /sp e /br (a porta tem as 7 comuns). textContent do <main> = número + pergunta + resposta.
+const FAQ_08_09_HOME =
+  "08Quem paga os honorários do assistente técnico?A parte que o indica adianta os honorários do assistente técnico, que são separados dos honorários do perito do juízo (CPC, art. 95). O orçamento é feito por caso, sem mensalidade, e você sabe o valor antes de decidir." +
+  "09A Dra. Kelly atende no meu estado?Sim. A análise do laudo, os quesitos e o parecer técnico são feitos para processos de todo o Brasil, e o acompanhamento presencial da perícia acontece onde ela for marcada.";
+const FAQ_07_FIM = "mais completa fica a impugnação.";
+const FAQ_NOTA = "Tem outra dúvida sobre seu caso?";
 
 // copy v2 (briefing de 22/10, Grupo A): [item, texto na porta, texto na home ("" = só existe na
 // porta), ocorrências esperadas no <main> da porta]. ORDEM importa: o texto mais longo vem antes
@@ -79,8 +88,9 @@ const COPY_V2 = [
   ["A14", " Por isso não existe médico perito particular. O que você pode ter é um médico assistente técnico, do seu lado na perícia.", "", 1],
   ["A15/A17", "TJGO · TJMG · TJSP · TJMT · TRT-3", "TRT-3 · TJGO · TJSP · TJMT · TJMG", 2],
   ["A16", "Goiânia e regiãoAcompanhamento presencial de perícias", "BrasilAtuação técnica em todo o país", 1],
-  ["A18", " E depois do exame só dá para questionar o que foi perguntado e registrado.", "", 1],
-  ["A19", `${GO_FAQ_06_Q}O perito é nomeado pelo juiz e não pode ser contratado por nenhum dos lados. O que você contrata é o médico assistente técnico, que acompanha a perícia do seu lado, formula os quesitos e analisa o laudo.`, "Quanto custa?Orçamento por caso, sem mensalidade. Você sabe o valor antes de fechar.", 1],
+  // A18 e A19 viraram texto comum das 4 páginas (06/11/2026): não são mais diferença da porta.
+  // FAQ 08 e 09: a porta pula da 07 direto para a nota do rodapé do FAQ.
+  ["FAQ sem 08 e 09", `${FAQ_07_FIM}${FAQ_NOTA}`, `${FAQ_07_FIM}${FAQ_08_09_HOME}${FAQ_NOTA}`, 1],
   ["A20", GO_ATUACAO_P, `A Dra. Kelly acompanha a perícia presencialmente onde ela acontecer, ${HOME_ATUACAO_P}`, 1],
   ["Atuação (título)", GO_ATUACAO_H2, HOME_ATUACAO_H2, 1],
   ["A21", "Goiânia e região · Cível e trabalhista · CRM/MG 109.153", "Resposta rápida · Cível e trabalhista · CRM/MG 109.153", 1],
@@ -226,13 +236,13 @@ async function main() {
   check(!ldStr.includes("LocalBusiness"), "JSON-LD sem LocalBusiness");
   check(!/"address"/.test(ldStr) && !/Goi[aâ]nia/i.test(ldStr), "JSON-LD sem endereço e sem Goiânia");
 
-  // FAQPage do schema = FAQ visível da porta, pergunta a pergunta (copy v2: A18 e A19 nos dois)
+  // FAQPage do schema = FAQ visível da porta, pergunta a pergunta (7: as comuns, sem a 08 e a 09)
   const faqLd = ld.find((o) => o["@type"] === "FAQPage");
   const faqSchema = (faqLd?.mainEntity || []).map((q) => [q.name, q.acceptedAnswer?.text]);
   const faqVisivel = await page.$$eval('#faq [id^="at-faq-btn-"]', (bs) =>
     bs.map((b) => [b.querySelector("span.flex-1").textContent.trim(), document.getElementById(b.getAttribute("aria-controls")).textContent.trim()]));
-  check(faqSchema.length === 6 && JSON.stringify(faqSchema) === JSON.stringify(faqVisivel), "JSON-LD FAQPage idêntico à FAQ visível", `${faqSchema.length} no schema, ${faqVisivel.length} visíveis`);
-  check(faqSchema.some(([q]) => q === GO_FAQ_06_Q), "JSON-LD FAQPage com a pergunta do perito particular (A19)");
+  check(faqSchema.length === 7 && JSON.stringify(faqSchema) === JSON.stringify(faqVisivel), "JSON-LD FAQPage idêntico à FAQ visível (7)", `${faqSchema.length} no schema, ${faqVisivel.length} visíveis`);
+  check(faqSchema.some(([q]) => q === GO_FAQ_PERITO_PARTICULAR_Q), "JSON-LD FAQPage com a pergunta do perito particular");
 
   console.log("\n[3] Porta Goiânia — conteúdo (desktop 1366px)");
   const h1 = (await page.textContent("h1")).trim();
@@ -268,8 +278,9 @@ async function main() {
   check(sugereSede.length === 0, "nenhum texto sugere sede/escritório/consultório/sala/endereço em Goiânia", sugereSede.join(" | ").slice(0, 160));
   check(!blocos.some((t) => /CRM\/GO/.test(t)), "nenhuma menção a CRM/GO");
   for (const t of REMOVIDOS_V2) check(!rawHtml.includes(t), `HTML sem "${t}" (saiu na copy v2)`);
-  const precos = blocos.filter((t) => /pre[çc]o|or[çc]amento|mensalidade|\bvalor\b|proposta/i.test(t));
-  check(precos.length === 0, "nenhum texto sobre preço, valor ou proposta", precos.join(" | ").slice(0, 160));
+  // exceção autorizada pelo Ivan (06/11/2026): a 1ª microprova do hero, comum às 4 páginas
+  const precos = blocos.filter((t) => t !== HERO_MICROPROVA_ORCAMENTO && /pre[çc]o|or[çc]amento|mensalidade|\bvalor\b|proposta/i.test(t));
+  check(precos.length === 0, `nenhum texto sobre preço, valor ou proposta (exceto "${HERO_MICROPROVA_ORCAMENTO}")`, precos.join(" | ").slice(0, 160));
   const medicos = [...new Set(blocos.flatMap((t) => t.match(/\bDra?\.\s+[A-ZÀ-Ú][a-zà-ú]+/g) || []))];
   check(medicos.every((m) => m === "Dra. Kelly"), "nenhum nome de outro médico (só Dra. Kelly)", medicos.join(", "));
   for (const t of [title, desc, GO_FOOTER, ...COPY_V2.map(([, go]) => go)]) {

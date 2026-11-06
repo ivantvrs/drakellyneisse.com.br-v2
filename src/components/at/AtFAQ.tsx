@@ -2,13 +2,25 @@ import { useContext, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { AtGeoContext, useAtWhatsappUrl } from "./cta-at";
-import { GO_FAQ_01_COMPLEMENTO, GO_FAQ_06_PERGUNTA, GO_FAQ_06_RESPOSTA } from "./geo-goiania";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
-const faqs = [
+// FAQ das páginas AT (vocabulário de busca do Ads, aprovado pelo Ivan em 06/11/2026).
+// O JSON-LD FAQPage do <head> do index.html tem que repetir esta lista palavra por palavra e na
+// mesma ordem (/sp e /br herdam o <head> byte a byte). Sem travessão nos textos.
+// 01 a 07: comuns às 4 páginas (a 01 e a 03 eram a A18 e a A19 da porta Goiânia e viraram texto
+// comum).
+const faqsComuns = [
   {
     q: "Eu preciso mesmo de um assistente técnico?",
-    a: "Não é obrigatório, mas é um direito seu. Sem ele, o laudo do perito entra no processo sem nenhum contraponto médico, e é nesse laudo que o juiz se baseia.",
+    a: "Não é obrigatório, mas é um direito seu. Sem ele, o laudo do perito entra no processo sem nenhum contraponto médico, e é nesse laudo que o juiz se baseia. E depois do exame só dá para questionar o que foi perguntado e registrado.",
+  },
+  {
+    q: "Assistente técnico judicial, pericial ou médico: qual é a diferença?",
+    a: "Nenhuma, é o mesmo papel com nomes diferentes. A lei chama de assistente técnico (CPC, art. 465), e no dia a dia se fala em assistente técnico judicial ou assistente técnico pericial. Quando a perícia é médica, quem cumpre esse papel é um médico: o assistente técnico médico, indicado por uma das partes para acompanhar a perícia judicial.",
+  },
+  {
+    q: "Procurei um médico perito particular. É isso?",
+    a: "O perito é nomeado pelo juiz e não pode ser contratado por nenhum dos lados. O que você contrata é o médico assistente técnico, que acompanha a perícia do seu lado, formula os quesitos e analisa o laudo.",
   },
   {
     q: "Serve para o meu lado do processo?",
@@ -20,31 +32,32 @@ const faqs = [
   },
   {
     q: "Quando devo procurar?",
-    a: "Assim que souber da perícia ou da nomeação do perito. O prazo para indicar o assistente técnico e entregar os quesitos é curto.",
+    a: "Assim que souber da perícia ou da nomeação do perito. A indicação do assistente técnico e a apresentação dos quesitos têm prazo curto, contado da intimação do despacho que nomeia o perito: no CPC, são 15 dias (art. 465, § 1º).",
   },
   {
     q: "Já recebi o laudo. Ainda dá tempo?",
-    a: "Em muitos casos, sim, a impugnação tem prazo próprio. Quanto antes o laudo for analisado, mais completa fica a contestação.",
-  },
-  {
-    q: "Quanto custa?",
-    a: "Orçamento por caso, sem mensalidade. Você sabe o valor antes de fechar.",
+    a: "Em muitos casos, sim. Depois que o laudo é juntado, as partes podem se manifestar e o assistente técnico pode apresentar parecer: no CPC, o prazo é de 15 dias (art. 477, § 1º). Quanto antes o laudo for analisado, mais completa fica a impugnação.",
   },
 ];
 
-// Porta Goiânia (briefing v2): a 01 ganha uma frase no fim (A18) e a 06 troca "Quanto custa?" pela
-// pergunta do perito particular (A19). O JSON-LD FAQPage do <head> recebe as mesmas trocas em
-// scripts/gen-at-goiania.mjs — pergunta visível e schema não podem divergir.
-const faqsGoiania = faqs.map((f, i) =>
-  i === 0 ? { ...f, a: `${f.a} ${GO_FAQ_01_COMPLEMENTO}` }
-    : i === 5 ? { q: GO_FAQ_06_PERGUNTA, a: GO_FAQ_06_RESPOSTA }
-      : f
-);
+// 08 e 09: só home, /sp e /br. A porta Goiânia fica com as 7 comuns, e o gerador
+// scripts/gen-at-goiania.mjs tira as mesmas duas do JSON-LD da porta.
+const faqsNacional = [
+  ...faqsComuns,
+  {
+    q: "Quem paga os honorários do assistente técnico?",
+    a: "A parte que o indica adianta os honorários do assistente técnico, que são separados dos honorários do perito do juízo (CPC, art. 95). O orçamento é feito por caso, sem mensalidade, e você sabe o valor antes de decidir.",
+  },
+  {
+    q: "A Dra. Kelly atende no meu estado?",
+    a: "Sim. A análise do laudo, os quesitos e o parecer técnico são feitos para processos de todo o Brasil, e o acompanhamento presencial da perícia acontece onde ela for marcada.",
+  },
+];
 
 const AtFAQ = () => {
   const [open, setOpen] = useState<number | null>(null);
   const { ref, isVisible } = useInView();
-  const lista = useContext(AtGeoContext) === "goiania" ? faqsGoiania : faqs;
+  const lista = useContext(AtGeoContext) === "goiania" ? faqsComuns : faqsNacional;
 
   return (
     <section
