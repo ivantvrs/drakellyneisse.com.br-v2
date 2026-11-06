@@ -154,7 +154,7 @@ const AtOQueE = () => {
                 </p>
               </div>
               <p className="text-[14px] leading-relaxed mb-7" style={{ color: "#A9A093" }}>
-                É o seu médico de confiança dentro da perícia. Ele:
+                É o seu médico de confiança dentro da perícia. No processo, também aparece como assistente técnico judicial ou assistente técnico pericial. O que ele faz:
               </p>
 
               <ol className="atoq-axis">
