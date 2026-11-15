@@ -16,6 +16,7 @@ import PageRainFX from "@/components/PageRainFX";
 import { SP_FOOTER_SEDE_LINE } from "@/components/at/geo-sp";
 import { BR_FOOTER_SEDE_LINE } from "@/components/at/geo-br";
 import { GO_FOOTER_SEDE_LINE } from "@/components/at/geo-goiania";
+import { BSB_FOOTER_SEDE_LINE } from "@/components/at/geo-brasilia";
 import { AtGeoContext, type AtGeo } from "@/components/at/cta-at";
 
 // Linha de sede/atendimento do rodapé por porta (home = default do Footer).
@@ -23,6 +24,7 @@ const FOOTER_SEDE_LINE: Record<AtGeo, string> = {
   sp: SP_FOOTER_SEDE_LINE,
   br: BR_FOOTER_SEDE_LINE,
   goiania: GO_FOOTER_SEDE_LINE,
+  brasilia: BSB_FOOTER_SEDE_LINE,
 };
 
 // IMPORTS DIRETOS (sem lazy()/<Suspense>) DE PROPÓSITO. Esta é a HOME (/), pré-renderizada por
@@ -40,6 +42,10 @@ const FOOTER_SEDE_LINE: Record<AtGeo, string> = {
 // `geo="goiania"` (porta /assistente-tecnico-medico/goiania — campanha Ads [GO] Goiânia 60 km,
 // clone da SP): mesma árvore, muda o selo e uma linha do hero, a seção Atuação, o rodapé e o
 // deeplink Tintim (fluxo dedicado). Textos em components/at/geo-goiania.ts.
+// `geo="brasilia"` (porta /assistente-tecnico-medico/brasilia — campanha Ads [DF] Brasília 80 km,
+// clone técnico da Goiânia): mesma árvore, muda SÓ o selo e a linha presencial do hero, a seção
+// Atuação, o rodapé e o deeplink Tintim (fluxo dedicado); FAQ e tudo o mais são os da home.
+// Textos em components/at/geo-brasilia.ts.
 const AtIndex = ({ geo }: { geo?: AtGeo }) => (
   <AtGeoContext.Provider value={geo}>
     <AtHeader />
