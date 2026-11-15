@@ -3,19 +3,24 @@ import { MapPin } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
 import { AtGeoContext } from "./cta-at";
 import { GO_ATUACAO_CIDADES, GO_ATUACAO_FIM, GO_ATUACAO_INICIO, GO_ATUACAO_TITULO } from "./geo-goiania";
+import { BSB_ATUACAO_CIDADES, BSB_ATUACAO_FIM, BSB_ATUACAO_INICIO, BSB_ATUACAO_TITULO } from "./geo-brasilia";
 
 // Na porta geo SP (AtGeoContext="sp") a seção troca as cidades: "São Paulo, Campinas ou
 // qualquer outra cidade do país" (pedido do Ivan 10/07). Na porta BR (campanha nacional) não
 // há cidade nenhuma: "em todo o Brasil" / "qualquer cidade do país" (briefing 10/08). Na porta
 // Goiânia a frase inteira é outra, sem dizer quem vai à perícia: "Acompanhamento presencial da
 // perícia onde ela acontecer: em Goiânia, Aparecida de Goiânia, Anápolis, nas cidades da região
-// e …" (copy v2, 22/10). Na home segue Goiânia/Brasília/Uberlândia. O restante da copy é idêntico.
+// e …" (copy v2, 22/10). Na porta Brasília a frase da home troca só a lista de cidades: "…, em
+// Brasília, Taguatinga, Águas Claras, Luziânia, Valparaíso de Goiás, Formosa e em qualquer outra
+// cidade do país." (briefing 15/11). Na home segue Goiânia/Brasília/Uberlândia. O restante da
+// copy é idêntico.
 const AtAtuacao = () => {
   const { ref, isVisible } = useInView();
   const geo = useContext(AtGeoContext);
   const sp = geo === "sp";
   const br = geo === "br";
   const go = geo === "goiania";
+  const bsb = geo === "brasilia";
 
   return (
     <section
@@ -56,13 +61,20 @@ const AtAtuacao = () => {
               ? "Acompanhamento pericial em todo o Brasil"
               : go
                 ? GO_ATUACAO_TITULO
-                : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
+                : bsb
+                  ? BSB_ATUACAO_TITULO
+                  : "Acompanhamento presencial em Goiânia, Brasília, Uberlândia e em todo o Brasil"}
         </h2>
         <p className="text-base md:text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: "#A9A093" }}>
           {go ? (
             <>
               {GO_ATUACAO_INICIO}{" "}
               <strong style={{ color: "#D6BE83" }}>{GO_ATUACAO_CIDADES}</strong>{GO_ATUACAO_FIM}
+            </>
+          ) : bsb ? (
+            <>
+              {BSB_ATUACAO_INICIO}{" "}
+              <strong style={{ color: "#D6BE83" }}>{BSB_ATUACAO_CIDADES}</strong>{BSB_ATUACAO_FIM}
             </>
           ) : (
             <>

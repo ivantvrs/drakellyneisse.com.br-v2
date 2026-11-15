@@ -7,6 +7,7 @@ import heroMobNewAvif from "@/assets/kelly-hero-mobile.avif";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import { AtGeoContext, useAtWhatsappUrl } from "./cta-at";
 import { GO_HERO_MOMENTO, GO_HERO_PRESENCIAL, GO_HERO_SELO, GO_HERO_SIGILO } from "./geo-goiania";
+import { BSB_HERO_PRESENCIAL, BSB_HERO_SELO } from "./geo-brasilia";
 
 // 1x1 transparente: o <img> do <picture> só o usa quando NENHUM <source media> casa.
 // Assim o hero mobile NÃO baixa no desktop e o recorte desktop NÃO baixa no mobile
@@ -19,13 +20,17 @@ const EmblemIcon = () => (
   </svg>
 );
 
-// Texto do selo do hero: a porta Goiânia tem selo próprio ("… · Goiânia e região");
-// home, /sp e /br seguem com o selo da mãe (mesmo texto, mesmo HTML). O selo da mãe usa os
-// termos da busca do Ads (assistente técnico pericial, perícia judicial; 06/11/2026) e não
-// pode passar de 2 linhas no Pixel 7 nem de 1 no desktop (scripts/validate-faq-vocabulario.mjs).
-const SeloTexto = () => (
-  <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SELO : "Assistente técnico pericial · Perícia judicial"}</>
-);
+// Texto do selo do hero: as portas Goiânia ("… · Goiânia e região") e Brasília ("… · Brasília e
+// entorno") têm selo próprio; home, /sp e /br seguem com o selo da mãe (mesmo texto, mesmo HTML).
+// O selo da mãe usa os termos da busca do Ads (assistente técnico pericial, perícia judicial;
+// 06/11/2026) e não pode passar de 2 linhas no Pixel 7 nem de 1 no desktop
+// (scripts/validate-faq-vocabulario.mjs).
+const SeloTexto = () => {
+  const geo = useContext(AtGeoContext);
+  return (
+    <>{geo === "goiania" ? GO_HERO_SELO : geo === "brasilia" ? BSB_HERO_SELO : "Assistente técnico pericial · Perícia judicial"}</>
+  );
+};
 
 // Linha logo ACIMA do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
 // nada). Mesma tipografia das microprovas; sem ícone por ser a pergunta que chama o botão.
@@ -41,19 +46,24 @@ const SigiloTexto = () => (
   <>{useContext(AtGeoContext) === "goiania" ? GO_HERO_SIGILO : "Seus dados estão protegidos"}</>
 );
 
-// Linha logo abaixo do botão de WhatsApp do hero, SÓ na porta Goiânia (nas demais não renderiza
-// nada). Mesmo estilo da 1ª microprova (Zap); items-start porque quebra em 2 linhas no mobile.
-const PresencialGoiania = () =>
-  useContext(AtGeoContext) === "goiania" ? (
+// Linha logo abaixo do botão de WhatsApp do hero, SÓ nas portas Goiânia e Brasília (nas demais não
+// renderiza nada). Mesmo estilo da 1ª microprova (Zap); items-start porque quebra em 2 linhas no
+// mobile. O texto é o da porta (geo-goiania.ts / geo-brasilia.ts); o HTML é o mesmo.
+const PresencialGoiania = () => {
+  const geo = useContext(AtGeoContext);
+  const texto = geo === "goiania" ? GO_HERO_PRESENCIAL : geo === "brasilia" ? BSB_HERO_PRESENCIAL : null;
+  return texto ? (
     <p className="font-label text-sm mt-4 flex items-start gap-2" style={{ color: '#A09A8D' }}>
       <MapPin size={15} strokeWidth={1.8} style={{ color: '#C79A5C', flexShrink: 0, marginTop: 2.5 }} aria-hidden="true" />
-      {GO_HERO_PRESENCIAL}
+      {texto}
     </p>
   ) : null;
+};
 
 // Copy ÚNICA para todas as portas (decisão do Ivan 10/07: a porta geo SP mantém a copy da
-// página mãe; o geo aparece só no rodapé e no deeplink Tintim, via AtGeoContext). Exceção: a
-// porta Goiânia troca o selo e ganha a linha de acompanhamento presencial (briefing 22/10).
+// página mãe; o geo aparece só no rodapé e no deeplink Tintim, via AtGeoContext). Exceções: a
+// porta Goiânia troca o selo e ganha a linha de acompanhamento presencial (briefing 22/10), e a
+// porta Brasília faz as mesmas duas trocas com os textos dela (briefing 15/11).
 const Hero = () => (
   <section id="inicio" className="relative overflow-hidden flex flex-col md:flex-row md:items-center md:min-h-screen" style={{ backgroundColor: '#0F0F0F' }}>
     {/* ░░ Fundo DESKTOP (≥768px) — halo + recorte da Dra. ░░ */}

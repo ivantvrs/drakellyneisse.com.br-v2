@@ -37,6 +37,8 @@
     { "source": "/assistente-tecnico-medico/br/", "destination": "/assistente-tecnico-medico-br.html" },
     { "source": "/assistente-tecnico-medico/goiania", "destination": "/assistente-tecnico-medico-goiania.html" },
     { "source": "/assistente-tecnico-medico/goiania/", "destination": "/assistente-tecnico-medico-goiania.html" },
+    { "source": "/assistente-tecnico-medico/brasilia", "destination": "/assistente-tecnico-medico-brasilia.html" },
+    { "source": "/assistente-tecnico-medico/brasilia/", "destination": "/assistente-tecnico-medico-brasilia.html" },
     { "source": "/bio", "destination": "/link-bio-1/index.html" },
     { "source": "/bio/", "destination": "/link-bio-1/index.html" }
   ]

@@ -1,17 +1,17 @@
-// Validação E2E do vocabulário de busca nas 4 páginas AT (roda sobre dist/, pós-build).
+// Validação E2E do vocabulário de busca nas páginas AT (roda sobre dist/, pós-build).
 //
 //   node scripts/validate-faq-vocabulario.mjs
 //
 // Tarefa de 06/11/2026 (aprovada pelo Ivan): FAQ nova, parágrafo do "O que é", selo do hero da
-// mãe e 1ª microprova do hero. Para "/", /sp, /br e /goiania confere:
+// mãe e 1ª microprova do hero. Para "/", /sp, /br, /goiania e /brasilia (desde 15/11) confere:
 //   1. JSON-LD FAQPage idêntico à FAQ visível e ao texto aprovado, palavra por palavra e na mesma
-//      ordem (9 na home, /sp e /br; 7 em Goiânia, sem a 08 e a 09), com as respostas no HTML do
-//      SSG mesmo com o item fechado
+//      ordem (9 na home, /sp, /br e /brasilia; 7 em Goiânia, sem a 08 e a 09), com as respostas
+//      no HTML do SSG mesmo com o item fechado
 //   2. "assistente técnico judicial" e "assistente técnico pericial" no texto da página
 //   3. HTML sem "Quanto custa"
 //   4. textos novos sem travessão (— ou –) e sem cidade/estado (regra anti-geo da home)
 //   5. selo do hero da home, /sp e /br: no máximo 2 linhas no Pixel 7 e 1 no desktop (1024, 1366
-//      e 1920 px); Goiânia segue com o selo próprio
+//      e 1920 px); Goiânia e Brasília seguem com o selo próprio (Brasília também até 2 no celular)
 //   6. hero com "Orçamento em até 2h úteis" no celular e no desktop (1 linha) e sem "Resposta
 //      rápida" como microprova isolada; a linha do CTA final "Resposta rápida · Cível e
 //      trabalhista · CRM/MG 109.153" continua na home, /sp e /br (Goiânia já tem a dela)
@@ -34,6 +34,7 @@ const BASE = `http://127.0.0.1:${PORT}`;
 // textos aprovados — conferidos LITERALMENTE (não importados do código, de propósito)
 const SELO_MAE = "Assistente técnico pericial · Perícia judicial";
 const SELO_GO = "Assistente técnico · Goiânia e região";
+const SELO_BSB = "Assistente técnico · Brasília e entorno"; // porta Brasília (15/11/2026): até 2 linhas no Pixel 7
 const MICROPROVA = "Orçamento em até 2h úteis";
 const MICROPROVA_ANTIGA = "Resposta rápida";
 const CTA_FINAL_LINHA = "Resposta rápida · Cível e trabalhista · CRM/MG 109.153";
@@ -60,6 +61,8 @@ const PAGINAS = [
   { nome: "sp", rota: "/assistente-tecnico-medico/sp", arquivo: "assistente-tecnico-medico-sp.html", nFaq: 9, selo: SELO_MAE, ctaFinal: true },
   { nome: "br", rota: "/assistente-tecnico-medico/br", arquivo: "assistente-tecnico-medico-br.html", nFaq: 9, selo: SELO_MAE, ctaFinal: true },
   { nome: "goiania", rota: "/assistente-tecnico-medico/goiania", arquivo: "assistente-tecnico-medico-goiania.html", nFaq: 7, selo: SELO_GO, ctaFinal: false },
+  // porta Brasília (15/11/2026): FAQ e CTA final da home, selo próprio
+  { nome: "brasilia", rota: "/assistente-tecnico-medico/brasilia", arquivo: "assistente-tecnico-medico-brasilia.html", nFaq: 9, selo: SELO_BSB, ctaFinal: true },
 ];
 // desktop: o selo tem que caber em 1 linha nestas larguras (em 768 px, borda do breakpoint md, o
 // selo antigo e o de Goiânia já quebravam em 2; a medida sai no log só como informação)
@@ -255,7 +258,8 @@ async function main() {
     const ctxMob = await newContext(browser, { ...devices["Pixel 7"] });
     const mob = await abrir(ctxMob, pg.rota);
     const heroM = await medirHero(mob, pg.selo, MICROPROVA);
-    const maxSelo = pg.selo === SELO_MAE ? 2 : 1;
+    // só o selo da Goiânia tem que caber em 1 linha no celular; o da mãe e o de Brasília podem ter 2
+    const maxSelo = pg.selo === SELO_GO ? 1 : 2;
     check(heroM.selos === 1, `selo "${pg.selo}" visível (Pixel 7)`);
     check(heroM.seloLinhas >= 1 && heroM.seloLinhas <= maxSelo, `selo em no máximo ${maxSelo} linha(s) (Pixel 7)`, `${heroM.seloLinhas} linha(s)`);
     check(heroM.micros === 1, `microprova "${MICROPROVA}" visível (Pixel 7)`);

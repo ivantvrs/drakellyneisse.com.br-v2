@@ -23,6 +23,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { generateAtSpHtml, AT_SP_HTML, AT_SP_PATHNAME } from "./gen-at-sp.mjs";
 import { generateAtBrHtml, AT_BR_HTML, AT_BR_PATHNAME } from "./gen-at-br.mjs";
 import { generateAtGoianiaHtml, AT_GOIANIA_HTML, AT_GOIANIA_PATHNAME } from "./gen-at-goiania.mjs";
+import { generateAtBrasiliaHtml, AT_BRASILIA_HTML, AT_BRASILIA_PATHNAME } from "./gen-at-brasilia.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const DIST = path.join(ROOT, "dist");
@@ -32,6 +33,7 @@ const DIST_TRABALHISTA = path.join(DIST, "trabalhista.html");
 const DIST_AT_SP = path.join(DIST, "assistente-tecnico-medico-sp.html");
 const DIST_AT_BR = path.join(DIST, "assistente-tecnico-medico-br.html");
 const DIST_AT_GOIANIA = path.join(DIST, "assistente-tecnico-medico-goiania.html");
+const DIST_AT_BRASILIA = path.join(DIST, "assistente-tecnico-medico-brasilia.html");
 const NOT_FOUND_HTML = path.join(ROOT, "404.html");
 const DIST_404 = path.join(DIST, "404.html");
 const SERVER_OUT = path.join(ROOT, "dist-ssr");
@@ -123,8 +125,9 @@ async function inlineCriticalCss(html, trackingPrimitives) {
   const scriptsBefore = extractScripts(html);
 
   // entry CSS do app: index-*.css (HOME/AT), empresa-*.css (/empresa), trabalhista-*.css
-  // (/trabalhista), at-sp-*.css, at-br-*.css e at-goiania-*.css (portas geo) ou notfound-*.css (404.html).
-  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp|at-br|at-goiania|notfound)-[^"]+\.css)"[^>]*>/i;
+  // (/trabalhista), at-sp-*.css, at-br-*.css, at-goiania-*.css e at-brasilia-*.css (portas geo) ou
+  // notfound-*.css (404.html).
+  const linkRe = /<link\b[^>]*rel="stylesheet"[^>]*href="(\/assets\/(?:index|empresa|trabalhista|at-sp|at-br|at-goiania|at-brasilia|notfound)-[^"]+\.css)"[^>]*>/i;
   const m = html.match(linkRe);
   if (!m) throw new Error("link do CSS do app (<link rel=stylesheet ...index|empresa|trabalhista.css>) não encontrado");
   const href = m[1];
@@ -167,6 +170,10 @@ async function main() {
   // 0c) idem para a porta geo /assistente-tecnico-medico/goiania (gate próprio no gerador).
   console.log("[build] gen (at-goiania)…");
   await generateAtGoianiaHtml();
+
+  // 0d) idem para a porta geo /assistente-tecnico-medico/brasilia (gate próprio no gerador).
+  console.log("[build] gen (at-brasilia)…");
+  await generateAtBrasiliaHtml();
 
   // 1) client (LP advogado) — index.html exatamente como antes (output byte-idêntico).
   console.log("[build] client (index)…");
@@ -242,6 +249,19 @@ async function main() {
     },
   });
 
+  // 1e3) client (porta geo /assistente-tecnico-medico/brasilia) — mesmo padrão do passo 1d,
+  //      com input key "at-brasilia" -> assets at-brasilia-*.{js,css} próprios.
+  console.log("[build] client (at-brasilia)…");
+  await build({
+    build: {
+      outDir: "dist",
+      emptyOutDir: false,
+      rollupOptions: {
+        input: { "at-brasilia": AT_BRASILIA_HTML },
+      },
+    },
+  });
+
   // 1f) client (404.html) — build ISOLADO no MESMO dist/, mesmo padrão das portas acima.
   //     Input key "notfound" (e não "404": o nome vira prefixo dos assets e um chunk começando
   //     com dígito é pedir confusão nos regex/globs de asset).
@@ -304,6 +324,8 @@ async function main() {
   await processPage({ pathname: AT_BR_PATHNAME, distFile: DIST_AT_BR,       label: "at-br",       render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
   // Porta geo Goiânia: idem — mesmo funil AT da home (mesma conversão Ads zjEb…, whatsapp_click_at).
   await processPage({ pathname: AT_GOIANIA_PATHNAME, distFile: DIST_AT_GOIANIA, label: "at-goiania", render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
+  // Porta geo Brasília: idem — mesmo funil AT da home (mesma conversão Ads zjEb…, whatsapp_click_at).
+  await processPage({ pathname: AT_BRASILIA_PATHNAME, distFile: DIST_AT_BRASILIA, label: "at-brasilia", render, heroPreload: heroPreloadKelly, trackingPrimitives: TRACKING_PRIMITIVES_AT });
   // 404: sem preload de hero (não tem imagem) e sem primitivos de tracking (a página não carrega
   // NENHUMA tag de medição de propósito — ver 404.html). O gate byte-a-byte dos <script> continua
   // valendo: só o entry do Vite deve existir ali.
