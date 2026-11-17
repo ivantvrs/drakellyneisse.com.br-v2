@@ -893,11 +893,11 @@
   })();
   </script>
 
-  <!-- Meta Pixel — ID ainda não fornecido pelo cliente.
-       TODO: preencher PIXEL_ID. Sem ID o snippet não carrega nada e a página segue normal. -->
+  <!-- Meta Pixel "KN · Pixel · drakellyneisse.com.br" (BM da Dra. Kelly), o mesmo que o GTM
+       dispara no resto do site. Esta página NÃO carrega o GTM, então não há disparo duplicado. -->
   <script>
   (function () {
-    var PIXEL_ID = ''; // TODO: preencher PIXEL_ID (ex.: '1234567890123456')
+    var PIXEL_ID = '9215275421923361';
     window.__linkbioPixelId = PIXEL_ID;
     if (!PIXEL_ID) return;
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -957,10 +957,15 @@
         }
       } catch (_) { /* não quebrar UX */ }
 
-      // 3) Meta Pixel (só com PIXEL_ID preenchido)
+      // 3) Meta Pixel (só com PIXEL_ID preenchido). Cards de WhatsApp também mandam o
+      // evento padrão Contact, o mesmo que o GTM manda no resto do site (público e conversão
+      // "clicou no WhatsApp" únicos). Sem link_url para a Meta: a URL carrega utm e gclid.
       try {
         if (typeof fbq === 'function') {
-          fbq('trackCustom', 'LinkBioClick', { cta_origin: ctaOrigin, link_url: a.href });
+          fbq('trackCustom', 'LinkBioClick', { cta_origin: ctaOrigin });
+          if (/tintim\.link|wa\.me/i.test(a.href)) {
+            fbq('track', 'Contact', { content_name: ctaOrigin });
+          }
         }
       } catch (_) { /* não quebrar UX */ }
 
